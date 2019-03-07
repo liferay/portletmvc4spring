@@ -93,6 +93,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.springframework.web.portlet.context.StaticPortletApplicationContext;
 import org.springframework.web.portlet.mvc.AbstractController;
+import org.springframework.web.portlet.mvc.method.annotation.PortletRequestMappingHandlerAdapter;
 
 import static org.junit.Assert.*;
 
@@ -275,7 +276,7 @@ public class Portlet20AnnotationControllerTests {
 			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
 				GenericWebApplicationContext wac = new GenericWebApplicationContext();
 				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyCommandProvidingFormController.class));
-				RootBeanDefinition adapterDef = new RootBeanDefinition(AnnotationMethodHandlerAdapter.class);
+				RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
 				adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
 				wac.registerBeanDefinition("handlerAdapter", adapterDef);
 				wac.refresh();
@@ -305,7 +306,7 @@ public class Portlet20AnnotationControllerTests {
 				GenericWebApplicationContext wac = new GenericWebApplicationContext();
 				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyTypedCommandProvidingFormController.class));
 				wac.registerBeanDefinition("controller2", new RootBeanDefinition(MyOtherTypedCommandProvidingFormController.class));
-				RootBeanDefinition adapterDef = new RootBeanDefinition(AnnotationMethodHandlerAdapter.class);
+				RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
 				adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
 				adapterDef.getPropertyValues().add("customArgumentResolver", new MySpecialArgumentResolver());
 				wac.registerBeanDefinition("handlerAdapter", adapterDef);
@@ -726,7 +727,7 @@ public class Portlet20AnnotationControllerTests {
 				wac.registerSingleton("secondController", SecondController.class);
 				wac.registerSingleton("thirdController", ThirdController.class);
 				wac.registerSingleton("handlerMapping", DefaultAnnotationHandlerMapping.class);
-				wac.registerSingleton("handlerAdapter", AnnotationMethodHandlerAdapter.class);
+				wac.registerSingleton("handlerAdapter", PortletRequestMappingHandlerAdapter.class);
 				wac.setPortletContext(new MockPortletContext());
 				AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
 				wac.refresh();
@@ -1061,8 +1062,7 @@ public class Portlet20AnnotationControllerTests {
 	private static class MyWebBindingInitializer implements WebBindingInitializer {
 
 		@Override
-		public void initBinder(WebDataBinder binder, WebRequest request) {
-			assertNotNull(request.getLocale());
+		public void initBinder(WebDataBinder binder) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			dateFormat.setLenient(false);
 			binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));

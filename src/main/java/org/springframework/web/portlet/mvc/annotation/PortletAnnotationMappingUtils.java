@@ -33,7 +33,7 @@ import org.springframework.web.portlet.util.PortletUtils;
  * @author Juergen Hoeller
  * @since 2.5.2
  */
-abstract class PortletAnnotationMappingUtils {
+public class PortletAnnotationMappingUtils {
 
 	/**
 	 * Check whether the given portlet modes matches the specified type-level modes.

@@ -82,7 +82,8 @@ import org.springframework.web.servlet.ViewResolver;
  * <li>It can use any {@link HandlerAdapter}; this allows for using any handler interface.
  * The default adapter is {@link org.springframework.web.portlet.mvc.SimpleControllerHandlerAdapter}
  * for Spring's {@link org.springframework.web.portlet.mvc.Controller} interface.
- * A default {@link org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter}
+ * A default
+ * {@link org.springframework.web.portlet.mvc.method.annotation.PortletRequestMappingHandlerAdapter}
  * will be registered as well. HandlerAdapter objects can be added as beans in the
  * application context, overriding the default HandlerAdapter. Like HandlerMappings,
  * HandlerAdapters can be given any bean name (they are tested by type).
