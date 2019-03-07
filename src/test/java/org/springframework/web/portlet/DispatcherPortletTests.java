@@ -42,7 +42,6 @@ import org.springframework.web.portlet.context.PortletConfigAwareBean;
 import org.springframework.web.portlet.context.PortletContextAwareBean;
 import org.springframework.web.portlet.multipart.MultipartActionRequest;
 import org.springframework.web.portlet.multipart.PortletMultipartResolver;
-import org.springframework.web.servlet.ViewRendererServlet;
 import org.springframework.web.servlet.view.InternalResourceView;
 
 import static org.junit.Assert.*;

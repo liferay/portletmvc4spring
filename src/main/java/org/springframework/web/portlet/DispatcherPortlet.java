@@ -58,7 +58,6 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.portlet.multipart.MultipartActionRequest;
 import org.springframework.web.portlet.multipart.PortletMultipartResolver;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewRendererServlet;
 import org.springframework.web.servlet.ViewResolver;
 
 /**
@@ -127,7 +126,7 @@ import org.springframework.web.servlet.ViewResolver;
  * @author Juergen Hoeller
  * @since 2.0
  * @see org.springframework.web.portlet.mvc.Controller
- * @see org.springframework.web.servlet.ViewRendererServlet
+ * @see ViewRendererServlet
  * @see org.springframework.web.context.ContextLoaderListener
  */
 public class DispatcherPortlet extends FrameworkPortlet {
@@ -1152,7 +1151,7 @@ public class DispatcherPortlet extends FrameworkPortlet {
 	/**
 	 * Actually render the given view.
 	 * <p>The default implementation delegates to
-	 * {@link org.springframework.web.servlet.ViewRendererServlet}.
+	 * {@link ViewRendererServlet}.
 	 * @param view the View to render
 	 * @param model the associated model
 	 * @param request current portlet render/resource request
