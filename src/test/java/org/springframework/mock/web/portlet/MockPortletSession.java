@@ -26,7 +26,7 @@ import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import org.springframework.mock.web.test.MockHttpSession;
+import org.springframework.mock.web.MockHttpSession;
 
 /**
  * Mock implementation of the {@link javax.portlet.PortletSession} interface.

@@ -115,7 +115,7 @@ public class PortletRequestAttributesTests {
 		MockPortletRequest request = new MockPortletRequest();
 		request.setSession(session);
 		PortletRequestAttributes attrs = new PortletRequestAttributes(request);
-		attrs.setAttribute(KEY, VALUE, RequestAttributes.SCOPE_GLOBAL_SESSION);
+		attrs.setAttribute(KEY, VALUE, PortletRequestAttributes.SCOPE_GLOBAL_SESSION);
 		assertSame(VALUE, session.getAttribute(KEY, PortletSession.APPLICATION_SCOPE));
 	}
 
@@ -126,10 +126,10 @@ public class PortletRequestAttributesTests {
 		MockPortletRequest request = new MockPortletRequest();
 		request.setSession(session);
 		PortletRequestAttributes attrs = new PortletRequestAttributes(request);
-		assertSame(VALUE, attrs.getAttribute(KEY, RequestAttributes.SCOPE_GLOBAL_SESSION));
+		assertSame(VALUE, attrs.getAttribute(KEY, PortletRequestAttributes.SCOPE_GLOBAL_SESSION));
 		attrs.requestCompleted();
 		request.close();
-		attrs.setAttribute(KEY, VALUE, RequestAttributes.SCOPE_GLOBAL_SESSION);
+		attrs.setAttribute(KEY, VALUE, PortletRequestAttributes.SCOPE_GLOBAL_SESSION);
 		assertSame(VALUE, session.getAttribute(KEY, PortletSession.APPLICATION_SCOPE));
 	}
 

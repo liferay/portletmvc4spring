@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.mock.web.portlet.MockRenderRequest;
 import org.springframework.mock.web.portlet.ServletWrappingPortletContext;
-import org.springframework.mock.web.test.MockServletContext;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.web.context.ContextCleanupListener;
 import org.springframework.web.context.WebApplicationContext;
@@ -98,7 +98,7 @@ public class PortletApplicationContextScopeTests {
 
 	@Test
 	public void testGlobalSessionScope() {
-		WebApplicationContext ac = initApplicationContext(WebApplicationContext.SCOPE_GLOBAL_SESSION);
+		WebApplicationContext ac = initApplicationContext(PortletApplicationContext.SCOPE_GLOBAL_SESSION);
 		MockRenderRequest request = new MockRenderRequest();
 		PortletRequestAttributes requestAttributes = new PortletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(requestAttributes);

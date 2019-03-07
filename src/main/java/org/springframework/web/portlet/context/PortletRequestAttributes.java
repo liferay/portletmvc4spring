@@ -44,7 +44,6 @@ import org.springframework.web.portlet.util.PortletUtils;
  * @see javax.portlet.PortletSession#PORTLET_SCOPE
  * @see javax.portlet.PortletSession#APPLICATION_SCOPE
  * @see RequestAttributes#SCOPE_SESSION
- * @see RequestAttributes#SCOPE_GLOBAL_SESSION
  */
 public class PortletRequestAttributes extends AbstractRequestAttributes {
 
@@ -55,6 +54,13 @@ public class PortletRequestAttributes extends AbstractRequestAttributes {
 	public static final String DESTRUCTION_CALLBACK_NAME_PREFIX =
 			PortletRequestAttributes.class.getName() + ".DESTRUCTION_CALLBACK.";
 
+	/**
+	 * Constant that indicates global session scope.
+	 * <p>This explicitly refers to a globally shared session,
+	 * (a.k.a. PortletSession.APPLICATION_SCOPE)
+	 * Else, it simply refers to the common session.
+	 */
+	public static final int SCOPE_GLOBAL_SESSION = 2;
 
 	private final PortletRequest request;
 
