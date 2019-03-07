@@ -17,6 +17,7 @@
 package org.springframework.web.portlet.multipart;
 
 import javax.portlet.ActionRequest;
+import javax.portlet.ResourceRequest;
 
 import org.springframework.web.multipart.MultipartException;
 
@@ -67,6 +68,7 @@ import org.springframework.web.multipart.MultipartException;
  * @author Juergen Hoeller
  * @since 2.0
  * @see MultipartActionRequest
+ * @see MultipartResourceRequest
  * @see org.springframework.web.multipart.MultipartFile
  * @see CommonsPortletMultipartResolver
  * @see org.springframework.web.multipart.support.ByteArrayMultipartFileEditor
@@ -86,6 +88,17 @@ public interface PortletMultipartResolver {
 	boolean isMultipart(ActionRequest request);
 
 	/**
+	 * Determine if the given request contains multipart content.
+	 * <p>Will typically check for content type
+	 * "{@code multipart/form-data}", but the actually accepted requests
+	 * might depend on the capabilities of the resolver implementation.
+	 * @param request the portlet request to be evaluated
+	 * @return whether the request contains multipart content
+	 * @since 5.1
+	 */
+	boolean isMultipart(ResourceRequest request);
+
+	/**
 	 * Parse the given portlet request into multipart files and parameters,
 	 * and wrap the request inside a MultipartActionRequest object
 	 * that provides access to file descriptors and makes contained
@@ -101,8 +114,29 @@ public interface PortletMultipartResolver {
 	 * @see javax.portlet.ActionRequest#getParameter
 	 * @see javax.portlet.ActionRequest#getParameterNames
 	 * @see javax.portlet.ActionRequest#getParameterMap
+	 * @since 5.1
 	 */
 	MultipartActionRequest resolveMultipart(ActionRequest request) throws MultipartException;
+
+	/**
+	 * Parse the given portlet request into multipart files and parameters,
+	 * and wrap the request inside a MultipartResourceRequest object
+	 * that provides access to file descriptors and makes contained
+	 * parameters accessible via the standard PortletRequest methods.
+	 * @param request the portlet request to wrap (must be of a multipart content type)
+	 * @return the wrapped portlet request
+	 * @throws org.springframework.web.multipart.MultipartException if the portlet request
+	 * is not multipart, or if implementation-specific problems are encountered
+	 * (such as exceeding file size limits)
+	 * @see org.springframework.web.portlet.multipart.MultipartResourceRequest#getFile
+	 * @see org.springframework.web.portlet.multipart.MultipartResourceRequest#getFileNames
+	 * @see org.springframework.web.portlet.multipart.MultipartResourceRequest#getFileMap
+	 * @see javax.portlet.ResourceRequest#getParameter
+	 * @see javax.portlet.ResourceRequest#getParameterNames
+	 * @see javax.portlet.ResourceRequest#getParameterMap
+	 * @since 5.1
+	 */
+	MultipartResourceRequest resolveMultipart(ResourceRequest request) throws MultipartException;
 
 	/**
 	 * Cleanup any resources used for the multipart handling,
@@ -110,5 +144,13 @@ public interface PortletMultipartResolver {
 	 * @param request the request to cleanup resources for
 	 */
 	void cleanupMultipart(MultipartActionRequest request);
+
+	/**
+	 * Cleanup any resources used for the multipart handling,
+	 * such as storage for any uploaded file(s).
+	 * @param request the request to cleanup resources for
+	 * @since 5.1
+	 */
+	void cleanupMultipart(MultipartResourceRequest request);
 
 }

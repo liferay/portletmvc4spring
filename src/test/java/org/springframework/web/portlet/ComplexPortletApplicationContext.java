@@ -50,7 +50,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.Ordered;
 import org.springframework.mock.web.portlet.MockPortletConfig;
 import org.springframework.mock.web.portlet.MockPortletContext;
-import org.springframework.mock.web.test.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -69,7 +69,9 @@ import org.springframework.web.portlet.handler.SimplePortletHandlerAdapter;
 import org.springframework.web.portlet.handler.SimplePortletPostProcessor;
 import org.springframework.web.portlet.handler.UserRoleAuthorizationInterceptor;
 import org.springframework.web.portlet.multipart.DefaultMultipartActionRequest;
+import org.springframework.web.portlet.multipart.DefaultMultipartResourceRequest;
 import org.springframework.web.portlet.multipart.MultipartActionRequest;
+import org.springframework.web.portlet.multipart.MultipartResourceRequest;
 import org.springframework.web.portlet.multipart.PortletMultipartResolver;
 import org.springframework.web.portlet.mvc.Controller;
 import org.springframework.web.portlet.mvc.SimpleControllerHandlerAdapter;
@@ -505,6 +507,11 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		}
 
 		@Override
+		public boolean isMultipart(ResourceRequest request) {
+			return true;
+		}
+
+		@Override
 		public MultipartActionRequest resolveMultipart(ActionRequest request) throws MultipartException {
 			if (request.getAttribute("fail") != null) {
 				throw new MaxUploadSizeExceededException(1000);
@@ -524,7 +531,34 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		}
 
 		@Override
+		public MultipartResourceRequest resolveMultipart(ResourceRequest request) throws MultipartException {
+			if (request.getAttribute("fail") != null) {
+				throw new MaxUploadSizeExceededException(1000);
+			}
+			if (request instanceof MultipartActionRequest) {
+				throw new IllegalStateException("Already a multipart request");
+			}
+			if (request.getAttribute("resolved") != null) {
+				throw new IllegalStateException("Already resolved");
+			}
+			request.setAttribute("resolved", Boolean.TRUE);
+			MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<String, MultipartFile>();
+			files.set("someFile", new MockMultipartFile("someFile", "someContent".getBytes()));
+			Map<String, String[]> params = new HashMap<String, String[]>();
+			params.put("someParam", new String[] {"someParam"});
+			return new DefaultMultipartResourceRequest(request, files, params, Collections.<String, String>emptyMap());
+		}
+
+		@Override
 		public void cleanupMultipart(MultipartActionRequest request) {
+			if (request.getAttribute("cleanedUp") != null) {
+				throw new IllegalStateException("Already cleaned up");
+			}
+			request.setAttribute("cleanedUp", Boolean.TRUE);
+		}
+
+		@Override
+		public void cleanupMultipart(MultipartResourceRequest request) {
 			if (request.getAttribute("cleanedUp") != null) {
 				throw new IllegalStateException("Already cleaned up");
 			}

@@ -16,9 +16,24 @@
 
 package org.springframework.web.portlet.multipart;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.Principal;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import javax.portlet.ActionRequest;
+import javax.portlet.PortalContext;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletMode;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletSession;
+import javax.portlet.ResourceRequest;
+import javax.portlet.WindowState;
+import javax.servlet.http.Cookie;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -119,6 +134,14 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 		return (request != null && PortletFileUpload.isMultipartContent(request));
 	}
 
+	/**
+	 * @since 5.1
+	 */
+	@Override
+	public boolean isMultipart(ResourceRequest request) {
+		return (request != null && PortletFileUpload.isMultipartContent(new ActionRequestAdapter(request)));
+	}
+
 	@Override
 	public MultipartActionRequest resolveMultipart(final ActionRequest request) throws MultipartException {
 		Assert.notNull(request, "Request must not be null");
@@ -141,6 +164,30 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 	}
 
 	/**
+	 * @since 5.1
+	 */
+	@Override
+	public MultipartResourceRequest resolveMultipart(final ResourceRequest request) throws MultipartException {
+		Assert.notNull(request, "Request must not be null");
+		if (this.resolveLazily) {
+			return new DefaultMultipartResourceRequest(request) {
+				@Override
+				protected void initializeMultipart() {
+					MultipartParsingResult parsingResult = parseRequest(request);
+					setMultipartFiles(parsingResult.getMultipartFiles());
+					setMultipartParameters(parsingResult.getMultipartParameters());
+					setMultipartParameterContentTypes(parsingResult.getMultipartParameterContentTypes());
+				}
+			};
+		}
+		else {
+			MultipartParsingResult parsingResult = parseRequest(request);
+			return new DefaultMultipartResourceRequest(request, parsingResult.getMultipartFiles(),
+					parsingResult.getMultipartParameters(), parsingResult.getMultipartParameterContentTypes());
+		}
+	}
+
+	/**
 	 * Parse the given portlet request, resolving its multipart elements.
 	 * @param request the request to parse
 	 * @return the parsing result
@@ -151,6 +198,28 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 		FileUpload fileUpload = prepareFileUpload(encoding);
 		try {
 			List<FileItem> fileItems = ((PortletFileUpload) fileUpload).parseRequest(request);
+			return parseFileItems(fileItems, encoding);
+		}
+		catch (FileUploadBase.SizeLimitExceededException ex) {
+			throw new MaxUploadSizeExceededException(fileUpload.getSizeMax(), ex);
+		}
+		catch (FileUploadException ex) {
+			throw new MultipartException("Could not parse multipart portlet request", ex);
+		}
+	}
+
+	/**
+	 * Parse the given portlet request, resolving its multipart elements.
+	 * @param request the request to parse
+	 * @return the parsing result
+	 * @throws MultipartException if multipart resolution failed.
+	 * @since 5.1
+	 */
+	protected MultipartParsingResult parseRequest(ResourceRequest request) throws MultipartException {
+		String encoding = determineEncoding(request);
+		FileUpload fileUpload = prepareFileUpload(encoding);
+		try {
+			List<FileItem> fileItems = ((PortletFileUpload) fileUpload).parseRequest(new ActionRequestAdapter(request));
 			return parseFileItems(fileItems, encoding);
 		}
 		catch (FileUploadBase.SizeLimitExceededException ex) {
@@ -179,6 +248,25 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 		return encoding;
 	}
 
+	/**
+	 * Determine the encoding for the given request.
+	 * Can be overridden in subclasses.
+	 * <p>The default implementation checks the request encoding,
+	 * falling back to the default encoding specified for this resolver.
+	 * @param request current portlet request
+	 * @return the encoding for the request (never {@code null})
+	 * @see javax.portlet.ResourceRequest#getCharacterEncoding
+	 * @see #setDefaultEncoding
+	 * @since 5.1
+	 */
+	protected String determineEncoding(ResourceRequest request) {
+		String encoding = request.getCharacterEncoding();
+		if (encoding == null) {
+			encoding = getDefaultEncoding();
+		}
+		return encoding;
+	}
+
 	@Override
 	public void cleanupMultipart(MultipartActionRequest request) {
 		if (request != null) {
@@ -191,4 +279,318 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 		}
 	}
 
+	/**
+	 * @param request the request to cleanup resources for
+	 * @since 5.1
+	 */
+	@Override
+	public void cleanupMultipart(MultipartResourceRequest request) {
+		if (request != null) {
+			try {
+				cleanupFileItems(request.getMultiFileMap());
+			}
+			catch (Throwable ex) {
+				logger.warn("Failed to perform multipart cleanup for portlet request", ex);
+			}
+		}
+	}
+
+	/**
+	 * Since {@link PortletFileUpload#parseRequest(ActionRequest)} only works with {@link ActionRequest}, this adapter
+	 * class is necessary to force commons-fileupload to work with ResourceRequest (Ajax file upload).
+	 *
+	 * @author  Neil Griffin
+	 * @since 5.1
+	 */
+	private static class ActionRequestAdapter implements ActionRequest {
+
+		private ResourceRequest resourceRequest;
+
+		public ActionRequestAdapter(ResourceRequest resourceRequest) {
+			this.resourceRequest = resourceRequest;
+		}
+
+		@Override
+		public Object getAttribute(String name) {
+			return resourceRequest.getAttribute(name);
+		}
+
+		@Override
+		public Enumeration<String> getAttributeNames() {
+			return resourceRequest.getAttributeNames();
+		}
+
+		@Override
+		public String getAuthType() {
+			return resourceRequest.getAuthType();
+		}
+
+		@Override
+		public String getCharacterEncoding() {
+			return resourceRequest.getCharacterEncoding();
+		}
+
+		@Override
+		public int getContentLength() {
+			return resourceRequest.getContentLength();
+		}
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public long getContentLengthLong() {
+			return resourceRequest.getContentLengthLong();
+		}
+		*/
+
+		@Override
+		public String getContentType() {
+			return resourceRequest.getContentType();
+		}
+
+		@Override
+		public String getContextPath() {
+			return resourceRequest.getContextPath();
+		}
+
+		@Override
+		public Cookie[] getCookies() {
+			return resourceRequest.getCookies();
+		}
+
+		@Override
+		public Locale getLocale() {
+			return resourceRequest.getLocale();
+		}
+
+		@Override
+		public Enumeration<Locale> getLocales() {
+			return resourceRequest.getLocales();
+		}
+
+		@Override
+		public String getMethod() {
+			return resourceRequest.getMethod();
+		}
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public Part getPart(String name) throws IOException, PortletException {
+			return resourceRequest.getPart(name);
+		}
+		*/
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public Collection<Part> getParts()
+			throws IOException, PortletException {
+			return resourceRequest.getParts();
+		}
+		*/
+
+		@Override
+		public String getParameter(String name) {
+			return resourceRequest.getParameter(name);
+		}
+
+		@Override
+		public Map<String, String[]> getParameterMap() {
+			return resourceRequest.getParameterMap();
+		}
+
+		@Override
+		public Enumeration<String> getParameterNames() {
+			return resourceRequest.getParameterNames();
+		}
+
+		@Override
+		public String[] getParameterValues(String name) {
+			return resourceRequest.getParameterValues(name);
+		}
+
+		@Override
+		public PortalContext getPortalContext() {
+			return resourceRequest.getPortalContext();
+		}
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public PortletContext getPortletContext() {
+			return resourceRequest.getPortletContext();
+		}
+		*/
+
+		@Override
+		public InputStream getPortletInputStream() throws IOException {
+			return resourceRequest.getPortletInputStream();
+		}
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public RenderParameters getRenderParameters() {
+			return resourceRequest.getRenderParameters();
+		}
+		*/
+
+		@Override
+		public PortletMode getPortletMode() {
+			return resourceRequest.getPortletMode();
+		}
+
+		@Override
+		public PortletSession getPortletSession() {
+			return resourceRequest.getPortletSession();
+		}
+
+		@Override
+		public PortletSession getPortletSession(boolean create) {
+			return resourceRequest.getPortletSession();
+		}
+
+		@Override
+		public PortletPreferences getPreferences() {
+			return resourceRequest.getPreferences();
+		}
+
+		@Override
+		public Map<String, String[]> getPrivateParameterMap() {
+			return resourceRequest.getPrivateParameterMap();
+		}
+
+		@Override
+		public Enumeration<String> getProperties(String name) {
+			return resourceRequest.getProperties(name);
+		}
+
+		@Override
+		public String getProperty(String name) {
+			return resourceRequest.getProperty(name);
+		}
+
+		@Override
+		public Enumeration<String> getPropertyNames() {
+			return resourceRequest.getPropertyNames();
+		}
+
+		@Override
+		public Map<String, String[]> getPublicParameterMap() {
+			return resourceRequest.getPublicParameterMap();
+		}
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public String getUserAgent() {
+			return resourceRequest.getUserAgent();
+		}
+		*/
+
+		@Override
+		public BufferedReader getReader() throws IOException {
+			return resourceRequest.getReader();
+		}
+
+		@Override
+		public String getRemoteUser() {
+			return resourceRequest.getRemoteUser();
+		}
+
+		@Override
+		public String getRequestedSessionId() {
+			return resourceRequest.getRequestedSessionId();
+		}
+
+		@Override
+		public String getResponseContentType() {
+			return resourceRequest.getResponseContentType();
+		}
+
+		@Override
+		public Enumeration<String> getResponseContentTypes() {
+			return resourceRequest.getResponseContentTypes();
+		}
+
+		@Override
+		public String getScheme() {
+			return resourceRequest.getScheme();
+		}
+
+		@Override
+		public String getServerName() {
+			return resourceRequest.getServerName();
+		}
+
+		@Override
+		public int getServerPort() {
+			return resourceRequest.getServerPort();
+		}
+
+		@Override
+		public Principal getUserPrincipal() {
+			return resourceRequest.getUserPrincipal();
+		}
+
+		@Override
+		public String getWindowID() {
+			return resourceRequest.getWindowID();
+		}
+
+		@Override
+		public WindowState getWindowState() {
+			return resourceRequest.getWindowState();
+		}
+
+		@Override
+		public boolean isPortletModeAllowed(PortletMode mode) {
+			return resourceRequest.isPortletModeAllowed(mode);
+		}
+
+		@Override
+		public boolean isRequestedSessionIdValid() {
+			return resourceRequest.isRequestedSessionIdValid();
+		}
+
+		@Override
+		public boolean isSecure() {
+			return resourceRequest.isSecure();
+		}
+
+		@Override
+		public boolean isUserInRole(String role) {
+			return resourceRequest.isUserInRole(role);
+		}
+
+		@Override
+		public boolean isWindowStateAllowed(WindowState state) {
+			return resourceRequest.isWindowStateAllowed(state);
+		}
+
+		@Override
+		public void removeAttribute(String name) {
+			resourceRequest.removeAttribute(name);
+		}
+
+		@Override
+		public void setAttribute(String name, Object value) {
+			resourceRequest.setAttribute(name, value);
+		}
+
+		@Override
+		public void setCharacterEncoding(String enc) throws
+			UnsupportedEncodingException {
+			resourceRequest.setCharacterEncoding(enc);
+		}
+
+		// TODO: Requires Portlet 3.0 API
+		/*
+		@Override
+		public ActionParameters getActionParameters() {
+			return null;
+		}
+		*/
+	}
 }

@@ -56,6 +56,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.portlet.multipart.MultipartActionRequest;
+import org.springframework.web.portlet.multipart.MultipartResourceRequest;
 import org.springframework.web.portlet.multipart.PortletMultipartResolver;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -823,16 +824,18 @@ public class DispatcherPortlet extends FrameworkPortlet {
 			logger.debug("DispatcherPortlet with name '" + getPortletName() + "' received resource request");
 		}
 
+		ResourceRequest processedRequest = request;
 		HandlerExecutionChain mappedHandler = null;
 		int interceptorIndex = -1;
 
 		try {
+			processedRequest = checkMultipart(request);
 			ModelAndView mv;
 			try {
 				// Determine handler for the current request.
-				mappedHandler = getHandler(request);
+				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null || mappedHandler.getHandler() == null) {
-					noHandlerFound(request, response);
+					noHandlerFound(processedRequest, response);
 					return;
 				}
 
@@ -841,8 +844,8 @@ public class DispatcherPortlet extends FrameworkPortlet {
 				if (interceptors != null) {
 					for (int i = 0; i < interceptors.length; i++) {
 						HandlerInterceptor interceptor = interceptors[i];
-						if (!interceptor.preHandleResource(request, response, mappedHandler.getHandler())) {
-							triggerAfterResourceCompletion(mappedHandler, interceptorIndex, request, response, null);
+						if (!interceptor.preHandleResource(processedRequest, response, mappedHandler.getHandler())) {
+							triggerAfterResourceCompletion(mappedHandler, interceptorIndex, processedRequest, response, null);
 							return;
 						}
 						interceptorIndex = i;
@@ -851,13 +854,13 @@ public class DispatcherPortlet extends FrameworkPortlet {
 
 				// Actually invoke the handler.
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
-				mv = ha.handleResource(request, response, mappedHandler.getHandler());
+				mv = ha.handleResource(processedRequest, response, mappedHandler.getHandler());
 
 				// Apply postHandle methods of registered interceptors.
 				if (interceptors != null) {
 					for (int i = interceptors.length - 1; i >= 0; i--) {
 						HandlerInterceptor interceptor = interceptors[i];
-						interceptor.postHandleResource(request, response, mappedHandler.getHandler(), mv);
+						interceptor.postHandleResource(processedRequest, response, mappedHandler.getHandler(), mv);
 					}
 				}
 			}
@@ -867,12 +870,12 @@ public class DispatcherPortlet extends FrameworkPortlet {
 			}
 			catch (Exception ex) {
 				Object handler = (mappedHandler != null ? mappedHandler.getHandler() : null);
-				mv = processHandlerException(request, response, handler, ex);
+				mv = processHandlerException(processedRequest, response, handler, ex);
 			}
 
 			// Did the handler return a view to render?
 			if (mv != null && !mv.isEmpty()) {
-				render(mv, request, response);
+				render(mv, processedRequest, response);
 			}
 			else {
 				if (logger.isDebugEnabled()) {
@@ -882,20 +885,27 @@ public class DispatcherPortlet extends FrameworkPortlet {
 			}
 
 			// Trigger after-completion for successful outcome.
-			triggerAfterResourceCompletion(mappedHandler, interceptorIndex, request, response, null);
+			triggerAfterResourceCompletion(mappedHandler, interceptorIndex, processedRequest, response, null);
 		}
 
 		catch (Exception ex) {
 			// Trigger after-completion for thrown exception.
-			triggerAfterResourceCompletion(mappedHandler, interceptorIndex, request, response, ex);
+			triggerAfterResourceCompletion(mappedHandler, interceptorIndex, processedRequest, response, ex);
 			throw ex;
 		}
 		catch (Throwable err) {
 			PortletException ex =
 					new PortletException("Error occured during request processing: " + err.getMessage(), err);
 			// Trigger after-completion for thrown exception.
-			triggerAfterResourceCompletion(mappedHandler, interceptorIndex, request, response, ex);
+			triggerAfterResourceCompletion(mappedHandler, interceptorIndex, processedRequest, response, ex);
 			throw ex;
+		}
+
+		finally {
+			// Clean up any resources used by a multipart request.
+			if (processedRequest instanceof MultipartResourceRequest && processedRequest != request) {
+				this.multipartResolver.cleanupMultipart((MultipartResourceRequest) processedRequest);
+			}
 		}
 	}
 
@@ -977,13 +987,33 @@ public class DispatcherPortlet extends FrameworkPortlet {
 	/**
 	 * Convert the request into a multipart request, and make multipart resolver available.
 	 * If no multipart resolver is set, simply use the existing request.
-	 * @param request current HTTP request
+	 * @param request current action request
 	 * @return the processed request (multipart wrapper if necessary)
 	 */
 	protected ActionRequest checkMultipart(ActionRequest request) throws MultipartException {
 		if (this.multipartResolver != null && this.multipartResolver.isMultipart(request)) {
 			if (request instanceof MultipartActionRequest) {
 				logger.debug("Request is already a MultipartActionRequest - probably in a forward");
+			}
+			else {
+				return this.multipartResolver.resolveMultipart(request);
+			}
+		}
+		// If not returned before: return original request.
+		return request;
+	}
+
+	/**
+	 * Convert the request into a multipart request, and make multipart resolver available.
+	 * If no multipart resolver is set, simply use the existing request.
+	 * @param request current resource request
+	 * @return the processed request (multipart wrapper if necessary)
+	 * @since 5.1
+	 */
+	protected ResourceRequest checkMultipart(ResourceRequest request) throws MultipartException {
+		if (this.multipartResolver != null && this.multipartResolver.isMultipart(request)) {
+			if (request instanceof MultipartResourceRequest) {
+				logger.debug("Request is already a MultipartResourceRequest - probably in a forward");
 			}
 			else {
 				return this.multipartResolver.resolveMultipart(request);
