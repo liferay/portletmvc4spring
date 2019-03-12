@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.spring.mock.web.portlet;
 
 import java.util.Map;
+
 import javax.portlet.MutableResourceParameters;
 import javax.portlet.PortletMode;
 import javax.portlet.ResourceURL;
 import javax.portlet.WindowState;
 
+
 /**
  * Mock implementation of the {@link javax.portlet.ResourceURL} interface.
  *
- * @author Juergen Hoeller
- * @since 3.0
+ * @author  Juergen Hoeller
+ * @since   3.0
  */
 public class MockResourceURL extends MockBaseURL implements ResourceURL {
 
@@ -48,25 +49,37 @@ public class MockResourceURL extends MockBaseURL implements ResourceURL {
 		this.windowState = windowState;
 	}
 
-	//---------------------------------------------------------------------
-	// ResourceURL methods
-	//---------------------------------------------------------------------
-
 	@Override
-	public MutableResourceParameters getResourceParameters() {
-		if (mutableResourceParameters == null) {
-			mutableResourceParameters = new MockMutableResourceParameters();
-		}
-		return mutableResourceParameters;
+	public String getCacheability() {
+		return this.cacheability;
 	}
 
 	@Override
-	public void setResourceID(String resourceID) {
-		this.resourceID = resourceID;
+	public PortletMode getPortletMode() {
+		return portletMode;
 	}
 
 	public String getResourceID() {
 		return this.resourceID;
+	}
+
+	// ---------------------------------------------------------------------
+	// ResourceURL methods
+	// ---------------------------------------------------------------------
+
+	@Override
+	public MutableResourceParameters getResourceParameters() {
+
+		if (mutableResourceParameters == null) {
+			mutableResourceParameters = new MockMutableResourceParameters();
+		}
+
+		return mutableResourceParameters;
+	}
+
+	@Override
+	public WindowState getWindowState() {
+		return windowState;
 	}
 
 	@Override
@@ -75,32 +88,23 @@ public class MockResourceURL extends MockBaseURL implements ResourceURL {
 	}
 
 	@Override
-	public String getCacheability() {
-		return this.cacheability;
+	public void setResourceID(String resourceID) {
+		this.resourceID = resourceID;
 	}
-
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(encodeParameter("resourceID", this.resourceID));
+
 		if (this.cacheability != null) {
 			sb.append(";").append(encodeParameter("cacheability", this.cacheability));
 		}
+
 		for (Map.Entry<String, String[]> entry : this.parameters.entrySet()) {
 			sb.append(";").append(encodeParameter("param_" + entry.getKey(), entry.getValue()));
 		}
-		return (isSecure() ? "https:" : "http:") +
-				"//localhost/mockportlet?" + sb.toString();
-	}
 
-	@Override
-	public PortletMode getPortletMode() {
-		return portletMode;
-	}
-
-	@Override
-	public WindowState getWindowState() {
-		return windowState;
+		return (isSecure() ? "https:" : "http:") + "//localhost/mockportlet?" + sb.toString();
 	}
 }

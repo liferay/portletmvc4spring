@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2016 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.handler;
 
 import java.util.Collections;
@@ -21,6 +20,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
@@ -33,48 +33,44 @@ import javax.xml.namespace.QName;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
+
 import com.liferay.portletmvc4spring.context.PortletConfigAware;
 import com.liferay.portletmvc4spring.context.PortletContextAware;
 
+
 /**
- * {@link org.springframework.beans.factory.config.BeanPostProcessor}
- * that applies initialization and destruction callbacks to beans that
- * implement the {@link javax.portlet.Portlet} interface.
+ * {@link org.springframework.beans.factory.config.BeanPostProcessor} that applies initialization and destruction
+ * callbacks to beans that implement the {@link javax.portlet.Portlet} interface.
  *
- * <p>After initialization of the bean instance, the Portlet {@code init}
- * method will be called with a PortletConfig that contains the bean name
- * of the Portlet and the PortletContext that it is running in.
+ * <p>After initialization of the bean instance, the Portlet {@code init} method will be called with a PortletConfig
+ * that contains the bean name of the Portlet and the PortletContext that it is running in.
  *
- * <p>Before destruction of the bean instance, the Portlet {@code destroy}
- * will be called.
+ * <p>Before destruction of the bean instance, the Portlet {@code destroy} will be called.
  *
- * <p><b>Note that this post-processor does not support Portlet initialization
- * parameters.</b> Bean instances that implement the Portlet interface are
- * supposed to be configured like any other Spring bean, that is, through
+ * <p><b>Note that this post-processor does not support Portlet initialization parameters.</b> Bean instances that
+ * implement the Portlet interface are supposed to be configured like any other Spring bean, that is, through
  * constructor arguments or bean properties.
  *
- * <p>For reuse of a Portlet implementation in a plain Portlet container
- * and as a bean in a Spring context, consider deriving from Spring's
- * {@link com.liferay.portletmvc4spring.GenericPortletBean} base class that
- * applies Portlet initialization parameters as bean properties, supporting
- * both the standard Portlet and the Spring bean initialization style.
+ * <p>For reuse of a Portlet implementation in a plain Portlet container and as a bean in a Spring context, consider
+ * deriving from Spring's {@link com.liferay.portletmvc4spring.GenericPortletBean} base class that applies Portlet
+ * initialization parameters as bean properties, supporting both the standard Portlet and the Spring bean initialization
+ * style.
  *
- * <p><b>Alternatively, consider wrapping a Portlet with Spring's
- * {@link com.liferay.portletmvc4spring.mvc.PortletWrappingController}.</b>
- * This is particularly appropriate for existing Portlet classes,
- * allowing to specify Portlet initialization parameters etc.
+ * <p><b>Alternatively, consider wrapping a Portlet with Spring's {@link
+ * com.liferay.portletmvc4spring.mvc.PortletWrappingController}.</b> This is particularly appropriate for existing
+ * Portlet classes, allowing to specify Portlet initialization parameters etc.
  *
- * @author Juergen Hoeller
- * @author John A. Lewis
- * @since 2.0
- * @see javax.portlet.Portlet
- * @see javax.portlet.PortletConfig
- * @see SimplePortletHandlerAdapter
- * @see com.liferay.portletmvc4spring.GenericPortletBean
- * @see com.liferay.portletmvc4spring.mvc.PortletWrappingController
+ * @author  Juergen Hoeller
+ * @author  John A. Lewis
+ * @since   2.0
+ * @see     javax.portlet.Portlet
+ * @see     javax.portlet.PortletConfig
+ * @see     SimplePortletHandlerAdapter
+ * @see     com.liferay.portletmvc4spring.GenericPortletBean
+ * @see     com.liferay.portletmvc4spring.mvc.PortletWrappingController
  */
-public class SimplePortletPostProcessor
-	implements DestructionAwareBeanPostProcessor, PortletContextAware, PortletConfigAware {
+public class SimplePortletPostProcessor implements DestructionAwareBeanPostProcessor, PortletContextAware,
+	PortletConfigAware {
 
 	private boolean useSharedPortletConfig = true;
 
@@ -82,42 +78,16 @@ public class SimplePortletPostProcessor
 
 	private PortletConfig portletConfig;
 
-
-	/**
-	 * Set whether to use the shared PortletConfig object passed in
-	 * through {@code setPortletConfig}, if available.
-	 * <p>Default is "true". Turn this setting to "false" to pass in
-	 * a mock PortletConfig object with the bean name as portlet name,
-	 * holding the current PortletContext.
-	 * @see #setPortletConfig
-	 */
-	public void setUseSharedPortletConfig(boolean useSharedPortletConfig) {
-		this.useSharedPortletConfig = useSharedPortletConfig;
-	}
-
-	@Override
-	public void setPortletContext(PortletContext portletContext) {
-		this.portletContext = portletContext;
-	}
-
-	@Override
-	public void setPortletConfig(PortletConfig portletConfig) {
-		this.portletConfig = portletConfig;
-	}
-
-
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		return bean;
-	}
-
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+
 		if (bean instanceof Portlet) {
 			PortletConfig config = this.portletConfig;
-			if (config == null || !this.useSharedPortletConfig) {
+
+			if ((config == null) || !this.useSharedPortletConfig) {
 				config = new DelegatingPortletConfig(beanName, this.portletContext, this.portletConfig);
 			}
+
 			try {
 				((Portlet) bean).init(config);
 			}
@@ -125,14 +95,21 @@ public class SimplePortletPostProcessor
 				throw new BeanInitializationException("Portlet.init threw exception", ex);
 			}
 		}
+
 		return bean;
 	}
 
 	@Override
 	public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
+
 		if (bean instanceof Portlet) {
 			((Portlet) bean).destroy();
 		}
+	}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
 	}
 
 	@Override
@@ -140,10 +117,30 @@ public class SimplePortletPostProcessor
 		return (bean instanceof Portlet);
 	}
 
+	@Override
+	public void setPortletConfig(PortletConfig portletConfig) {
+		this.portletConfig = portletConfig;
+	}
+
+	@Override
+	public void setPortletContext(PortletContext portletContext) {
+		this.portletContext = portletContext;
+	}
 
 	/**
-	 * Internal implementation of the PortletConfig interface, to be passed
-	 * to the wrapped servlet.
+	 * Set whether to use the shared PortletConfig object passed in through {@code setPortletConfig}, if available.
+	 *
+	 * <p>Default is "true". Turn this setting to "false" to pass in a mock PortletConfig object with the bean name as
+	 * portlet name, holding the current PortletContext.
+	 *
+	 * @see  #setPortletConfig
+	 */
+	public void setUseSharedPortletConfig(boolean useSharedPortletConfig) {
+		this.useSharedPortletConfig = useSharedPortletConfig;
+	}
+
+	/**
+	 * Internal implementation of the PortletConfig interface, to be passed to the wrapped servlet.
 	 */
 	private static class DelegatingPortletConfig implements PortletConfig {
 
@@ -160,13 +157,13 @@ public class SimplePortletPostProcessor
 		}
 
 		@Override
-		public String getPortletName() {
-			return this.portletName;
+		public Map<String, String[]> getContainerRuntimeOptions() {
+			return ((this.portletConfig != null) ? this.portletConfig.getContainerRuntimeOptions() : null);
 		}
 
 		@Override
-		public PortletContext getPortletContext() {
-			return this.portletContext;
+		public String getDefaultNamespace() {
+			return XMLConstants.NULL_NS_URI;
 		}
 
 		@Override
@@ -180,23 +177,19 @@ public class SimplePortletPostProcessor
 		}
 
 		@Override
-		public ResourceBundle getResourceBundle(Locale locale) {
-			return (this.portletConfig != null ? this.portletConfig.getResourceBundle(locale) : null);
+		public PortletContext getPortletContext() {
+			return this.portletContext;
 		}
 
 		@Override
-		public Enumeration<String> getPublicRenderParameterNames() {
-			return Collections.enumeration(Collections.<String>emptySet());
+		public Enumeration<PortletMode> getPortletModes(String mimeType) {
+			return ((this.portletConfig != null) ? this.portletConfig.getPortletModes(mimeType)
+												 : Collections.emptyEnumeration());
 		}
 
 		@Override
-		public String getDefaultNamespace() {
-			return XMLConstants.NULL_NS_URI;
-		}
-
-		@Override
-		public Enumeration<QName> getPublishingEventQNames() {
-			return Collections.enumeration(Collections.<QName>emptySet());
+		public String getPortletName() {
+			return this.portletName;
 		}
 
 		@Override
@@ -205,28 +198,35 @@ public class SimplePortletPostProcessor
 		}
 
 		@Override
+		public Map<String, QName> getPublicRenderParameterDefinitions() {
+			return ((this.portletConfig != null) ? this.portletConfig.getPublicRenderParameterDefinitions()
+												 : Collections.emptyMap());
+		}
+
+		@Override
+		public Enumeration<String> getPublicRenderParameterNames() {
+			return Collections.enumeration(Collections.<String>emptySet());
+		}
+
+		@Override
+		public Enumeration<QName> getPublishingEventQNames() {
+			return Collections.enumeration(Collections.<QName>emptySet());
+		}
+
+		@Override
+		public ResourceBundle getResourceBundle(Locale locale) {
+			return ((this.portletConfig != null) ? this.portletConfig.getResourceBundle(locale) : null);
+		}
+
+		@Override
 		public Enumeration<Locale> getSupportedLocales() {
 			return Collections.enumeration(Collections.<Locale>emptySet());
 		}
 
 		@Override
-		public Map<String, String[]> getContainerRuntimeOptions() {
-			return (this.portletConfig != null ? this.portletConfig.getContainerRuntimeOptions() : null);
-		}
-
-		@Override
-		public Enumeration<PortletMode> getPortletModes(String mimeType) {
-			return (this.portletConfig != null ? this.portletConfig.getPortletModes(mimeType) : Collections.emptyEnumeration());
-		}
-
-		@Override
 		public Enumeration<WindowState> getWindowStates(String mimeType) {
-			return (this.portletConfig != null ? this.portletConfig.getWindowStates(mimeType) : Collections.emptyEnumeration());
-		}
-
-		@Override
-		public Map<String, QName> getPublicRenderParameterDefinitions() {
-			return (this.portletConfig != null ? this.portletConfig.getPublicRenderParameterDefinitions() : Collections.emptyMap());
+			return ((this.portletConfig != null) ? this.portletConfig.getWindowStates(mimeType)
+												 : Collections.emptyEnumeration());
 		}
 	}
 

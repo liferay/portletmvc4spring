@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.spring.mock.web.portlet;
 
 import java.util.Collections;
@@ -25,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletMode;
@@ -34,12 +34,13 @@ import javax.xml.namespace.QName;
 
 import org.springframework.util.Assert;
 
+
 /**
  * Mock implementation of the {@link javax.portlet.PortletConfig} interface.
  *
- * @author John A. Lewis
- * @author Juergen Hoeller
- * @since 2.0
+ * @author  John A. Lewis
+ * @author  Juergen Hoeller
+ * @since   2.0
  */
 public class MockPortletConfig implements PortletConfig {
 
@@ -63,7 +64,6 @@ public class MockPortletConfig implements PortletConfig {
 
 	private final Map<String, String[]> containerRuntimeOptions = new LinkedHashMap<String, String[]>();
 
-
 	/**
 	 * Create a new MockPortletConfig with a default {@link MockPortletContext}.
 	 */
@@ -73,7 +73,8 @@ public class MockPortletConfig implements PortletConfig {
 
 	/**
 	 * Create a new MockPortletConfig with a default {@link MockPortletContext}.
-	 * @param portletName the name of the portlet
+	 *
+	 * @param  portletName  the name of the portlet
 	 */
 	public MockPortletConfig(String portletName) {
 		this(null, portletName);
@@ -81,7 +82,8 @@ public class MockPortletConfig implements PortletConfig {
 
 	/**
 	 * Create a new MockPortletConfig.
-	 * @param portletContext the PortletContext that the portlet runs in
+	 *
+	 * @param  portletContext  the PortletContext that the portlet runs in
 	 */
 	public MockPortletConfig(PortletContext portletContext) {
 		this(portletContext, "");
@@ -89,34 +91,21 @@ public class MockPortletConfig implements PortletConfig {
 
 	/**
 	 * Create a new MockPortletConfig.
-	 * @param portletContext the PortletContext that the portlet runs in
-	 * @param portletName the name of the portlet
+	 *
+	 * @param  portletContext  the PortletContext that the portlet runs in
+	 * @param  portletName     the name of the portlet
 	 */
 	public MockPortletConfig(PortletContext portletContext, String portletName) {
-		this.portletContext = (portletContext != null ? portletContext : new MockPortletContext());
+		this.portletContext = ((portletContext != null) ? portletContext : new MockPortletContext());
 		this.portletName = portletName;
 	}
 
-
-	@Override
-	public String getPortletName() {
-		return this.portletName;
+	public void addContainerRuntimeOption(String key, String value) {
+		this.containerRuntimeOptions.put(key, new String[] { value });
 	}
 
-	@Override
-	public PortletContext getPortletContext() {
-		return this.portletContext;
-	}
-
-	public void setResourceBundle(Locale locale, ResourceBundle resourceBundle) {
-		Assert.notNull(locale, "Locale must not be null");
-		this.resourceBundles.put(locale, resourceBundle);
-	}
-
-	@Override
-	public ResourceBundle getResourceBundle(Locale locale) {
-		Assert.notNull(locale, "Locale must not be null");
-		return this.resourceBundles.get(locale);
+	public void addContainerRuntimeOption(String key, String[] values) {
+		this.containerRuntimeOptions.put(key, values);
 	}
 
 	public void addInitParameter(String name, String value) {
@@ -124,68 +113,20 @@ public class MockPortletConfig implements PortletConfig {
 		this.initParameters.put(name, value);
 	}
 
-	@Override
-	public String getInitParameter(String name) {
-		Assert.notNull(name, "Parameter name must not be null");
-		return this.initParameters.get(name);
-	}
-
-	@Override
-	public Enumeration<String> getInitParameterNames() {
-		return Collections.enumeration(this.initParameters.keySet());
+	public void addProcessingEventQName(QName name) {
+		this.processingEventQNames.add(name);
 	}
 
 	public void addPublicRenderParameterName(String name) {
 		this.publicRenderParameterNames.add(name);
 	}
 
-	@Override
-	public Enumeration<String> getPublicRenderParameterNames() {
-		return Collections.enumeration(this.publicRenderParameterNames);
-	}
-
-	public void setDefaultNamespace(String defaultNamespace) {
-		this.defaultNamespace = defaultNamespace;
-	}
-
-	@Override
-	public String getDefaultNamespace() {
-		return this.defaultNamespace;
-	}
-
 	public void addPublishingEventQName(QName name) {
 		this.publishingEventQNames.add(name);
 	}
 
-	@Override
-	public Enumeration<QName> getPublishingEventQNames() {
-		return Collections.enumeration(this.publishingEventQNames);
-	}
-
-	public void addProcessingEventQName(QName name) {
-		this.processingEventQNames.add(name);
-	}
-
-	@Override
-	public Enumeration<QName> getProcessingEventQNames() {
-		return Collections.enumeration(this.processingEventQNames);
-	}
-
 	public void addSupportedLocale(Locale locale) {
 		this.supportedLocales.add(locale);
-	}
-
-	@Override
-	public Enumeration<Locale> getSupportedLocales() {
-		return Collections.enumeration(this.supportedLocales);
-	}
-
-	public void addContainerRuntimeOption(String key, String value) {
-		this.containerRuntimeOptions.put(key, new String[] {value});
-	}
-
-	public void addContainerRuntimeOption(String key, String[] values) {
-		this.containerRuntimeOptions.put(key, values);
 	}
 
 	@Override
@@ -194,8 +135,67 @@ public class MockPortletConfig implements PortletConfig {
 	}
 
 	@Override
+	public String getDefaultNamespace() {
+		return this.defaultNamespace;
+	}
+
+	@Override
+	public String getInitParameter(String name) {
+		Assert.notNull(name, "Parameter name must not be null");
+
+		return this.initParameters.get(name);
+	}
+
+	@Override
+	public Enumeration<String> getInitParameterNames() {
+		return Collections.enumeration(this.initParameters.keySet());
+	}
+
+	@Override
+	public PortletContext getPortletContext() {
+		return this.portletContext;
+	}
+
+	@Override
 	public Enumeration<PortletMode> getPortletModes(String mimeType) {
 		return Collections.enumeration(Collections.<PortletMode>emptySet());
+	}
+
+	@Override
+	public String getPortletName() {
+		return this.portletName;
+	}
+
+	@Override
+	public Enumeration<QName> getProcessingEventQNames() {
+		return Collections.enumeration(this.processingEventQNames);
+	}
+
+	@Override
+	public Map<String, QName> getPublicRenderParameterDefinitions() {
+		return Collections.<String, QName>emptyMap();
+	}
+
+	@Override
+	public Enumeration<String> getPublicRenderParameterNames() {
+		return Collections.enumeration(this.publicRenderParameterNames);
+	}
+
+	@Override
+	public Enumeration<QName> getPublishingEventQNames() {
+		return Collections.enumeration(this.publishingEventQNames);
+	}
+
+	@Override
+	public ResourceBundle getResourceBundle(Locale locale) {
+		Assert.notNull(locale, "Locale must not be null");
+
+		return this.resourceBundles.get(locale);
+	}
+
+	@Override
+	public Enumeration<Locale> getSupportedLocales() {
+		return Collections.enumeration(this.supportedLocales);
 	}
 
 	@Override
@@ -203,8 +203,12 @@ public class MockPortletConfig implements PortletConfig {
 		return Collections.enumeration(Collections.<WindowState>emptySet());
 	}
 
-	@Override
-	public Map<String, QName> getPublicRenderParameterDefinitions() {
-		return Collections.<String, QName>emptyMap();
+	public void setDefaultNamespace(String defaultNamespace) {
+		this.defaultNamespace = defaultNamespace;
+	}
+
+	public void setResourceBundle(Locale locale, ResourceBundle resourceBundle) {
+		Assert.notNull(locale, "Locale must not be null");
+		this.resourceBundles.put(locale, resourceBundle);
 	}
 }

@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.spring.mock.web.portlet;
 
 import java.io.BufferedReader;
@@ -24,17 +23,19 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+
 import javax.portlet.ClientDataRequest;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.servlet.http.Part;
 
+
 /**
  * Mock implementation of the {@link javax.portlet.ClientDataRequest} interface.
  *
- * @author Juergen Hoeller
- * @since 3.0
+ * @author  Juergen Hoeller
+ * @since   3.0
  */
 public class MockClientDataRequest extends MockPortletRequest implements ClientDataRequest {
 
@@ -46,12 +47,12 @@ public class MockClientDataRequest extends MockPortletRequest implements ClientD
 
 	private String method;
 
-
 	/**
-	 * Create a new MockClientDataRequest with a default {@link MockPortalContext}
-	 * and a default {@link MockPortletContext}.
-	 * @see org.springframework.mock.web.portlet.MockPortalContext
-	 * @see org.springframework.mock.web.portlet.MockPortletContext
+	 * Create a new MockClientDataRequest with a default {@link MockPortalContext} and a default {@link
+	 * MockPortletContext}.
+	 *
+	 * @see  org.springframework.mock.web.portlet.MockPortalContext
+	 * @see  org.springframework.mock.web.portlet.MockPortletContext
 	 */
 	public MockClientDataRequest() {
 		super();
@@ -59,7 +60,8 @@ public class MockClientDataRequest extends MockPortletRequest implements ClientD
 
 	/**
 	 * Create a new MockClientDataRequest with a default {@link MockPortalContext}.
-	 * @param portletContext the PortletContext that the request runs in
+	 *
+	 * @param  portletContext  the PortletContext that the request runs in
 	 */
 	public MockClientDataRequest(PortletContext portletContext) {
 		super(portletContext);
@@ -67,44 +69,12 @@ public class MockClientDataRequest extends MockPortletRequest implements ClientD
 
 	/**
 	 * Create a new MockClientDataRequest.
-	 * @param portalContext the PortalContext that the request runs in
-	 * @param portletContext the PortletContext that the request runs in
+	 *
+	 * @param  portalContext   the PortalContext that the request runs in
+	 * @param  portletContext  the PortletContext that the request runs in
 	 */
 	public MockClientDataRequest(PortalContext portalContext, PortletContext portletContext) {
 		super(portalContext, portletContext);
-	}
-
-
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
-
-	@Override
-	public InputStream getPortletInputStream() throws IOException {
-		if (this.content != null) {
-			return new ByteArrayInputStream(this.content);
-		}
-		else {
-			return null;
-		}
-	}
-
-	@Override
-	public void setCharacterEncoding(String characterEncoding) {
-		this.characterEncoding = characterEncoding;
-	}
-
-	@Override
-	public BufferedReader getReader() throws UnsupportedEncodingException {
-		if (this.content != null) {
-			InputStream sourceStream = new ByteArrayInputStream(this.content);
-			Reader sourceReader = (this.characterEncoding != null) ?
-				new InputStreamReader(sourceStream, this.characterEncoding) : new InputStreamReader(sourceStream);
-			return new BufferedReader(sourceReader);
-		}
-		else {
-			return null;
-		}
 	}
 
 	@Override
@@ -112,18 +82,9 @@ public class MockClientDataRequest extends MockPortletRequest implements ClientD
 		return this.characterEncoding;
 	}
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-
-	@Override
-	public String getContentType() {
-		return this.contentType;
-	}
-
 	@Override
 	public int getContentLength() {
-		return (this.content != null ? content.length : -1);
+		return ((this.content != null) ? content.length : -1);
 	}
 
 	@Override
@@ -131,8 +92,9 @@ public class MockClientDataRequest extends MockPortletRequest implements ClientD
 		return getContentLength();
 	}
 
-	public void setMethod(String method) {
-		this.method = method;
+	@Override
+	public String getContentType() {
+		return this.contentType;
 	}
 
 	@Override
@@ -148,6 +110,49 @@ public class MockClientDataRequest extends MockPortletRequest implements ClientD
 	@Override
 	public Collection<Part> getParts() throws IOException, PortletException {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public InputStream getPortletInputStream() throws IOException {
+
+		if (this.content != null) {
+			return new ByteArrayInputStream(this.content);
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public BufferedReader getReader() throws UnsupportedEncodingException {
+
+		if (this.content != null) {
+			InputStream sourceStream = new ByteArrayInputStream(this.content);
+			Reader sourceReader = (this.characterEncoding != null)
+				? new InputStreamReader(sourceStream, this.characterEncoding) : new InputStreamReader(sourceStream);
+
+			return new BufferedReader(sourceReader);
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public void setCharacterEncoding(String characterEncoding) {
+		this.characterEncoding = characterEncoding;
+	}
+
+	public void setContent(byte[] content) {
+		this.content = content;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 }

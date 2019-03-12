@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2017 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,35 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.mvc.method.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.core.MethodParameter;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.annotation.AbstractCookieValueMethodArgumentResolver;
-import com.liferay.portletmvc4spring.util.PortletUtils;
-import org.springframework.web.util.UriUtils;
-import org.springframework.web.util.WebUtils;
+import java.net.URLDecoder;
+import java.nio.charset.UnsupportedCharsetException;
 
 import javax.portlet.ClientDataRequest;
 import javax.portlet.PortletRequest;
 import javax.servlet.http.Cookie;
-import java.net.URLDecoder;
-import java.nio.charset.UnsupportedCharsetException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+
+import org.springframework.core.MethodParameter;
+
+import org.springframework.lang.Nullable;
+
+import org.springframework.util.Assert;
+
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.annotation.AbstractCookieValueMethodArgumentResolver;
+import org.springframework.web.util.UriUtils;
+import org.springframework.web.util.WebUtils;
+
+import com.liferay.portletmvc4spring.util.PortletUtils;
+
 
 /**
- * An {@link AbstractCookieValueMethodArgumentResolver}
- * that resolves cookie values from a {@link PortletRequest}.
+ * An {@link AbstractCookieValueMethodArgumentResolver} that resolves cookie values from a {@link PortletRequest}.
  *
- * @author Arjen Poutsma
- * @author Rossen Stoyanchev
- * @author Neil Griffin
- * @since 5.1
+ * @author  Arjen Poutsma
+ * @author  Rossen Stoyanchev
+ * @author  Neil Griffin
+ * @since   5.1
  */
 public class PortletCookieValueMethodArgumentResolver extends AbstractCookieValueMethodArgumentResolver {
 
@@ -53,13 +59,14 @@ public class PortletCookieValueMethodArgumentResolver extends AbstractCookieValu
 
 	@Override
 	@Nullable
-	protected Object resolveName(String cookieName, MethodParameter parameter,
-			NativeWebRequest webRequest) throws Exception {
+	protected Object resolveName(String cookieName, MethodParameter parameter, NativeWebRequest webRequest)
+		throws Exception {
 
 		PortletRequest portletRequest = webRequest.getNativeRequest(PortletRequest.class);
 		Assert.state(portletRequest != null, "No PortletRequest");
 
 		Cookie cookieValue = PortletUtils.getCookie(portletRequest, cookieName);
+
 		if (Cookie.class.isAssignableFrom(parameter.getNestedParameterType())) {
 			return cookieValue;
 		}
@@ -73,26 +80,32 @@ public class PortletCookieValueMethodArgumentResolver extends AbstractCookieValu
 
 	private Object decodeCookieValue(PortletRequest request, String source) {
 		String enc = determineEncoding(request);
+
 		try {
 			return UriUtils.decode(source, enc);
 		}
 		catch (UnsupportedCharsetException ex) {
+
 			if (logger.isWarnEnabled()) {
 				logger.warn("Could not decode request string [" + source + "] with encoding '" + enc +
-							"': falling back to platform default encoding; exception message: " + ex.getMessage());
+					"': falling back to platform default encoding; exception message: " + ex.getMessage());
 			}
+
 			return URLDecoder.decode(source);
 		}
 	}
 
 	private String determineEncoding(PortletRequest request) {
 		String enc = null;
+
 		if (request instanceof ClientDataRequest) {
-			enc = ((ClientDataRequest)request).getCharacterEncoding();
+			enc = ((ClientDataRequest) request).getCharacterEncoding();
 		}
+
 		if (enc == null) {
 			enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
 		}
+
 		return enc;
 	}
 }

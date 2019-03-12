@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2015 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.context;
 
 import java.security.Principal;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
@@ -27,21 +27,24 @@ import javax.portlet.PortletSession;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
 import org.springframework.web.context.request.NativeWebRequest;
+
 import com.liferay.portletmvc4spring.util.PortletUtils;
 
+
 /**
- * {@link org.springframework.web.context.request.WebRequest} adapter
- * for a {@link javax.portlet.PortletRequest}.
+ * {@link org.springframework.web.context.request.WebRequest} adapter for a {@link javax.portlet.PortletRequest}.
  *
- * @author Juergen Hoeller
- * @since 2.0
+ * @author  Juergen Hoeller
+ * @since   2.0
  */
 public class PortletWebRequest extends PortletRequestAttributes implements NativeWebRequest {
 
 	/**
 	 * Create a new PortletWebRequest instance for the given request.
-	 * @param request current portlet request
+	 *
+	 * @param  request  current portlet request
 	 */
 	public PortletWebRequest(PortletRequest request) {
 		super(request);
@@ -49,44 +52,74 @@ public class PortletWebRequest extends PortletRequestAttributes implements Nativ
 
 	/**
 	 * Create a new PortletWebRequest instance for the given request/response pair.
-	 * @param request current portlet request
-	 * @param response current portlet response
+	 *
+	 * @param  request   current portlet request
+	 * @param  response  current portlet response
 	 */
 	public PortletWebRequest(PortletRequest request, PortletResponse response) {
 		super(request, response);
 	}
 
-
+	/**
+	 * Last-modified handling not supported for portlet requests: As a consequence, this method always returns {@code
+	 * false}.
+	 */
 	@Override
-	public Object getNativeRequest() {
-		return getRequest();
+	public boolean checkNotModified(long lastModifiedTimestamp) {
+		return false;
+	}
+
+	/**
+	 * Last-modified handling not supported for portlet requests: As a consequence, this method always returns {@code
+	 * false}.
+	 */
+	@Override
+	public boolean checkNotModified(String eTag) {
+		return false;
+	}
+
+	/**
+	 * Last-modified handling not supported for portlet requests: As a consequence, this method always returns {@code
+	 * false}.
+	 *
+	 * @since  4.2
+	 */
+	@Override
+	public boolean checkNotModified(String etag, long lastModifiedTimestamp) {
+		return false;
 	}
 
 	@Override
-	public Object getNativeResponse() {
-		return getResponse();
+	public String getContextPath() {
+		return getRequest().getContextPath();
 	}
 
 	@Override
-	public <T> T getNativeRequest(Class<T> requiredType) {
-		return PortletUtils.getNativeRequest(getRequest(), requiredType);
-	}
+	public String getDescription(boolean includeClientInfo) {
+		PortletRequest request = getRequest();
+		StringBuilder result = new StringBuilder();
+		result.append("context=").append(request.getContextPath());
 
-	@Override
-	public <T> T getNativeResponse(Class<T> requiredType) {
-		return PortletUtils.getNativeResponse(getResponse(), requiredType);
-	}
+		if (includeClientInfo) {
+			PortletSession session = request.getPortletSession(false);
 
+			if (session != null) {
+				result.append(";session=").append(session.getId());
+			}
+
+			String user = getRequest().getRemoteUser();
+
+			if (StringUtils.hasLength(user)) {
+				result.append(";user=").append(user);
+			}
+		}
+
+		return result.toString();
+	}
 
 	@Override
 	public String getHeader(String headerName) {
 		return getRequest().getProperty(headerName);
-	}
-
-	@Override
-	public String[] getHeaderValues(String headerName) {
-		String[] headerValues = StringUtils.toStringArray(getRequest().getProperties(headerName));
-		return (!ObjectUtils.isEmpty(headerValues) ? headerValues : null);
 	}
 
 	@Override
@@ -95,23 +128,10 @@ public class PortletWebRequest extends PortletRequestAttributes implements Nativ
 	}
 
 	@Override
-	public String getParameter(String paramName) {
-		return getRequest().getParameter(paramName);
-	}
+	public String[] getHeaderValues(String headerName) {
+		String[] headerValues = StringUtils.toStringArray(getRequest().getProperties(headerName));
 
-	@Override
-	public String[] getParameterValues(String paramName) {
-		return getRequest().getParameterValues(paramName);
-	}
-
-	@Override
-	public Iterator<String> getParameterNames() {
-		return CollectionUtils.toIterator(getRequest().getParameterNames());
-	}
-
-	@Override
-	public Map<String, String[]> getParameterMap() {
-		return getRequest().getParameterMap();
+		return ((!ObjectUtils.isEmpty(headerValues)) ? headerValues : null);
 	}
 
 	@Override
@@ -120,8 +140,43 @@ public class PortletWebRequest extends PortletRequestAttributes implements Nativ
 	}
 
 	@Override
-	public String getContextPath() {
-		return getRequest().getContextPath();
+	public Object getNativeRequest() {
+		return getRequest();
+	}
+
+	@Override
+	public <T> T getNativeRequest(Class<T> requiredType) {
+		return PortletUtils.getNativeRequest(getRequest(), requiredType);
+	}
+
+	@Override
+	public Object getNativeResponse() {
+		return getResponse();
+	}
+
+	@Override
+	public <T> T getNativeResponse(Class<T> requiredType) {
+		return PortletUtils.getNativeResponse(getResponse(), requiredType);
+	}
+
+	@Override
+	public String getParameter(String paramName) {
+		return getRequest().getParameter(paramName);
+	}
+
+	@Override
+	public Map<String, String[]> getParameterMap() {
+		return getRequest().getParameterMap();
+	}
+
+	@Override
+	public Iterator<String> getParameterNames() {
+		return CollectionUtils.toIterator(getRequest().getParameterNames());
+	}
+
+	@Override
+	public String[] getParameterValues(String paramName) {
+		return getRequest().getParameterValues(paramName);
 	}
 
 	@Override
@@ -135,61 +190,14 @@ public class PortletWebRequest extends PortletRequestAttributes implements Nativ
 	}
 
 	@Override
-	public boolean isUserInRole(String role) {
-		return getRequest().isUserInRole(role);
-	}
-
-	@Override
 	public boolean isSecure() {
 		return getRequest().isSecure();
 	}
 
-	/**
-	 * Last-modified handling not supported for portlet requests:
-	 * As a consequence, this method always returns {@code false}.
-	 */
 	@Override
-	public boolean checkNotModified(long lastModifiedTimestamp) {
-		return false;
+	public boolean isUserInRole(String role) {
+		return getRequest().isUserInRole(role);
 	}
-
-	/**
-	 * Last-modified handling not supported for portlet requests:
-	 * As a consequence, this method always returns {@code false}.
-	 */
-	@Override
-	public boolean checkNotModified(String eTag) {
-		return false;
-	}
-
-	/**
-	 * Last-modified handling not supported for portlet requests:
-	 * As a consequence, this method always returns {@code false}.
-	 * @since 4.2
-	 */
-	@Override
-	public boolean checkNotModified(String etag, long lastModifiedTimestamp) {
-		return false;
-	}
-
-	@Override
-	public String getDescription(boolean includeClientInfo) {
-		PortletRequest request = getRequest();
-		StringBuilder result = new StringBuilder();
-		result.append("context=").append(request.getContextPath());
-		if (includeClientInfo) {
-			PortletSession session = request.getPortletSession(false);
-			if (session != null) {
-				result.append(";session=").append(session.getId());
-			}
-			String user = getRequest().getRemoteUser();
-			if (StringUtils.hasLength(user)) {
-				result.append(";user=").append(user);
-			}
-		}
-		return result.toString();
-	}
-
 
 	@Override
 	public String toString() {

@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2009 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.spring.mock.web.portlet;
 
 import javax.portlet.ActionParameters;
@@ -22,31 +21,32 @@ import javax.portlet.PortalContext;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletMode;
 
+
 /**
  * Mock implementation of the {@link javax.portlet.ActionRequest} interface.
  *
- * @author John A. Lewis
- * @author Juergen Hoeller
- * @since 2.0
+ * @author  John A. Lewis
+ * @author  Juergen Hoeller
+ * @since   2.0
  */
 public class MockActionRequest extends MockClientDataRequest implements ActionRequest {
 
 	private ActionParameters actionParameters;
 
 	/**
-	 * Create a new MockActionRequest with a default {@link MockPortalContext}
-	 * and a default {@link MockPortletContext}.
-	 * @see org.springframework.mock.web.portlet.MockPortalContext
-	 * @see org.springframework.mock.web.portlet.MockPortletContext
+	 * Create a new MockActionRequest with a default {@link MockPortalContext} and a default {@link MockPortletContext}.
+	 *
+	 * @see  org.springframework.mock.web.portlet.MockPortalContext
+	 * @see  org.springframework.mock.web.portlet.MockPortletContext
 	 */
 	public MockActionRequest() {
 		super();
 	}
 
 	/**
-	 * Create a new MockActionRequest with a default {@link MockPortalContext}
-	 * and a default {@link MockPortletContext}.
-	 * @param actionName the name of the action to trigger
+	 * Create a new MockActionRequest with a default {@link MockPortalContext} and a default {@link MockPortletContext}.
+	 *
+	 * @param  actionName  the name of the action to trigger
 	 */
 	public MockActionRequest(String actionName) {
 		super();
@@ -54,9 +54,9 @@ public class MockActionRequest extends MockClientDataRequest implements ActionRe
 	}
 
 	/**
-	 * Create a new MockActionRequest with a default {@link MockPortalContext}
-	 * and a default {@link MockPortletContext}.
-	 * @param portletMode the mode that the portlet runs in
+	 * Create a new MockActionRequest with a default {@link MockPortalContext} and a default {@link MockPortletContext}.
+	 *
+	 * @param  portletMode  the mode that the portlet runs in
 	 */
 	public MockActionRequest(PortletMode portletMode) {
 		super();
@@ -65,7 +65,8 @@ public class MockActionRequest extends MockClientDataRequest implements ActionRe
 
 	/**
 	 * Create a new MockActionRequest with a default {@link MockPortalContext}.
-	 * @param portletContext the PortletContext that the request runs in
+	 *
+	 * @param  portletContext  the PortletContext that the request runs in
 	 */
 	public MockActionRequest(PortletContext portletContext) {
 		super(portletContext);
@@ -73,24 +74,26 @@ public class MockActionRequest extends MockClientDataRequest implements ActionRe
 
 	/**
 	 * Create a new MockActionRequest.
-	 * @param portalContext the PortalContext that the request runs in
-	 * @param portletContext the PortletContext that the request runs in
+	 *
+	 * @param  portalContext   the PortalContext that the request runs in
+	 * @param  portletContext  the PortletContext that the request runs in
 	 */
 	public MockActionRequest(PortalContext portalContext, PortletContext portletContext) {
 		super(portalContext, portletContext);
 	}
 
+	@Override
+	public ActionParameters getActionParameters() {
+
+		if (actionParameters == null) {
+			actionParameters = new MockActionParameters();
+		}
+
+		return actionParameters;
+	}
 
 	@Override
 	protected String getLifecyclePhase() {
 		return ACTION_PHASE;
-	}
-
-	@Override
-	public ActionParameters getActionParameters() {
-		if (actionParameters == null) {
-			actionParameters = new MockActionParameters();
-		}
-		return actionParameters;
 	}
 }

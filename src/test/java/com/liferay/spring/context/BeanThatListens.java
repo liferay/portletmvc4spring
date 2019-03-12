@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2014 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.spring.context;
+
+import java.util.Map;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
-import java.util.Map;
 
 /**
  * A stub {@link ApplicationListener}.
  *
- * @author Thomas Risberg
- * @author Juergen Hoeller
+ * @author  Thomas Risberg
+ * @author  Juergen Hoeller
  */
 public class BeanThatListens implements ApplicationListener<ApplicationEvent> {
 
@@ -33,29 +33,31 @@ public class BeanThatListens implements ApplicationListener<ApplicationEvent> {
 
 	private int eventCount;
 
-
 	public BeanThatListens() {
 	}
 
 	public BeanThatListens(BeanThatBroadcasts beanThatBroadcasts) {
 		this.beanThatBroadcasts = beanThatBroadcasts;
-		Map<String, BeanThatListens> beans = beanThatBroadcasts.applicationContext.getBeansOfType(BeanThatListens.class);
+
+		Map<String, BeanThatListens> beans = beanThatBroadcasts.applicationContext.getBeansOfType(
+				BeanThatListens.class);
+
 		if (!beans.isEmpty()) {
 			throw new IllegalStateException("Shouldn't have found any BeanThatListens instances");
 		}
 	}
 
+	public int getEventCount() {
+		return eventCount;
+	}
 
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		eventCount++;
+
 		if (beanThatBroadcasts != null) {
 			beanThatBroadcasts.receivedCount++;
 		}
-	}
-
-	public int getEventCount() {
-		return eventCount;
 	}
 
 	public void zero() {

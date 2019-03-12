@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2014 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring;
 
 import java.io.IOException;
@@ -23,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.EventRequest;
@@ -44,18 +44,22 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.i18n.LocaleContextHolder;
+
 import org.springframework.core.Ordered;
-import com.liferay.spring.mock.web.portlet.MockPortletConfig;
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
+
 import org.springframework.mock.web.MockMultipartFile;
+
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.liferay.portletmvc4spring.bind.PortletRequestBindingException;
 import com.liferay.portletmvc4spring.context.PortletRequestHandledEvent;
 import com.liferay.portletmvc4spring.context.StaticPortletApplicationContext;
@@ -76,10 +80,14 @@ import com.liferay.portletmvc4spring.multipart.PortletMultipartResolver;
 import com.liferay.portletmvc4spring.mvc.Controller;
 import com.liferay.portletmvc4spring.mvc.SimpleControllerHandlerAdapter;
 
+import com.liferay.spring.mock.web.portlet.MockPortletConfig;
+import com.liferay.spring.mock.web.portlet.MockPortletContext;
+
+
 /**
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @author Arjen Poutsma
+ * @author  Juergen Hoeller
+ * @author  Mark Fisher
+ * @author  Arjen Poutsma
  */
 public class ComplexPortletApplicationContext extends StaticPortletApplicationContext {
 
@@ -113,10 +121,11 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		registerBeanDefinition("portletConfig", new RootBeanDefinition(MockPortletConfig.class, cvs, null));
 
 		UserRoleAuthorizationInterceptor userRoleInterceptor = new UserRoleAuthorizationInterceptor();
-		userRoleInterceptor.setAuthorizedRoles(new String[] {"role1", "role2"});
+		userRoleInterceptor.setAuthorizedRoles(new String[] { "role1", "role2" });
 
 		ParameterHandlerMapping interceptingHandlerMapping = new ParameterHandlerMapping();
 		interceptingHandlerMapping.setParameterName("interceptingParam");
+
 		ParameterMappingInterceptor parameterMappingInterceptor = new ParameterMappingInterceptor();
 		parameterMappingInterceptor.setParameterName("interceptingParam");
 
@@ -135,6 +144,7 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		registerSingleton("handlerMapping3", PortletModeHandlerMapping.class, pvs);
 
 		pvs = new MutablePropertyValues();
+
 		Map<String, BeanReference> parameterMap = new ManagedMap<String, BeanReference>();
 		parameterMap.put("test1", new RuntimeBeanReference("testController1"));
 		parameterMap.put("test2", new RuntimeBeanReference("testController2"));
@@ -150,9 +160,11 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		registerSingleton("handlerMapping2", ParameterHandlerMapping.class, pvs);
 
 		pvs = new MutablePropertyValues();
+
 		Map<String, Object> innerMap = new ManagedMap<String, Object>();
 		innerMap.put("help1", new RuntimeBeanReference("helpController1"));
 		innerMap.put("help2", new RuntimeBeanReference("helpController2"));
+
 		Map<String, Object> outerMap = new ManagedMap<String, Object>();
 		outerMap.put("help", innerMap);
 		pvs.add("portletModeParameterMap", outerMap);
@@ -163,16 +175,15 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		pvs.add("order", "1");
 		pvs.add("exceptionMappings",
 			"java.lang.IllegalAccessException=failed-illegalaccess\n" +
-			"PortletRequestBindingException=failed-binding\n" +
-			"NoHandlerFoundException=failed-unavailable");
+			"PortletRequestBindingException=failed-binding\n" + "NoHandlerFoundException=failed-unavailable");
 		pvs.add("defaultErrorView", "failed-default-1");
 		registerSingleton("exceptionResolver", SimpleMappingExceptionResolver.class, pvs);
 
 		pvs = new MutablePropertyValues();
 		pvs.add("order", "0");
 		pvs.add("exceptionMappings",
-				"java.lang.Exception=failed-exception\n" +
-				"java.lang.RuntimeException=failed-runtime");
+			"java.lang.Exception=failed-exception\n" + "java.lang.RuntimeException=failed-runtime");
+
 		List<BeanReference> mappedHandlers = new ManagedList<BeanReference>();
 		mappedHandlers.add(new RuntimeBeanReference("exceptionThrowingHandler1"));
 		pvs.add("mappedHandlers", mappedHandlers);
@@ -186,45 +197,10 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		super.refresh();
 	}
 
+	public static interface MyHandler {
 
-	public static class TestController1 implements Controller {
-
-		@Override
-		public void handleActionRequest(ActionRequest request, ActionResponse response) {
-			response.setRenderParameter("result", "test1-action");
-		}
-
-		@Override
-		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws Exception {
-			return null;
-		}
+		public void doSomething(PortletRequest request) throws Exception;
 	}
-
-
-	public static class TestController2 implements Controller {
-
-		@Override
-		public void handleActionRequest(ActionRequest request, ActionResponse response) {}
-
-		@Override
-		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws Exception {
-			response.setProperty("result", "test2-view");
-			return null;
-		}
-	}
-
-
-	public static class ViewController implements Controller {
-
-		@Override
-		public void handleActionRequest(ActionRequest request, ActionResponse response) {}
-
-		@Override
-		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws Exception {
-			return new ModelAndView("someViewName", "result", "view was here");
-		}
-	}
-
 
 	public static class EditController implements Controller {
 
@@ -239,6 +215,34 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		}
 	}
 
+	public static class ExceptionThrowingHandler implements MyHandler {
+
+		@Override
+		public void doSomething(PortletRequest request) throws Exception {
+
+			if (request.getParameter("fail") != null) {
+				throw new ModelAndViewDefiningException(new ModelAndView("failed-modelandview"));
+			}
+
+			if (request.getParameter("access") != null) {
+				throw new IllegalAccessException("portlet-illegalaccess");
+			}
+
+			if (request.getParameter("binding") != null) {
+				throw new PortletRequestBindingException("portlet-binding");
+			}
+
+			if (request.getParameter("generic") != null) {
+				throw new Exception("portlet-generic");
+			}
+
+			if (request.getParameter("runtime") != null) {
+				throw new RuntimeException("portlet-runtime");
+			}
+
+			throw new IllegalArgumentException("illegal argument");
+		}
+	}
 
 	public static class HelpController1 implements Controller {
 
@@ -253,7 +257,6 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		}
 	}
 
-
 	public static class HelpController2 implements Controller {
 
 		@Override
@@ -267,51 +270,270 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		}
 	}
 
-	public static class RequestLocaleCheckingController implements Controller {
-
-		@Override
-		public void handleActionRequest(ActionRequest request, ActionResponse response) throws PortletException {
-			if (!Locale.CANADA.equals(request.getLocale())) {
-				throw new PortletException("Incorrect Locale in ActionRequest");
-			}
-		}
-
-		@Override
-		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response)
-			throws PortletException, IOException {
-			if (!Locale.CANADA.equals(request.getLocale())) {
-				throw new PortletException("Incorrect Locale in RenderRequest");
-			}
-			response.getWriter().write("locale-ok");
-			return null;
-		}
-	}
-
-
 	public static class LocaleContextCheckingController implements Controller {
 
 		@Override
 		public void handleActionRequest(ActionRequest request, ActionResponse response) throws PortletException {
+
 			if (!Locale.CANADA.equals(LocaleContextHolder.getLocale())) {
 				throw new PortletException("Incorrect Locale in LocaleContextHolder");
 			}
 		}
 
 		@Override
-		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response)
-			throws PortletException, IOException {
+		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws PortletException,
+			IOException {
+
 			if (!Locale.CANADA.equals(LocaleContextHolder.getLocale())) {
 				throw new PortletException("Incorrect Locale in LocaleContextHolder");
 			}
+
 			response.getWriter().write("locale-ok");
+
 			return null;
 		}
 	}
 
+	public static class MockMultipartResolver implements PortletMultipartResolver {
+
+		@Override
+		public void cleanupMultipart(MultipartActionRequest request) {
+
+			if (request.getAttribute("cleanedUp") != null) {
+				throw new IllegalStateException("Already cleaned up");
+			}
+
+			request.setAttribute("cleanedUp", Boolean.TRUE);
+		}
+
+		@Override
+		public void cleanupMultipart(MultipartResourceRequest request) {
+
+			if (request.getAttribute("cleanedUp") != null) {
+				throw new IllegalStateException("Already cleaned up");
+			}
+
+			request.setAttribute("cleanedUp", Boolean.TRUE);
+		}
+
+		@Override
+		public boolean isMultipart(ActionRequest request) {
+			return true;
+		}
+
+		@Override
+		public boolean isMultipart(ResourceRequest request) {
+			return true;
+		}
+
+		@Override
+		public MultipartActionRequest resolveMultipart(ActionRequest request) throws MultipartException {
+
+			if (request.getAttribute("fail") != null) {
+				throw new MaxUploadSizeExceededException(1000);
+			}
+
+			if (request instanceof MultipartActionRequest) {
+				throw new IllegalStateException("Already a multipart request");
+			}
+
+			if (request.getAttribute("resolved") != null) {
+				throw new IllegalStateException("Already resolved");
+			}
+
+			request.setAttribute("resolved", Boolean.TRUE);
+
+			MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<String, MultipartFile>();
+			files.set("someFile", new MockMultipartFile("someFile", "someContent".getBytes()));
+
+			Map<String, String[]> params = new HashMap<String, String[]>();
+			params.put("someParam", new String[] { "someParam" });
+
+			return new DefaultMultipartActionRequest(request, files, params, Collections.<String, String>emptyMap());
+		}
+
+		@Override
+		public MultipartResourceRequest resolveMultipart(ResourceRequest request) throws MultipartException {
+
+			if (request.getAttribute("fail") != null) {
+				throw new MaxUploadSizeExceededException(1000);
+			}
+
+			if (request instanceof MultipartActionRequest) {
+				throw new IllegalStateException("Already a multipart request");
+			}
+
+			if (request.getAttribute("resolved") != null) {
+				throw new IllegalStateException("Already resolved");
+			}
+
+			request.setAttribute("resolved", Boolean.TRUE);
+
+			MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<String, MultipartFile>();
+			files.set("someFile", new MockMultipartFile("someFile", "someContent".getBytes()));
+
+			Map<String, String[]> params = new HashMap<String, String[]>();
+			params.put("someParam", new String[] { "someParam" });
+
+			return new DefaultMultipartResourceRequest(request, files, params, Collections.<String, String>emptyMap());
+		}
+	}
+
+	public static class MultipartCheckingHandler implements MyHandler {
+
+		@Override
+		public void doSomething(PortletRequest request) throws PortletException, IllegalAccessException {
+
+			if (!(request instanceof MultipartActionRequest)) {
+				throw new PortletException("Not in a MultipartActionRequest");
+			}
+		}
+	}
+
+	public static class MyHandlerAdapter implements HandlerAdapter, Ordered {
+
+		@Override
+		public int getOrder() {
+			return 99;
+		}
+
+		@Override
+		public void handleAction(ActionRequest request, ActionResponse response, Object delegate) throws Exception {
+			((MyHandler) delegate).doSomething(request);
+		}
+
+		@Override
+		public void handleEvent(EventRequest request, EventResponse response, Object handler) throws Exception {
+		}
+
+		@Override
+		public ModelAndView handleRender(RenderRequest request, RenderResponse response, Object delegate)
+			throws Exception {
+			((MyHandler) delegate).doSomething(request);
+
+			return null;
+		}
+
+		@Override
+		public ModelAndView handleResource(ResourceRequest request, ResourceResponse response, Object handler)
+			throws Exception {
+			return null;
+		}
+
+		@Override
+		public boolean supports(Object handler) {
+			return (handler != null) && MyHandler.class.isAssignableFrom(handler.getClass());
+		}
+	}
+
+	public static class MyHandlerInterceptor1 extends HandlerInterceptorAdapter {
+
+		@Override
+		public void afterRenderCompletion(RenderRequest request, RenderResponse response, Object handler, Exception ex)
+			throws PortletException {
+
+			if (request.getAttribute("test2-remove-after") != null) {
+				throw new PortletException("Wrong interceptor order");
+			}
+
+			request.removeAttribute("test1-remove-after");
+		}
+
+		@Override
+		public void postHandleRender(RenderRequest request, RenderResponse response, Object handler,
+			ModelAndView modelAndView) throws PortletException {
+
+			if (request.getAttribute("test2-remove-post") != null) {
+				throw new PortletException("Wrong interceptor order");
+			}
+
+			if (!"test1-remove-post".equals(request.getAttribute("test1-remove-post"))) {
+				throw new PortletException("Incorrect request attribute");
+			}
+
+			request.removeAttribute("test1-remove-post");
+		}
+
+		@Override
+		public boolean preHandleRender(RenderRequest request, RenderResponse response, Object handler)
+			throws PortletException {
+
+			if (request.getAttribute("test2-remove-never") != null) {
+				throw new PortletException("Wrong interceptor order");
+			}
+
+			request.setAttribute("test1-remove-never", "test1-remove-never");
+			request.setAttribute("test1-remove-post", "test1-remove-post");
+			request.setAttribute("test1-remove-after", "test1-remove-after");
+
+			return true;
+		}
+	}
+
+	public static class MyHandlerInterceptor2 extends HandlerInterceptorAdapter {
+
+		@Override
+		public void afterRenderCompletion(RenderRequest request, RenderResponse response, Object handler, Exception ex)
+			throws Exception {
+
+			if (request.getAttribute("test1-remove-after") == null) {
+				throw new PortletException("Wrong interceptor order");
+			}
+
+			request.removeAttribute("test2-remove-after");
+		}
+
+		@Override
+		public void postHandleRender(RenderRequest request, RenderResponse response, Object handler,
+			ModelAndView modelAndView) throws PortletException {
+
+			if ("true".equals(request.getParameter("noView"))) {
+				modelAndView.clear();
+			}
+
+			if (request.getAttribute("test1-remove-post") == null) {
+				throw new PortletException("Wrong interceptor order");
+			}
+
+			if (!"test2-remove-post".equals(request.getAttribute("test2-remove-post"))) {
+				throw new PortletException("Incorrect request attribute");
+			}
+
+			request.removeAttribute("test2-remove-post");
+		}
+
+		@Override
+		public boolean preHandleRender(RenderRequest request, RenderResponse response, Object handler)
+			throws PortletException {
+
+			if (request.getAttribute("test1-remove-post") == null) {
+				throw new PortletException("Wrong interceptor order");
+			}
+
+			if ("true".equals(request.getParameter("abort"))) {
+				return false;
+			}
+
+			request.setAttribute("test2-remove-never", "test2-remove-never");
+			request.setAttribute("test2-remove-post", "test2-remove-post");
+			request.setAttribute("test2-remove-after", "test2-remove-after");
+
+			return true;
+		}
+	}
 
 	public static class MyPortlet implements Portlet {
 
 		private PortletConfig portletConfig;
+
+		@Override
+		public void destroy() {
+			this.portletConfig = null;
+		}
+
+		public PortletConfig getPortletConfig() {
+			return this.portletConfig;
+		}
 
 		@Override
 		public void init(PortletConfig portletConfig) throws PortletException {
@@ -327,245 +549,31 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 		public void render(RenderRequest request, RenderResponse response) throws PortletException, IOException {
 			response.getWriter().write("myPortlet was here");
 		}
-
-		public PortletConfig getPortletConfig() {
-			return this.portletConfig;
-		}
-
-		@Override
-		public void destroy() {
-			this.portletConfig = null;
-		}
 	}
 
-
-	public static interface MyHandler {
-
-		public void doSomething(PortletRequest request) throws Exception;
-	}
-
-
-	public static class ExceptionThrowingHandler implements MyHandler {
+	public static class RequestLocaleCheckingController implements Controller {
 
 		@Override
-		public void doSomething(PortletRequest request) throws Exception {
-			if (request.getParameter("fail") != null) {
-				throw new ModelAndViewDefiningException(new ModelAndView("failed-modelandview"));
-			}
-			if (request.getParameter("access") != null) {
-				throw new IllegalAccessException("portlet-illegalaccess");
-			}
-			if (request.getParameter("binding") != null) {
-				throw new PortletRequestBindingException("portlet-binding");
-			}
-			if (request.getParameter("generic") != null) {
-				throw new Exception("portlet-generic");
-			}
-			if (request.getParameter("runtime") != null) {
-				throw new RuntimeException("portlet-runtime");
-			}
-			throw new IllegalArgumentException("illegal argument");
-		}
-	}
+		public void handleActionRequest(ActionRequest request, ActionResponse response) throws PortletException {
 
-
-	public static class MyHandlerAdapter implements HandlerAdapter, Ordered {
-
-		@Override
-		public int getOrder() {
-			return 99;
+			if (!Locale.CANADA.equals(request.getLocale())) {
+				throw new PortletException("Incorrect Locale in ActionRequest");
+			}
 		}
 
 		@Override
-		public boolean supports(Object handler) {
-			return handler != null && MyHandler.class.isAssignableFrom(handler.getClass());
-		}
+		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws PortletException,
+			IOException {
 
-		@Override
-		public void handleAction(ActionRequest request, ActionResponse response, Object delegate) throws Exception {
-			((MyHandler) delegate).doSomething(request);
-		}
+			if (!Locale.CANADA.equals(request.getLocale())) {
+				throw new PortletException("Incorrect Locale in RenderRequest");
+			}
 
-		@Override
-		public ModelAndView handleRender(RenderRequest request, RenderResponse response, Object delegate) throws Exception {
-			((MyHandler) delegate).doSomething(request);
+			response.getWriter().write("locale-ok");
+
 			return null;
 		}
-
-		@Override
-		public ModelAndView handleResource(ResourceRequest request, ResourceResponse response, Object handler)
-				throws Exception {
-			return null;
-		}
-
-		@Override
-		public void handleEvent(EventRequest request, EventResponse response, Object handler) throws Exception {
-		}
 	}
-
-
-	public static class MyHandlerInterceptor1 extends HandlerInterceptorAdapter {
-
-		@Override
-		public boolean preHandleRender(RenderRequest request, RenderResponse response, Object handler)
-			throws PortletException {
-			if (request.getAttribute("test2-remove-never") != null) {
-				throw new PortletException("Wrong interceptor order");
-			}
-			request.setAttribute("test1-remove-never", "test1-remove-never");
-			request.setAttribute("test1-remove-post", "test1-remove-post");
-			request.setAttribute("test1-remove-after", "test1-remove-after");
-			return true;
-		}
-
-		@Override
-		public void postHandleRender(
-				RenderRequest request, RenderResponse response, Object handler, ModelAndView modelAndView)
-				throws PortletException {
-			if (request.getAttribute("test2-remove-post") != null) {
-				throw new PortletException("Wrong interceptor order");
-			}
-			if (!"test1-remove-post".equals(request.getAttribute("test1-remove-post"))) {
-				throw new PortletException("Incorrect request attribute");
-			}
-			request.removeAttribute("test1-remove-post");
-		}
-
-		@Override
-		public void afterRenderCompletion(
-				RenderRequest request, RenderResponse response, Object handler, Exception ex)
-				throws PortletException {
-			if (request.getAttribute("test2-remove-after") != null) {
-				throw new PortletException("Wrong interceptor order");
-			}
-			request.removeAttribute("test1-remove-after");
-		}
-	}
-
-
-	public static class MyHandlerInterceptor2 extends HandlerInterceptorAdapter {
-
-		@Override
-		public boolean preHandleRender(RenderRequest request, RenderResponse response, Object handler)
-			throws PortletException {
-			if (request.getAttribute("test1-remove-post") == null) {
-				throw new PortletException("Wrong interceptor order");
-			}
-			if ("true".equals(request.getParameter("abort"))) {
-				return false;
-			}
-			request.setAttribute("test2-remove-never", "test2-remove-never");
-			request.setAttribute("test2-remove-post", "test2-remove-post");
-			request.setAttribute("test2-remove-after", "test2-remove-after");
-			return true;
-		}
-
-		@Override
-		public void postHandleRender(
-				RenderRequest request, RenderResponse response, Object handler, ModelAndView modelAndView)
-				throws PortletException {
-			if ("true".equals(request.getParameter("noView"))) {
-				modelAndView.clear();
-			}
-			if (request.getAttribute("test1-remove-post") == null) {
-				throw new PortletException("Wrong interceptor order");
-			}
-			if (!"test2-remove-post".equals(request.getAttribute("test2-remove-post"))) {
-				throw new PortletException("Incorrect request attribute");
-			}
-			request.removeAttribute("test2-remove-post");
-		}
-
-		@Override
-		public void afterRenderCompletion(
-				RenderRequest request, RenderResponse response, Object handler, Exception ex)
-				throws Exception {
-			if (request.getAttribute("test1-remove-after") == null) {
-				throw new PortletException("Wrong interceptor order");
-			}
-			request.removeAttribute("test2-remove-after");
-		}
-	}
-
-
-	public static class MultipartCheckingHandler implements MyHandler {
-
-		@Override
-		public void doSomething(PortletRequest request) throws PortletException, IllegalAccessException {
-			if (!(request instanceof MultipartActionRequest)) {
-				throw new PortletException("Not in a MultipartActionRequest");
-			}
-		}
-	}
-
-
-	public static class MockMultipartResolver implements PortletMultipartResolver {
-
-		@Override
-		public boolean isMultipart(ActionRequest request) {
-			return true;
-		}
-
-		@Override
-		public boolean isMultipart(ResourceRequest request) {
-			return true;
-		}
-
-		@Override
-		public MultipartActionRequest resolveMultipart(ActionRequest request) throws MultipartException {
-			if (request.getAttribute("fail") != null) {
-				throw new MaxUploadSizeExceededException(1000);
-			}
-			if (request instanceof MultipartActionRequest) {
-				throw new IllegalStateException("Already a multipart request");
-			}
-			if (request.getAttribute("resolved") != null) {
-				throw new IllegalStateException("Already resolved");
-			}
-			request.setAttribute("resolved", Boolean.TRUE);
-			MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<String, MultipartFile>();
-			files.set("someFile", new MockMultipartFile("someFile", "someContent".getBytes()));
-			Map<String, String[]> params = new HashMap<String, String[]>();
-			params.put("someParam", new String[] {"someParam"});
-			return new DefaultMultipartActionRequest(request, files, params, Collections.<String, String>emptyMap());
-		}
-
-		@Override
-		public MultipartResourceRequest resolveMultipart(ResourceRequest request) throws MultipartException {
-			if (request.getAttribute("fail") != null) {
-				throw new MaxUploadSizeExceededException(1000);
-			}
-			if (request instanceof MultipartActionRequest) {
-				throw new IllegalStateException("Already a multipart request");
-			}
-			if (request.getAttribute("resolved") != null) {
-				throw new IllegalStateException("Already resolved");
-			}
-			request.setAttribute("resolved", Boolean.TRUE);
-			MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<String, MultipartFile>();
-			files.set("someFile", new MockMultipartFile("someFile", "someContent".getBytes()));
-			Map<String, String[]> params = new HashMap<String, String[]>();
-			params.put("someParam", new String[] {"someParam"});
-			return new DefaultMultipartResourceRequest(request, files, params, Collections.<String, String>emptyMap());
-		}
-
-		@Override
-		public void cleanupMultipart(MultipartActionRequest request) {
-			if (request.getAttribute("cleanedUp") != null) {
-				throw new IllegalStateException("Already cleaned up");
-			}
-			request.setAttribute("cleanedUp", Boolean.TRUE);
-		}
-
-		@Override
-		public void cleanupMultipart(MultipartResourceRequest request) {
-			if (request.getAttribute("cleanedUp") != null) {
-				throw new IllegalStateException("Already cleaned up");
-			}
-			request.setAttribute("cleanedUp", Boolean.TRUE);
-		}
-	}
-
 
 	public static class TestApplicationListener implements ApplicationListener<ApplicationEvent> {
 
@@ -573,9 +581,49 @@ public class ComplexPortletApplicationContext extends StaticPortletApplicationCo
 
 		@Override
 		public void onApplicationEvent(ApplicationEvent event) {
+
 			if (event instanceof PortletRequestHandledEvent) {
 				this.counter++;
 			}
+		}
+	}
+
+	public static class TestController1 implements Controller {
+
+		@Override
+		public void handleActionRequest(ActionRequest request, ActionResponse response) {
+			response.setRenderParameter("result", "test1-action");
+		}
+
+		@Override
+		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws Exception {
+			return null;
+		}
+	}
+
+	public static class TestController2 implements Controller {
+
+		@Override
+		public void handleActionRequest(ActionRequest request, ActionResponse response) {
+		}
+
+		@Override
+		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws Exception {
+			response.setProperty("result", "test2-view");
+
+			return null;
+		}
+	}
+
+	public static class ViewController implements Controller {
+
+		@Override
+		public void handleActionRequest(ActionRequest request, ActionResponse response) {
+		}
+
+		@Override
+		public ModelAndView handleRenderRequest(RenderRequest request, RenderResponse response) throws Exception {
+			return new ModelAndView("someViewName", "result", "view was here");
 		}
 	}
 

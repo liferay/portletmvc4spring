@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2015 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.mvc.annotation;
 
 import java.io.IOException;
@@ -24,6 +23,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.EventResponse;
@@ -40,15 +40,62 @@ import javax.portlet.StateAwareResponse;
 import javax.portlet.WindowState;
 import javax.servlet.http.Cookie;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigUtils;
+
 import org.springframework.core.MethodParameter;
+
+import org.springframework.lang.Nullable;
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import static org.springframework.web.bind.support.WebArgumentResolver.UNRESOLVED;
+import org.springframework.web.bind.support.WebBindingInitializer;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
+
+import com.liferay.portletmvc4spring.DispatcherPortlet;
+import com.liferay.portletmvc4spring.ModelAndView;
+import com.liferay.portletmvc4spring.NoHandlerFoundException;
+import com.liferay.portletmvc4spring.bind.annotation.ActionMapping;
+import com.liferay.portletmvc4spring.bind.annotation.EventMapping;
+import com.liferay.portletmvc4spring.bind.annotation.RenderMapping;
+import com.liferay.portletmvc4spring.bind.annotation.ResourceMapping;
+import com.liferay.portletmvc4spring.context.StaticPortletApplicationContext;
+import com.liferay.portletmvc4spring.mvc.AbstractController;
+import com.liferay.portletmvc4spring.mvc.method.annotation.PortletRequestMappingHandlerAdapter;
+
 import com.liferay.spring.mock.web.portlet.MockActionRequest;
 import com.liferay.spring.mock.web.portlet.MockActionResponse;
 import com.liferay.spring.mock.web.portlet.MockEvent;
@@ -60,106 +107,17 @@ import com.liferay.spring.mock.web.portlet.MockRenderRequest;
 import com.liferay.spring.mock.web.portlet.MockRenderResponse;
 import com.liferay.spring.mock.web.portlet.MockResourceRequest;
 import com.liferay.spring.mock.web.portlet.MockResourceResponse;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Controller;
 import com.liferay.spring.tests.sample.beans.DerivedTestBean;
 import com.liferay.spring.tests.sample.beans.ITestBean;
 import com.liferay.spring.tests.sample.beans.TestBean;
-import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.bind.support.WebBindingInitializer;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.support.GenericWebApplicationContext;
-import com.liferay.portletmvc4spring.DispatcherPortlet;
-import com.liferay.portletmvc4spring.ModelAndView;
-import com.liferay.portletmvc4spring.NoHandlerFoundException;
-import com.liferay.portletmvc4spring.bind.annotation.ActionMapping;
-import com.liferay.portletmvc4spring.bind.annotation.EventMapping;
-import com.liferay.portletmvc4spring.bind.annotation.RenderMapping;
-import com.liferay.portletmvc4spring.bind.annotation.ResourceMapping;
-import com.liferay.portletmvc4spring.context.StaticPortletApplicationContext;
-import com.liferay.portletmvc4spring.mvc.AbstractController;
-import com.liferay.portletmvc4spring.mvc.method.annotation.PortletRequestMappingHandlerAdapter;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static org.junit.Assert.*;
-import static org.springframework.web.bind.support.WebArgumentResolver.UNRESOLVED;
 
 /**
- * @author Juergen Hoeller
- * @author Neil Griffin
- * @since 3.0
+ * @author  Juergen Hoeller
+ * @author  Neil Griffin
+ * @since   3.0
  */
 public class Portlet20AnnotationControllerTests {
-
-	@Test
-	public void standardHandleMethod() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyController.class));
-				wac.refresh();
-				return wac;
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
-		MockRenderResponse response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("test", response.getContentAsString());
-	}
-
-	@Test
-	public void standardHandleMethodWithResources() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				wac.setPortletConfig(getPortletConfig());
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyController.class));
-				wac.refresh();
-				return wac;
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockResourceRequest resourceRequest = new MockResourceRequest("/resource1");
-		MockResourceResponse resourceResponse = new MockResourceResponse();
-		portlet.serveResource(resourceRequest, resourceResponse);
-		assertEquals("/resource1", resourceResponse.getForwardedUrl());
-		assertNull(resourceResponse.getProperty(ResourceResponse.HTTP_STATUS_CODE));
-
-		resourceRequest = new MockResourceRequest("/WEB-INF/resource2");
-		resourceResponse = new MockResourceResponse();
-		portlet.serveResource(resourceRequest, resourceResponse);
-		assertNull(resourceResponse.getForwardedUrl());
-		assertEquals("404", resourceResponse.getProperty(ResourceResponse.HTTP_STATUS_CODE));
-
-		resourceRequest = new MockResourceRequest("/META-INF/resource3");
-		resourceResponse = new MockResourceResponse();
-		portlet.serveResource(resourceRequest, resourceResponse);
-		assertNull(resourceResponse.getForwardedUrl());
-		assertEquals("404", resourceResponse.getProperty(ResourceResponse.HTTP_STATUS_CODE));
-	}
 
 	@Test
 	public void adaptedHandleMethods() throws Exception {
@@ -181,70 +139,185 @@ public class Portlet20AnnotationControllerTests {
 		doTestAdaptedHandleMethods(MyAdaptedController4.class);
 	}
 
-	private void doTestAdaptedHandleMethods(final Class<?> controllerClass) throws Exception {
+	@Test
+	public void binderInitializingCommandProvidingFormController() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(controllerClass));
-				wac.refresh();
-				return wac;
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller",
+						new RootBeanDefinition(MyBinderInitializingCommandProvidingFormController.class));
+					wac.refresh();
+
+					return wac;
+				}
+
+				@Override
+				protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
+					new TestView().render(mv.getViewName(), mv.getModel(), request, response);
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
-		MockActionRequest actionRequest = new MockActionRequest(PortletMode.VIEW);
-		MockActionResponse actionResponse = new MockActionResponse();
-		portlet.processAction(actionRequest, actionResponse);
-		assertEquals("value", actionResponse.getRenderParameter("test"));
-
 		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
-		request.setSession(actionRequest.getPortletSession());
-		request.setParameters(actionResponse.getRenderParameterMap());
-		request.addParameter("name", "name1");
+		request.addParameter("defaultName", "myDefaultName");
 		request.addParameter("age", "value2");
+		request.addParameter("date", "2007-10-02");
+
 		MockRenderResponse response = new MockRenderResponse();
 		portlet.render(request, response);
-		assertEquals("test-name1-typeMismatch", response.getContentAsString());
-		assertNull(request.getPortletSession().getAttribute("testBean"));
+		assertEquals("myView-String:myDefaultName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
+	}
 
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("param1", "value1");
-		request.addParameter("param2", "2");
-		request.addProperty("header1", "10");
-		request.setCookies(new Cookie("cookie1", "3"));
+	@Test
+	public void commandProvidingFormController() throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller",
+						new RootBeanDefinition(MyCommandProvidingFormController.class));
+
+					RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
+					adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
+					wac.registerBeanDefinition("handlerAdapter", adapterDef);
+					wac.refresh();
+
+					return wac;
+				}
+
+				@Override
+				protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
+					new TestView().render(mv.getViewName(), mv.getModel(), request, response);
+				}
+			};
+		portlet.init(new MockPortletConfig());
+
+		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
+		request.addParameter("defaultName", "myDefaultName");
+		request.addParameter("age", "value2");
+		request.addParameter("date", "2007-10-02");
+
+		MockRenderResponse response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myView-String:myDefaultName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
+	}
+
+	@Test
+	public void eventDispatchingController() throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+					wac.setPortletContext(new MockPortletContext());
+
+					RootBeanDefinition bd = new RootBeanDefinition(MyPortlet20DispatchingController.class);
+					bd.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller", bd);
+					wac.registerBeanDefinition("controller2", new RootBeanDefinition(DetailsController.class));
+					AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
+					wac.refresh();
+
+					return wac;
+				}
+			};
+		portlet.init(new MockPortletConfig());
+
+		MockRenderRequest request = new MockRenderRequest();
+		MockRenderResponse response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myView", response.getContentAsString());
+
+		MockActionRequest actionRequest = new MockActionRequest("this");
+		MockActionResponse actionResponse = new MockActionResponse();
+		portlet.processAction(actionRequest, actionResponse);
+
+		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
+		request.setParameters(actionResponse.getRenderParameterMap());
+		request.setSession(actionRequest.getPortletSession());
 		response = new MockRenderResponse();
 		portlet.render(request, response);
-		assertEquals("test-value1-2-10-3", response.getContentAsString());
+		assertEquals("myLargeView-value", response.getContentAsString());
 
-		request = new MockRenderRequest(PortletMode.HELP);
-		request.addParameter("name", "name1");
-		request.addParameter("age", "2");
+		actionRequest = new MockActionRequest();
+		actionRequest.addParameter("action", "details");
+		actionResponse = new MockActionResponse();
+		portlet.processAction(actionRequest, actionResponse);
+
+		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
+		request.setParameters(actionResponse.getRenderParameterMap());
+		request.setSession(actionRequest.getPortletSession());
 		response = new MockRenderResponse();
 		portlet.render(request, response);
-		assertEquals("test-name1-2", response.getContentAsString());
+		assertEquals("myLargeView-details", response.getContentAsString());
+
+		MockEventRequest eventRequest = new MockEventRequest(new MockEvent("event1"));
+		eventRequest.setParameters(actionRequest.getParameterMap());
+
+		MockEventResponse eventResponse = new MockEventResponse();
+		portlet.processEvent(eventRequest, eventResponse);
+
+		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
+		request.setParameters(eventResponse.getRenderParameterMap());
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myLargeView-value3", response.getContentAsString());
+
+		eventRequest = new MockEventRequest(new MockEvent("event3"));
+		eventRequest.setParameters(actionRequest.getParameterMap());
+		eventResponse = new MockEventResponse();
+		portlet.processEvent(eventRequest, eventResponse);
+
+		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
+		request.setParameters(eventResponse.getRenderParameterMap());
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myLargeView-value4", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.VIEW, WindowState.NORMAL);
+		request.setParameters(actionResponse.getRenderParameterMap());
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myView", response.getContentAsString());
+
+		MockResourceRequest resourceRequest = new MockResourceRequest("resource1");
+		MockResourceResponse resourceResponse = new MockResourceResponse();
+		portlet.serveResource(resourceRequest, resourceResponse);
+		assertEquals("myResource", resourceResponse.getContentAsString());
+
+		resourceRequest = new MockResourceRequest("resource2");
+		resourceResponse = new MockResourceResponse();
+		portlet.serveResource(resourceRequest, resourceResponse);
+		assertEquals("myDefaultResource", resourceResponse.getContentAsString());
 	}
 
 	@Test
 	public void formController() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyFormController.class));
-				wac.refresh();
-				return wac;
-			}
-			@Override
-			protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
-				new TestView().render(mv.getViewName(), mv.getModel(), request, response);
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller", new RootBeanDefinition(MyFormController.class));
+					wac.refresh();
+
+					return wac;
+				}
+
+				@Override
+				protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
+					new TestView().render(mv.getViewName(), mv.getModel(), request, response);
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
 		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
 		request.addParameter("name", "name1");
 		request.addParameter("age", "value2");
+
 		MockRenderResponse response = new MockRenderResponse();
 		portlet.render(request, response);
 		assertEquals("myView-name1-typeMismatch-tb1-myValue", response.getContentAsString());
@@ -253,182 +326,50 @@ public class Portlet20AnnotationControllerTests {
 	@Test
 	public void modelFormController() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyModelFormController.class));
-				wac.refresh();
-				return wac;
-			}
-			@Override
-			protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
-				new TestView().render(mv.getViewName(), mv.getModel(), request, response);
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller", new RootBeanDefinition(MyModelFormController.class));
+					wac.refresh();
+
+					return wac;
+				}
+
+				@Override
+				protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
+					new TestView().render(mv.getViewName(), mv.getModel(), request, response);
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
 		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
 		request.addParameter("name", "name1");
 		request.addParameter("age", "value2");
+
 		MockRenderResponse response = new MockRenderResponse();
 		portlet.render(request, response);
 		assertEquals("myView-name1-typeMismatch-tb1-myValue", response.getContentAsString());
 	}
 
 	@Test
-	public void commandProvidingFormController() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyCommandProvidingFormController.class));
-				RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
-				adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
-				wac.registerBeanDefinition("handlerAdapter", adapterDef);
-				wac.refresh();
-				return wac;
-			}
-			@Override
-			protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
-				new TestView().render(mv.getViewName(), mv.getModel(), request, response);
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
-		request.addParameter("defaultName", "myDefaultName");
-		request.addParameter("age", "value2");
-		request.addParameter("date", "2007-10-02");
-		MockRenderResponse response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView-String:myDefaultName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
-	}
-
-	@Test
-	public void typedCommandProvidingFormController() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyTypedCommandProvidingFormController.class));
-				wac.registerBeanDefinition("controller2", new RootBeanDefinition(MyOtherTypedCommandProvidingFormController.class));
-				RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
-				adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
-				List<HandlerMethodArgumentResolver> customArgumentResolvers = new ArrayList<>();
-				customArgumentResolvers.add(new MySpecialArgumentResolver());
-				adapterDef.getPropertyValues().add("customArgumentResolvers", customArgumentResolvers);
-				wac.registerBeanDefinition("handlerAdapter", adapterDef);
-				wac.refresh();
-				return wac;
-			}
-			@Override
-			protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
-				new TestView().render(mv.getViewName(), mv.getModel(), request, response);
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
-		request.addParameter("myParam", "myValue");
-		request.addParameter("defaultName", "10");
-		request.addParameter("age", "value2");
-		request.addParameter("date", "2007-10-02");
-		MockRenderResponse response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView-Integer:10-typeMismatch-tb1-myOriginalValue",
-			response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.VIEW);
-		request.addParameter("myParam", "myOtherValue");
-		request.addParameter("defaultName", "10");
-		request.addParameter("age", "value2");
-		request.addParameter("date", "2007-10-02");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myOtherView-Integer:10-typeMismatch-tb1-myOriginalValue",
-			response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "myValue");
-		request.addParameter("defaultName", "10");
-		request.addParameter("age", "value2");
-		request.addParameter("date", "2007-10-02");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		String responseContentAsString = response.getContentAsString();
-		assertTrue(
-			responseContentAsString.contains("argument type mismatch") &&
-			responseContentAsString.contains("Field error in object 'testBean' on field 'age': rejected value [value2];") &&
-			responseContentAsString.contains("java.lang.NumberFormatException"));
-	}
-
-	@Test
-	public void binderInitializingCommandProvidingFormController() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				GenericWebApplicationContext wac = new GenericWebApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MyBinderInitializingCommandProvidingFormController.class));
-				wac.refresh();
-				return wac;
-			}
-			@Override
-			protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
-				new TestView().render(mv.getViewName(), mv.getModel(), request, response);
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
-		request.addParameter("defaultName", "myDefaultName");
-		request.addParameter("age", "value2");
-		request.addParameter("date", "2007-10-02");
-		MockRenderResponse response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView-String:myDefaultName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
-	}
-
-	@Test
-	public void specificBinderInitializingCommandProvidingFormController() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				wac.registerBeanDefinition("controller", new RootBeanDefinition(MySpecificBinderInitializingCommandProvidingFormController.class));
-				wac.refresh();
-				return wac;
-			}
-			@Override
-			protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
-				new TestView().render(mv.getViewName(), mv.getModel(), request, response);
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
-		request.addParameter("defaultName", "myDefaultName");
-		request.addParameter("age", "value2");
-		request.addParameter("date", "2007-10-02");
-		MockRenderResponse response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView-String:myDefaultName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
-	}
-
-	@Test
 	public void parameterDispatchingController() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				wac.setPortletContext(new MockPortletContext());
-				RootBeanDefinition bd = new RootBeanDefinition(MyParameterDispatchingController.class);
-				bd.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller", bd);
-				AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
-				wac.refresh();
-				return wac;
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+					wac.setPortletContext(new MockPortletContext());
+
+					RootBeanDefinition bd = new RootBeanDefinition(MyParameterDispatchingController.class);
+					bd.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller", bd);
+					AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
+					wac.refresh();
+
+					return wac;
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
 		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
@@ -450,93 +391,6 @@ public class Portlet20AnnotationControllerTests {
 		assertEquals("myLangView", response.getContentAsString());
 
 		request = new MockRenderRequest(PortletMode.VIEW);
-		request.addParameter("surprise", "!");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("mySurpriseView", response.getContentAsString());
-	}
-
-	@Test
-	public void typeLevelParameterDispatchingController() throws Exception {
-		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				wac.setPortletContext(new MockPortletContext());
-				RootBeanDefinition bd = new RootBeanDefinition(MyTypeLevelParameterDispatchingController.class);
-				bd.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller", bd);
-				RootBeanDefinition bd2 = new RootBeanDefinition(MySpecialParameterDispatchingController.class);
-				bd2.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller2", bd2);
-				RootBeanDefinition bd3 = new RootBeanDefinition(MyOtherSpecialParameterDispatchingController.class);
-				bd3.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller3", bd3);
-				RootBeanDefinition bd4 = new RootBeanDefinition(MyParameterDispatchingController.class);
-				bd4.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller4", bd4);
-				AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
-				wac.refresh();
-				return wac;
-			}
-		};
-		portlet.init(new MockPortletConfig());
-
-		MockRenderRequest request = new MockRenderRequest(PortletMode.HELP);
-		MockRenderResponse response = new MockRenderResponse();
-		try {
-			portlet.render(request, response);
-			fail("Should have thrown NoHandlerFoundException");
-		}
-		catch (NoHandlerFoundException ex) {
-			// expected
-		}
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myDefaultView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "myValue");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "mySpecialValue");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("mySpecialView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "myOtherSpecialValue");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myOtherSpecialView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.VIEW);
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "myValue");
-		request.addParameter("view", "other");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myOtherView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "myValue");
-		request.addParameter("view", "my");
-		request.addParameter("lang", "de");
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myLangView", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.EDIT);
-		request.addParameter("myParam", "myValue");
 		request.addParameter("surprise", "!");
 		response = new MockRenderResponse();
 		portlet.render(request, response);
@@ -546,19 +400,22 @@ public class Portlet20AnnotationControllerTests {
 	@Test
 	public void portlet20DispatchingController() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				wac.setPortletContext(new MockPortletContext());
-				RootBeanDefinition bd = new RootBeanDefinition(MyPortlet20DispatchingController.class);
-				bd.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller", bd);
-				wac.registerBeanDefinition("controller2", new RootBeanDefinition(DetailsController.class));
-				AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
-				wac.refresh();
-				return wac;
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+					wac.setPortletContext(new MockPortletContext());
+
+					RootBeanDefinition bd = new RootBeanDefinition(MyPortlet20DispatchingController.class);
+					bd.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller", bd);
+					wac.registerBeanDefinition("controller2", new RootBeanDefinition(DetailsController.class));
+					AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
+					wac.refresh();
+
+					return wac;
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
 		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
@@ -645,109 +502,114 @@ public class Portlet20AnnotationControllerTests {
 	}
 
 	@Test
-	public void eventDispatchingController() throws Exception {
+	public void specificBinderInitializingCommandProvidingFormController() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				wac.setPortletContext(new MockPortletContext());
-				RootBeanDefinition bd = new RootBeanDefinition(MyPortlet20DispatchingController.class);
-				bd.setScope(WebApplicationContext.SCOPE_REQUEST);
-				wac.registerBeanDefinition("controller", bd);
-				wac.registerBeanDefinition("controller2", new RootBeanDefinition(DetailsController.class));
-				AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
-				wac.refresh();
-				return wac;
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+					wac.registerBeanDefinition("controller",
+						new RootBeanDefinition(MySpecificBinderInitializingCommandProvidingFormController.class));
+					wac.refresh();
+
+					return wac;
+				}
+
+				@Override
+				protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
+					new TestView().render(mv.getViewName(), mv.getModel(), request, response);
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
-		MockRenderRequest request = new MockRenderRequest();
+		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
+		request.addParameter("defaultName", "myDefaultName");
+		request.addParameter("age", "value2");
+		request.addParameter("date", "2007-10-02");
+
 		MockRenderResponse response = new MockRenderResponse();
 		portlet.render(request, response);
-		assertEquals("myView", response.getContentAsString());
+		assertEquals("myView-String:myDefaultName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
+	}
 
-		MockActionRequest actionRequest = new MockActionRequest("this");
-		MockActionResponse actionResponse = new MockActionResponse();
-		portlet.processAction(actionRequest, actionResponse);
+	@Test
+	public void standardHandleMethod() throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller", new RootBeanDefinition(MyController.class));
+					wac.refresh();
 
-		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
-		request.setParameters(actionResponse.getRenderParameterMap());
-		request.setSession(actionRequest.getPortletSession());
-		response = new MockRenderResponse();
+					return wac;
+				}
+			};
+		portlet.init(new MockPortletConfig());
+
+		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
+		MockRenderResponse response = new MockRenderResponse();
 		portlet.render(request, response);
-		assertEquals("myLargeView-value", response.getContentAsString());
+		assertEquals("test", response.getContentAsString());
+	}
 
-		actionRequest = new MockActionRequest();
-		actionRequest.addParameter("action", "details");
-		actionResponse = new MockActionResponse();
-		portlet.processAction(actionRequest, actionResponse);
+	@Test
+	public void standardHandleMethodWithResources() throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+					wac.setPortletConfig(getPortletConfig());
+					wac.registerBeanDefinition("controller", new RootBeanDefinition(MyController.class));
+					wac.refresh();
 
-		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
-		request.setParameters(actionResponse.getRenderParameterMap());
-		request.setSession(actionRequest.getPortletSession());
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myLargeView-details", response.getContentAsString());
+					return wac;
+				}
+			};
+		portlet.init(new MockPortletConfig());
 
-		MockEventRequest eventRequest = new MockEventRequest(new MockEvent("event1"));
-		eventRequest.setParameters(actionRequest.getParameterMap());
-		MockEventResponse eventResponse = new MockEventResponse();
-		portlet.processEvent(eventRequest, eventResponse);
-
-		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
-		request.setParameters(eventResponse.getRenderParameterMap());
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myLargeView-value3", response.getContentAsString());
-
-		eventRequest = new MockEventRequest(new MockEvent("event3"));
-		eventRequest.setParameters(actionRequest.getParameterMap());
-		eventResponse = new MockEventResponse();
-		portlet.processEvent(eventRequest, eventResponse);
-
-		request = new MockRenderRequest(PortletMode.VIEW, WindowState.MAXIMIZED);
-		request.setParameters(eventResponse.getRenderParameterMap());
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myLargeView-value4", response.getContentAsString());
-
-		request = new MockRenderRequest(PortletMode.VIEW, WindowState.NORMAL);
-		request.setParameters(actionResponse.getRenderParameterMap());
-		response = new MockRenderResponse();
-		portlet.render(request, response);
-		assertEquals("myView", response.getContentAsString());
-
-		MockResourceRequest resourceRequest = new MockResourceRequest("resource1");
+		MockResourceRequest resourceRequest = new MockResourceRequest("/resource1");
 		MockResourceResponse resourceResponse = new MockResourceResponse();
 		portlet.serveResource(resourceRequest, resourceResponse);
-		assertEquals("myResource", resourceResponse.getContentAsString());
+		assertEquals("/resource1", resourceResponse.getForwardedUrl());
+		assertNull(resourceResponse.getProperty(ResourceResponse.HTTP_STATUS_CODE));
 
-		resourceRequest = new MockResourceRequest("resource2");
+		resourceRequest = new MockResourceRequest("/WEB-INF/resource2");
 		resourceResponse = new MockResourceResponse();
 		portlet.serveResource(resourceRequest, resourceResponse);
-		assertEquals("myDefaultResource", resourceResponse.getContentAsString());
+		assertNull(resourceResponse.getForwardedUrl());
+		assertEquals("404", resourceResponse.getProperty(ResourceResponse.HTTP_STATUS_CODE));
+
+		resourceRequest = new MockResourceRequest("/META-INF/resource3");
+		resourceResponse = new MockResourceResponse();
+		portlet.serveResource(resourceRequest, resourceResponse);
+		assertNull(resourceResponse.getForwardedUrl());
+		assertEquals("404", resourceResponse.getProperty(ResourceResponse.HTTP_STATUS_CODE));
 	}
 
 	@Test
 	public void testPredicatePriorityComparisonAcrossControllers() throws Exception {
 		DispatcherPortlet portlet = new DispatcherPortlet() {
-			@Override
-			protected ApplicationContext createPortletApplicationContext(ApplicationContext parent) throws BeansException {
-				StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
-				// The order of handler registration is important to get
-				// the collection with [Render,Action,Render] predicates
-				wac.registerSingleton("firstController", FirstController.class);
-				wac.registerSingleton("secondController", SecondController.class);
-				wac.registerSingleton("thirdController", ThirdController.class);
-				wac.registerSingleton("handlerMapping", DefaultAnnotationHandlerMapping.class);
-				wac.registerSingleton("handlerAdapter", PortletRequestMappingHandlerAdapter.class);
-				wac.setPortletContext(new MockPortletContext());
-				AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
-				wac.refresh();
-				return wac;
-			}
-		};
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+
+					// The order of handler registration is important to get
+					// the collection with [Render,Action,Render] predicates
+					wac.registerSingleton("firstController", FirstController.class);
+					wac.registerSingleton("secondController", SecondController.class);
+					wac.registerSingleton("thirdController", ThirdController.class);
+					wac.registerSingleton("handlerMapping", DefaultAnnotationHandlerMapping.class);
+					wac.registerSingleton("handlerAdapter", PortletRequestMappingHandlerAdapter.class);
+					wac.setPortletContext(new MockPortletContext());
+					AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
+					wac.refresh();
+
+					return wac;
+				}
+			};
 		portlet.init(new MockPortletConfig());
 
 		// Make sure all 6 annotated methods can be called
@@ -790,21 +652,290 @@ public class Portlet20AnnotationControllerTests {
 		assertArrayEquals(new String[] { "resourceThird" }, resourceResponse.getProperties("RESPONSE"));
 	}
 
+	@Test
+	public void typedCommandProvidingFormController() throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller",
+						new RootBeanDefinition(MyTypedCommandProvidingFormController.class));
+					wac.registerBeanDefinition("controller2",
+						new RootBeanDefinition(MyOtherTypedCommandProvidingFormController.class));
 
-	/*
-	 * Controllers
-	 */
+					RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
+					adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
 
-	@RequestMapping("VIEW")
-	private static class MyController extends AbstractController {
+					List<HandlerMethodArgumentResolver> customArgumentResolvers = new ArrayList<>();
+					customArgumentResolvers.add(new MySpecialArgumentResolver());
+					adapterDef.getPropertyValues().add("customArgumentResolvers", customArgumentResolvers);
+					wac.registerBeanDefinition("handlerAdapter", adapterDef);
+					wac.refresh();
 
-		@Override
-		protected ModelAndView handleRenderRequestInternal(RenderRequest request, RenderResponse response) throws Exception {
-			response.getWriter().write("test");
-			return null;
+					return wac;
+				}
+
+				@Override
+				protected void render(ModelAndView mv, PortletRequest request, MimeResponse response) throws Exception {
+					new TestView().render(mv.getViewName(), mv.getModel(), request, response);
+				}
+			};
+		portlet.init(new MockPortletConfig());
+
+		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
+		request.addParameter("myParam", "myValue");
+		request.addParameter("defaultName", "10");
+		request.addParameter("age", "value2");
+		request.addParameter("date", "2007-10-02");
+
+		MockRenderResponse response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myView-Integer:10-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.VIEW);
+		request.addParameter("myParam", "myOtherValue");
+		request.addParameter("defaultName", "10");
+		request.addParameter("age", "value2");
+		request.addParameter("date", "2007-10-02");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myOtherView-Integer:10-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "myValue");
+		request.addParameter("defaultName", "10");
+		request.addParameter("age", "value2");
+		request.addParameter("date", "2007-10-02");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+
+		String responseContentAsString = response.getContentAsString();
+		assertTrue(responseContentAsString.contains("argument type mismatch") &&
+			responseContentAsString.contains(
+				"Field error in object 'testBean' on field 'age': rejected value [value2];") &&
+			responseContentAsString.contains("java.lang.NumberFormatException"));
+	}
+
+	@Test
+	public void typeLevelParameterDispatchingController() throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					StaticPortletApplicationContext wac = new StaticPortletApplicationContext();
+					wac.setPortletContext(new MockPortletContext());
+
+					RootBeanDefinition bd = new RootBeanDefinition(MyTypeLevelParameterDispatchingController.class);
+					bd.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller", bd);
+
+					RootBeanDefinition bd2 = new RootBeanDefinition(MySpecialParameterDispatchingController.class);
+					bd2.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller2", bd2);
+
+					RootBeanDefinition bd3 = new RootBeanDefinition(MyOtherSpecialParameterDispatchingController.class);
+					bd3.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller3", bd3);
+
+					RootBeanDefinition bd4 = new RootBeanDefinition(MyParameterDispatchingController.class);
+					bd4.setScope(WebApplicationContext.SCOPE_REQUEST);
+					wac.registerBeanDefinition("controller4", bd4);
+					AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
+					wac.refresh();
+
+					return wac;
+				}
+			};
+		portlet.init(new MockPortletConfig());
+
+		MockRenderRequest request = new MockRenderRequest(PortletMode.HELP);
+		MockRenderResponse response = new MockRenderResponse();
+
+		try {
+			portlet.render(request, response);
+			fail("Should have thrown NoHandlerFoundException");
+		}
+		catch (NoHandlerFoundException ex) {
+			// expected
+		}
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myDefaultView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "myValue");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "mySpecialValue");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("mySpecialView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "myOtherSpecialValue");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myOtherSpecialView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.VIEW);
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "myValue");
+		request.addParameter("view", "other");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myOtherView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "myValue");
+		request.addParameter("view", "my");
+		request.addParameter("lang", "de");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("myLangView", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("myParam", "myValue");
+		request.addParameter("surprise", "!");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("mySurpriseView", response.getContentAsString());
+	}
+
+	private void doTestAdaptedHandleMethods(final Class<?> controllerClass) throws Exception {
+		DispatcherPortlet portlet = new DispatcherPortlet() {
+				@Override
+				protected ApplicationContext createPortletApplicationContext(ApplicationContext parent)
+					throws BeansException {
+					GenericWebApplicationContext wac = new GenericWebApplicationContext();
+					wac.registerBeanDefinition("controller", new RootBeanDefinition(controllerClass));
+					wac.refresh();
+
+					return wac;
+				}
+			};
+		portlet.init(new MockPortletConfig());
+
+		MockActionRequest actionRequest = new MockActionRequest(PortletMode.VIEW);
+		MockActionResponse actionResponse = new MockActionResponse();
+		portlet.processAction(actionRequest, actionResponse);
+		assertEquals("value", actionResponse.getRenderParameter("test"));
+
+		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
+		request.setSession(actionRequest.getPortletSession());
+		request.setParameters(actionResponse.getRenderParameterMap());
+		request.addParameter("name", "name1");
+		request.addParameter("age", "value2");
+
+		MockRenderResponse response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("test-name1-typeMismatch", response.getContentAsString());
+		assertNull(request.getPortletSession().getAttribute("testBean"));
+
+		request = new MockRenderRequest(PortletMode.EDIT);
+		request.addParameter("param1", "value1");
+		request.addParameter("param2", "2");
+		request.addProperty("header1", "10");
+		request.setCookies(new Cookie("cookie1", "3"));
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("test-value1-2-10-3", response.getContentAsString());
+
+		request = new MockRenderRequest(PortletMode.HELP);
+		request.addParameter("name", "name1");
+		request.addParameter("age", "2");
+		response = new MockRenderResponse();
+		portlet.render(request, response);
+		assertEquals("test-name1-2", response.getContentAsString());
+	}
+
+	@RequestMapping("view")
+	public static class FirstController {
+
+		@RenderMapping
+		public String renderFirst(RenderResponse response) {
+			response.setProperty("RESPONSE", "renderFirst");
+
+			return "renderFirst";
+		}
+
+		@ResourceMapping("first")
+		public String resourceFirst(ResourceResponse response) {
+			response.setProperty("RESPONSE", "resourceFirst");
+
+			return "resourceFirst";
 		}
 	}
 
+	@RequestMapping("view")
+	public static class SecondController {
+
+		@ResourceMapping("second")
+		public String processResource(ResourceResponse response) {
+			response.setProperty("RESPONSE", "resourceSecond");
+
+			return "resourceSecond";
+		}
+
+		@RenderMapping(windowState = "MAXIMIZED", params = "report=second")
+		public String renderSecond(RenderResponse response) {
+			response.setProperty("RESPONSE", "renderSecond");
+
+			return "renderSecond";
+		}
+	}
+
+	@RequestMapping("view")
+	public static class ThirdController {
+
+		@ResourceMapping("third")
+		public String processResource(ResourceResponse response) {
+			response.setProperty("RESPONSE", "resourceThird");
+
+			return "resourceThird";
+		}
+
+		@RenderMapping(windowState = "MAXIMIZED", params = "report=third")
+		public String renderSecond(RenderResponse response) {
+			response.setProperty("RESPONSE", "renderThird");
+
+			return "renderThird";
+		}
+	}
+
+	@Controller
+	@RequestMapping("VIEW")
+	private static class DetailsController {
+
+		@ResourceMapping
+		public void myDefaultResource(Writer writer) throws IOException {
+			writer.write("myDefaultResource");
+		}
+
+		@ActionMapping("else")
+		public void myHandle(StateAwareResponse response) {
+			response.setRenderParameter("test", "value3");
+		}
+
+		@EventMapping("event3")
+		public void myHandle2(EventResponse response) throws IOException {
+			response.setRenderParameter("test", "value4");
+		}
+
+		@ActionMapping(params = "action=details")
+		public void renderDetails(ActionRequest request, ActionResponse response, Model model) {
+			response.setRenderParameter("test", "details");
+		}
+	}
 
 	@Controller
 	private static class MyAdaptedController {
@@ -815,14 +946,6 @@ public class Portlet20AnnotationControllerTests {
 			response.setRenderParameter("test", "value");
 		}
 
-		@RequestMapping("EDIT")
-		@RenderMapping
-		public void myHandle(@RequestParam("param1") String p1, @RequestParam("param2") int p2,
-				@RequestHeader("header1") long h1, @CookieValue("cookie1") Cookie c1,
-				RenderResponse response) throws IOException {
-			response.getWriter().write("test-" + p1 + "-" + p2 + "-" + h1 + "-" + c1.getValue());
-		}
-
 		@RequestMapping("HELP")
 		@RenderMapping
 		public void myHandle(TestBean tb, RenderResponse response) throws IOException {
@@ -834,8 +957,16 @@ public class Portlet20AnnotationControllerTests {
 		public void myHandle(TestBean tb, Errors errors, RenderResponse response) throws IOException {
 			response.getWriter().write("test-" + tb.getName() + "-" + errors.getFieldError("age").getCode());
 		}
-	}
 
+		@RequestMapping("EDIT")
+		@RenderMapping
+		public void myHandle(@RequestParam("param1") String p1,
+			@RequestParam("param2") int p2,
+			@RequestHeader("header1") long h1,
+			@CookieValue("cookie1") Cookie c1, RenderResponse response) throws IOException {
+			response.getWriter().write("test-" + p1 + "-" + p2 + "-" + h1 + "-" + c1.getValue());
+		}
+	}
 
 	@Controller
 	private static class MyAdaptedController2 {
@@ -846,13 +977,6 @@ public class Portlet20AnnotationControllerTests {
 			response.setRenderParameter("test", "value");
 		}
 
-		@RequestMapping("EDIT")
-		@RenderMapping
-		public void myHandle(@RequestParam("param1") String p1, int param2, RenderResponse response,
-				@RequestHeader("header1") String h1, @CookieValue("cookie1") String c1) throws IOException {
-			response.getWriter().write("test-" + p1 + "-" + param2 + "-" + h1 + "-" + c1);
-		}
-
 		@RequestMapping("HELP")
 		@RenderMapping
 		public void myHandle(TestBean tb, RenderResponse response) throws IOException {
@@ -864,23 +988,23 @@ public class Portlet20AnnotationControllerTests {
 		public void myHandle(TestBean tb, Errors errors, RenderResponse response) throws IOException {
 			response.getWriter().write("test-" + tb.getName() + "-" + errors.getFieldError("age").getCode());
 		}
+
+		@RequestMapping("EDIT")
+		@RenderMapping
+		public void myHandle(@RequestParam("param1") String p1, int param2, RenderResponse response,
+			@RequestHeader("header1") String h1,
+			@CookieValue("cookie1") String c1) throws IOException {
+			response.getWriter().write("test-" + p1 + "-" + param2 + "-" + h1 + "-" + c1);
+		}
 	}
 
-
 	@Controller
-	@RequestMapping({"VIEW", "EDIT", "HELP"})
+	@RequestMapping({ "VIEW", "EDIT", "HELP" })
 	private static class MyAdaptedController3 {
 
 		@ActionMapping
 		public void myHandle(ActionRequest request, ActionResponse response) {
 			response.setRenderParameter("test", "value");
-		}
-
-		@RequestMapping("EDIT")
-		@RenderMapping
-		public void myHandle(@RequestParam("param1") String p1, int param2, @RequestHeader Integer header1,
-				@CookieValue int cookie1, RenderResponse response) throws IOException {
-			response.getWriter().write("test-" + p1 + "-" + param2 + "-" + header1 + "-" + cookie1);
 		}
 
 		@RequestMapping("HELP")
@@ -893,8 +1017,14 @@ public class Portlet20AnnotationControllerTests {
 		public void myHandle(TestBean tb, Errors errors, RenderResponse response) throws IOException {
 			response.getWriter().write("test-" + tb.getName() + "-" + errors.getFieldError("age").getCode());
 		}
-	}
 
+		@RequestMapping("EDIT")
+		@RenderMapping
+		public void myHandle(@RequestParam("param1") String p1, int param2, @RequestHeader Integer header1,
+			@CookieValue int cookie1, RenderResponse response) throws IOException {
+			response.getWriter().write("test-" + p1 + "-" + param2 + "-" + header1 + "-" + cookie1);
+		}
+	}
 
 	@Controller
 	@SessionAttributes("testBean")
@@ -902,6 +1032,12 @@ public class Portlet20AnnotationControllerTests {
 
 		public void MyAdaptedControler4() {
 			System.err.println("!@#$ IN CONSTRUCTOR");
+		}
+
+		@RequestMapping("HELP")
+		@RenderMapping
+		public void myHandle(@ModelAttribute("tb") TestBean tb, RenderResponse response) throws IOException {
+			response.getWriter().write("test-" + tb.getName() + "-" + tb.getAge());
 		}
 
 		@RequestMapping("VIEW")
@@ -914,145 +1050,23 @@ public class Portlet20AnnotationControllerTests {
 			response.setRenderParameter("test", "value");
 		}
 
-		@RequestMapping("EDIT")
-		@RenderMapping
-		public void myHandle(@RequestParam("param1") String p1, int param2, RenderResponse response,
-				@RequestHeader("header1") String h1, @CookieValue("cookie1") String c1) throws IOException {
-			response.getWriter().write("test-" + p1 + "-" + param2 + "-" + h1 + "-" + c1);
-		}
-
-		@RequestMapping("HELP")
-		@RenderMapping
-		public void myHandle(@ModelAttribute("tb") TestBean tb, RenderResponse response) throws IOException {
-			response.getWriter().write("test-" + tb.getName() + "-" + tb.getAge());
-		}
-
 		@RequestMapping("VIEW")
 		@RenderMapping
-		public void myHandle(@ModelAttribute("testBean") TestBean tb, Errors errors, RenderResponse response, PortletSession session) throws IOException {
+		public void myHandle(@ModelAttribute("testBean") TestBean tb, Errors errors, RenderResponse response,
+			PortletSession session) throws IOException {
 			assertTrue(tb.isJedi());
 			assertNull(session.getAttribute("testBean"));
 			response.getWriter().write("test-" + tb.getName() + "-" + errors.getFieldError("age").getCode());
 		}
-	}
-
-
-	@Controller
-	private static class MyFormController {
-
-		@ModelAttribute("testBeanList")
-		public List<TestBean> getTestBeans() {
-			List<TestBean> list = new LinkedList<TestBean>();
-			list.add(new TestBean("tb1"));
-			list.add(new TestBean("tb2"));
-			return list;
-		}
-
-		@RequestMapping("VIEW")
-		@RenderMapping
-		public String myHandle(@ModelAttribute("myCommand")TestBean tb, BindingResult errors, ModelMap model) {
-			if (!model.containsKey("myKey")) {
-				model.addAttribute("myKey", "myValue");
-			}
-			return "myView";
-		}
-	}
-
-
-	@Controller
-	private static class MyModelFormController {
-
-		@ModelAttribute
-		public List<TestBean> getTestBeans() {
-			List<TestBean> list = new LinkedList<TestBean>();
-			list.add(new TestBean("tb1"));
-			list.add(new TestBean("tb2"));
-			return list;
-		}
-
-		@RequestMapping("VIEW")
-		@RenderMapping
-		public String myHandle(@ModelAttribute("myCommand")TestBean tb, BindingResult errors, Model model) {
-			if (!model.containsAttribute("myKey")) {
-				model.addAttribute("myKey", "myValue");
-			}
-			return "myView";
-		}
-	}
-
-
-	@Controller
-	private static class MyCommandProvidingFormController<T, TB, TB2> extends MyFormController {
-
-		@ModelAttribute("myCommand")
-		private TestBean createTestBean(
-				@RequestParam T defaultName, Map<String, Object> model, @RequestParam Date date) {
-			model.put("myKey", "myOriginalValue");
-			return new TestBean(defaultName.getClass().getSimpleName() + ":" + defaultName.toString());
-		}
-
-		@Override
-		@RequestMapping("VIEW")
-		@RenderMapping
-		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, ModelMap model) {
-			if (!model.containsKey("myKey")) {
-				model.addAttribute("myKey", "myValue");
-			}
-			return "myView";
-		}
 
 		@RequestMapping("EDIT")
 		@RenderMapping
-		public String myOtherHandle(TB tb, BindingResult errors, ExtendedModelMap model, MySpecialArg arg) {
-			TestBean tbReal = (TestBean) tb;
-			tbReal.setName("myName");
-			assertTrue(model.get("ITestBean") instanceof DerivedTestBean);
-			assertNotNull(arg);
-			return super.myHandle(tbReal, errors, model);
-		}
-
-		@ModelAttribute
-		@SuppressWarnings("unchecked")
-		protected TB2 getModelAttr() {
-			return (TB2) new DerivedTestBean();
+		public void myHandle(@RequestParam("param1") String p1, int param2, RenderResponse response,
+			@RequestHeader("header1") String h1,
+			@CookieValue("cookie1") String c1) throws IOException {
+			response.getWriter().write("test-" + p1 + "-" + param2 + "-" + h1 + "-" + c1);
 		}
 	}
-
-
-	private static class MySpecialArg {
-
-		public MySpecialArg(String value) {
-		}
-	}
-
-
-	@Controller
-	@RequestMapping(params = "myParam=myValue")
-	private static class MyTypedCommandProvidingFormController
-			extends MyCommandProvidingFormController<Integer, TestBean, ITestBean> {
-
-		@ExceptionHandler
-		public void handleException(Exception ex, Writer writer) throws IOException {
-			writer.write(ex.getMessage());
-		}
-	}
-
-	@Controller
-	@RequestMapping(params = "myParam=myOtherValue")
-	private static class MyOtherTypedCommandProvidingFormController
-			extends MyCommandProvidingFormController<Integer, TestBean, ITestBean> {
-
-		@Override
-		@RequestMapping("VIEW")
-		@RenderMapping
-		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, ModelMap model) {
-			if (!model.containsKey("myKey")) {
-				model.addAttribute("myKey", "myValue");
-			}
-			return "myOtherView";
-		}
-	}
-
 
 	@Controller
 	@SuppressWarnings("rawtypes")
@@ -1066,49 +1080,138 @@ public class Portlet20AnnotationControllerTests {
 		}
 	}
 
+	@Controller
+	private static class MyCommandProvidingFormController<T, TB, TB2> extends MyFormController {
+
+		@Override
+		@RequestMapping("VIEW")
+		@RenderMapping
+		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, ModelMap model) {
+
+			if (!model.containsKey("myKey")) {
+				model.addAttribute("myKey", "myValue");
+			}
+
+			return "myView";
+		}
+
+		@RequestMapping("EDIT")
+		@RenderMapping
+		public String myOtherHandle(TB tb, BindingResult errors, ExtendedModelMap model, MySpecialArg arg) {
+			TestBean tbReal = (TestBean) tb;
+			tbReal.setName("myName");
+			assertTrue(model.get("ITestBean") instanceof DerivedTestBean);
+			assertNotNull(arg);
+
+			return super.myHandle(tbReal, errors, model);
+		}
+
+		@ModelAttribute
+		@SuppressWarnings("unchecked")
+		protected TB2 getModelAttr() {
+			return (TB2) new DerivedTestBean();
+		}
+
+		@ModelAttribute("myCommand")
+		private TestBean createTestBean(@RequestParam T defaultName, Map<String, Object> model,
+			@RequestParam Date date) {
+			model.put("myKey", "myOriginalValue");
+
+			return new TestBean(defaultName.getClass().getSimpleName() + ":" + defaultName.toString());
+		}
+	}
+
+	/*
+	 * Controllers
+	 */
+
+	@RequestMapping("VIEW")
+	private static class MyController extends AbstractController {
+
+		@Override
+		protected ModelAndView handleRenderRequestInternal(RenderRequest request, RenderResponse response)
+			throws Exception {
+			response.getWriter().write("test");
+
+			return null;
+		}
+	}
 
 	@Controller
-	@SuppressWarnings("rawtypes")
-	private static class MySpecificBinderInitializingCommandProvidingFormController extends MyCommandProvidingFormController {
+	private static class MyFormController {
 
-		@InitBinder({"myCommand", "date"})
-		private void initBinder(WebDataBinder binder) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			dateFormat.setLenient(false);
-			binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+		@ModelAttribute("testBeanList")
+		public List<TestBean> getTestBeans() {
+			List<TestBean> list = new LinkedList<TestBean>();
+			list.add(new TestBean("tb1"));
+			list.add(new TestBean("tb2"));
+
+			return list;
+		}
+
+		@RequestMapping("VIEW")
+		@RenderMapping
+		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, ModelMap model) {
+
+			if (!model.containsKey("myKey")) {
+				model.addAttribute("myKey", "myValue");
+			}
+
+			return "myView";
 		}
 	}
 
+	@Controller
+	private static class MyModelFormController {
 
-	private static class MyWebBindingInitializer implements WebBindingInitializer {
+		@ModelAttribute
+		public List<TestBean> getTestBeans() {
+			List<TestBean> list = new LinkedList<TestBean>();
+			list.add(new TestBean("tb1"));
+			list.add(new TestBean("tb2"));
 
-		@Override
-		public void initBinder(WebDataBinder binder) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			dateFormat.setLenient(false);
-			binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+			return list;
+		}
+
+		@RequestMapping("VIEW")
+		@RenderMapping
+		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, Model model) {
+
+			if (!model.containsAttribute("myKey")) {
+				model.addAttribute("myKey", "myValue");
+			}
+
+			return "myView";
 		}
 	}
 
+	@Controller
+	@RequestMapping("EDIT")
+	private static class MyOtherSpecialParameterDispatchingController {
 
-	private static class MySpecialArgumentResolver implements HandlerMethodArgumentResolver {
-
-		@Override
-		public boolean supportsParameter(MethodParameter methodParameter) {
-			return MySpecialArg.class.isAssignableFrom(methodParameter.getParameterType());
-		}
-
-		@Nullable
-		@Override
-		public Object resolveArgument(MethodParameter methodParameter,
-			@Nullable ModelAndViewContainer modelAndViewContainer,
-			NativeWebRequest nativeWebRequest,
-			@Nullable WebDataBinderFactory webDataBinderFactory)
-			throws Exception {
-			return UNRESOLVED;
+		@RenderMapping(params = "myParam=myOtherSpecialValue")
+		public void myHandle(RenderResponse response) throws IOException {
+			response.getWriter().write("myOtherSpecialView");
 		}
 	}
 
+	@Controller
+	@RequestMapping(params = "myParam=myOtherValue")
+	private static class MyOtherTypedCommandProvidingFormController
+		extends MyCommandProvidingFormController<Integer, TestBean, ITestBean> {
+
+		@Override
+		@RequestMapping("VIEW")
+		@RenderMapping
+		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, ModelMap model) {
+
+			if (!model.containsKey("myKey")) {
+				model.addAttribute("myKey", "myValue");
+			}
+
+			return "myOtherView";
+		}
+	}
 
 	@Controller
 	@RequestMapping("VIEW")
@@ -1131,21 +1234,23 @@ public class Portlet20AnnotationControllerTests {
 
 		@RenderMapping
 		public void myHandle(RenderResponse response) throws IOException {
-			if (this.portletContext == null || this.request == null || this.response == null ||
-					this.session == null || this.webRequest == null) {
+
+			if ((this.portletContext == null) || (this.request == null) || (this.response == null) ||
+					(this.session == null) || (this.webRequest == null)) {
 				throw new IllegalStateException();
 			}
+
 			response.getWriter().write("myView");
 		}
 
-		@RenderMapping(params = {"view", "!lang"})
-		public void myOtherHandle(RenderResponse response) throws IOException {
-			response.getWriter().write("myOtherView");
-		}
-
-		@RenderMapping(params = {"view=my", "lang=de"})
+		@RenderMapping(params = { "view=my", "lang=de" })
 		public void myLangHandle(RenderResponse response) throws IOException {
 			response.getWriter().write("myLangView");
+		}
+
+		@RenderMapping(params = { "view", "!lang" })
+		public void myOtherHandle(RenderResponse response) throws IOException {
+			response.getWriter().write("myOtherView");
 		}
 
 		@RenderMapping(params = "surprise")
@@ -1154,73 +1259,13 @@ public class Portlet20AnnotationControllerTests {
 		}
 	}
 
-
-	@Controller
-	@RequestMapping(value = "EDIT", params = "myParam=myValue")
-	private static class MyTypeLevelParameterDispatchingController extends MyParameterDispatchingController {
-
-	}
-
-
-	@Controller
-	@RequestMapping("EDIT")
-	private static class MySpecialParameterDispatchingController {
-
-		@RenderMapping(params = "myParam=mySpecialValue")
-		public void myHandle(RenderResponse response) throws IOException {
-			response.getWriter().write("mySpecialView");
-		}
-
-		@RenderMapping
-		public void myDefaultHandle(RenderResponse response) throws IOException {
-			response.getWriter().write("myDefaultView");
-		}
-	}
-
-
-	@Controller
-	@RequestMapping("EDIT")
-	private static class MyOtherSpecialParameterDispatchingController {
-
-		@RenderMapping(params = "myParam=myOtherSpecialValue")
-		public void myHandle(RenderResponse response) throws IOException {
-			response.getWriter().write("myOtherSpecialView");
-		}
-	}
-
-
 	@Controller
 	@RequestMapping("VIEW")
 	private static class MyPortlet20DispatchingController {
 
-		@ActionMapping(name = "this")
-		public void myHandle(StateAwareResponse response) {
-			response.setRenderParameter("test", "value");
-		}
-
-		@ActionMapping("that")
-		public void myHandle2(StateAwareResponse response) {
-			response.setRenderParameter("test", "value2");
-		}
-
-		@ActionMapping("error")
-		public void myError(StateAwareResponse response) {
-			throw new IllegalStateException("XXX");
-		}
-
-		@EventMapping("event1")
-		public void myHandle(EventResponse response) throws IOException {
-			response.setRenderParameter("test", "value3");
-		}
-
-		@EventMapping("event2")
-		public void myHandle2(EventResponse response) throws IOException {
-			response.setRenderParameter("test", "value4");
-		}
-
-		@RenderMapping("MAXIMIZED")
-		public void myHandle(Writer writer, @RequestParam("test") String renderParam) throws IOException {
-			writer.write("myLargeView-" + renderParam);
+		@ExceptionHandler
+		public void handleException(Exception ex, Writer writer) throws IOException {
+			writer.write(ex.getMessage());
 		}
 
 		@RenderMapping
@@ -1228,9 +1273,35 @@ public class Portlet20AnnotationControllerTests {
 			writer.write("myView");
 		}
 
-		@ExceptionHandler
-		public void handleException(Exception ex, Writer writer) throws IOException {
-			writer.write(ex.getMessage());
+		@ActionMapping("error")
+		public void myError(StateAwareResponse response) {
+			throw new IllegalStateException("XXX");
+		}
+
+		@ActionMapping(name = "this")
+		public void myHandle(StateAwareResponse response) {
+			response.setRenderParameter("test", "value");
+		}
+
+		@EventMapping("event1")
+		public void myHandle(EventResponse response) throws IOException {
+			response.setRenderParameter("test", "value3");
+		}
+
+		@RenderMapping("MAXIMIZED")
+		public void myHandle(Writer writer,
+			@RequestParam("test") String renderParam) throws IOException {
+			writer.write("myLargeView-" + renderParam);
+		}
+
+		@ActionMapping("that")
+		public void myHandle2(StateAwareResponse response) {
+			response.setRenderParameter("test", "value2");
+		}
+
+		@EventMapping("event2")
+		public void myHandle2(EventResponse response) throws IOException {
+			response.setRenderParameter("test", "value4");
 		}
 
 		@ResourceMapping("resource1")
@@ -1239,105 +1310,111 @@ public class Portlet20AnnotationControllerTests {
 		}
 	}
 
+	private static class MySpecialArg {
 
-	@Controller
-	@RequestMapping("VIEW")
-	private static class DetailsController {
-
-		@ActionMapping("else")
-		public void myHandle(StateAwareResponse response) {
-			response.setRenderParameter("test", "value3");
-		}
-
-		@EventMapping("event3")
-		public void myHandle2(EventResponse response) throws IOException {
-			response.setRenderParameter("test", "value4");
-		}
-
-		@ActionMapping(params = "action=details")
-		public void renderDetails(ActionRequest request, ActionResponse response, Model model) {
-			response.setRenderParameter("test", "details");
-		}
-
-		@ResourceMapping
-		public void myDefaultResource(Writer writer) throws IOException {
-			writer.write("myDefaultResource");
+		public MySpecialArg(String value) {
 		}
 	}
 
+	private static class MySpecialArgumentResolver implements HandlerMethodArgumentResolver {
+
+		@Nullable
+		@Override
+		public Object resolveArgument(MethodParameter methodParameter,
+			@Nullable ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest,
+			@Nullable WebDataBinderFactory webDataBinderFactory) throws Exception {
+			return UNRESOLVED;
+		}
+
+		@Override
+		public boolean supportsParameter(MethodParameter methodParameter) {
+			return MySpecialArg.class.isAssignableFrom(methodParameter.getParameterType());
+		}
+	}
+
+	@Controller
+	@RequestMapping("EDIT")
+	private static class MySpecialParameterDispatchingController {
+
+		@RenderMapping
+		public void myDefaultHandle(RenderResponse response) throws IOException {
+			response.getWriter().write("myDefaultView");
+		}
+
+		@RenderMapping(params = "myParam=mySpecialValue")
+		public void myHandle(RenderResponse response) throws IOException {
+			response.getWriter().write("mySpecialView");
+		}
+	}
+
+	@Controller
+	@SuppressWarnings("rawtypes")
+	private static class MySpecificBinderInitializingCommandProvidingFormController
+		extends MyCommandProvidingFormController {
+
+		@InitBinder({ "myCommand", "date" })
+		private void initBinder(WebDataBinder binder) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			dateFormat.setLenient(false);
+			binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+		}
+	}
+
+	@Controller
+	@RequestMapping(params = "myParam=myValue")
+	private static class MyTypedCommandProvidingFormController
+		extends MyCommandProvidingFormController<Integer, TestBean, ITestBean> {
+
+		@ExceptionHandler
+		public void handleException(Exception ex, Writer writer) throws IOException {
+			writer.write(ex.getMessage());
+		}
+	}
+
+	@Controller
+	@RequestMapping(value = "EDIT", params = "myParam=myValue")
+	private static class MyTypeLevelParameterDispatchingController extends MyParameterDispatchingController {
+
+	}
+
+	private static class MyWebBindingInitializer implements WebBindingInitializer {
+
+		@Override
+		public void initBinder(WebDataBinder binder) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			dateFormat.setLenient(false);
+			binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+		}
+	}
 
 	private static class TestView {
 
 		@SuppressWarnings("deprecation")
-		public void render(String viewName, Map<String, Object> model, PortletRequest request, MimeResponse response) throws Exception {
+		public void render(String viewName, Map<String, Object> model, PortletRequest request, MimeResponse response)
+			throws Exception {
 			TestBean tb = (TestBean) model.get("testBean");
+
 			if (tb == null) {
 				tb = (TestBean) model.get("myCommand");
 			}
+
 			if (tb.getName().endsWith("myDefaultName")) {
 				assertEquals(107, tb.getDate().getYear());
 			}
+
 			Errors errors = (Errors) model.get(BindingResult.MODEL_KEY_PREFIX + "testBean");
+
 			if (errors == null) {
 				errors = (Errors) model.get(BindingResult.MODEL_KEY_PREFIX + "myCommand");
 			}
+
 			if (errors.hasFieldErrors("date")) {
 				throw new IllegalStateException();
 			}
+
 			List<?> testBeans = (List<?>) model.get("testBeanList");
 			response.getWriter().write(viewName + "-" + tb.getName() + "-" + errors.getFieldError("age").getCode() +
-					"-" + ((TestBean) testBeans.get(0)).getName() + "-" + model.get("myKey"));
-		}
-	}
-
-
-	@RequestMapping("view")
-	public static class FirstController {
-
-		@RenderMapping
-		public String renderFirst(RenderResponse response) {
-			response.setProperty("RESPONSE", "renderFirst");
-			return "renderFirst";
-		}
-
-		@ResourceMapping("first")
-		public String resourceFirst(ResourceResponse response) {
-			response.setProperty("RESPONSE", "resourceFirst");
-			return "resourceFirst";
-		}
-	}
-
-
-	@RequestMapping("view")
-	public static class SecondController {
-
-		@ResourceMapping("second")
-		public String processResource(ResourceResponse response) {
-			response.setProperty("RESPONSE", "resourceSecond");
-			return "resourceSecond";
-		}
-
-		@RenderMapping(windowState = "MAXIMIZED", params = "report=second")
-		public String renderSecond(RenderResponse response) {
-			response.setProperty("RESPONSE", "renderSecond");
-			return "renderSecond";
-		}
-	}
-
-
-	@RequestMapping("view")
-	public static class ThirdController {
-
-		@ResourceMapping("third")
-		public String processResource(ResourceResponse response) {
-			response.setProperty("RESPONSE", "resourceThird");
-			return "resourceThird";
-		}
-
-		@RenderMapping(windowState = "MAXIMIZED", params = "report=third")
-		public String renderSecond(RenderResponse response) {
-			response.setProperty("RESPONSE", "renderThird");
-			return "renderThird";
+				"-" + ((TestBean) testBeans.get(0)).getName() + "-" + model.get("myKey"));
 		}
 	}
 

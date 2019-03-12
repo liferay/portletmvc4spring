@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2015 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.mvc;
 
 import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
@@ -25,29 +25,32 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
+
+import com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext;
+import com.liferay.portletmvc4spring.context.StaticPortletApplicationContext;
+
 import com.liferay.spring.mock.web.portlet.MockActionRequest;
 import com.liferay.spring.mock.web.portlet.MockActionResponse;
 import com.liferay.spring.mock.web.portlet.MockPortletConfig;
 import com.liferay.spring.mock.web.portlet.MockPortletContext;
 import com.liferay.spring.mock.web.portlet.MockRenderRequest;
 import com.liferay.spring.mock.web.portlet.MockRenderResponse;
-import com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext;
-import com.liferay.portletmvc4spring.context.StaticPortletApplicationContext;
 
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for the {@link PortletWrappingController} class.
  *
- * @author Mark Fisher
- * @author Rick Evans
- * @author Chris Beams
- * @author Sam Brannen
+ * @author  Mark Fisher
+ * @author  Rick Evans
+ * @author  Chris Beams
+ * @author  Sam Brannen
  */
 public final class PortletWrappingControllerTests {
 
@@ -57,18 +60,6 @@ public final class PortletWrappingControllerTests {
 	private static final String PORTLET_NAME_ACTION_REQUEST_PARAMETER_NAME = "portletName";
 
 	private PortletWrappingController controller;
-
-
-	@Before
-	@SuppressWarnings("resource")
-	public void setUp() {
-		ConfigurablePortletApplicationContext applicationContext = new MyApplicationContext();
-		MockPortletConfig config = new MockPortletConfig(new MockPortletContext(), "wrappedPortlet");
-		applicationContext.setPortletConfig(config);
-		applicationContext.refresh();
-		controller = (PortletWrappingController) applicationContext.getBean(PORTLET_WRAPPING_CONTROLLER_BEAN_NAME);
-	}
-
 
 	@Test
 	public void actionRequest() throws Exception {
@@ -80,52 +71,9 @@ public final class PortletWrappingControllerTests {
 		assertEquals("myPortlet-action", response.getRenderParameter(RESULT_RENDER_PARAMETER_NAME));
 	}
 
-	@Test
-	public void renderRequest() throws Exception {
-		MockRenderResponse response = new MockRenderResponse();
-
-		controller.handleRenderRequest(new MockRenderRequest(), response);
-		assertEquals(RENDERED_RESPONSE_CONTENT, response.getContentAsString());
-	}
-
 	@Test(expected = IllegalArgumentException.class)
 	public void actionRequestWithNoParameters() throws Exception {
 		controller.handleActionRequest(new MockActionRequest(), new MockActionResponse());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void rejectsPortletClassThatDoesNotImplementPortletInterface() throws Exception {
-		PortletWrappingController controller = new PortletWrappingController();
-		controller.setPortletClass(String.class);
-
-		controller.afterPropertiesSet();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void rejectsIfPortletClassIsNotSupplied() throws Exception {
-		PortletWrappingController controller = new PortletWrappingController();
-		controller.setPortletClass(null);
-
-		controller.afterPropertiesSet();
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void destroyingTheControllerPropagatesDestroyToWrappedPortlet() throws Exception {
-		final PortletWrappingController controller = new PortletWrappingController();
-		controller.setPortletClass(MyPortlet.class);
-		controller.afterPropertiesSet();
-
-		// test for destroy() call being propagated via exception being thrown
-		controller.destroy();
-	}
-
-	@Test
-	public void portletName() throws Exception {
-		MockActionRequest request = new MockActionRequest();
-		MockActionResponse response = new MockActionResponse();
-		request.setParameter(PORTLET_NAME_ACTION_REQUEST_PARAMETER_NAME, "test");
-		controller.handleActionRequest(request, response);
-		assertEquals("wrappedPortlet", response.getRenderParameter(RESULT_RENDER_PARAMETER_NAME));
 	}
 
 	@Test
@@ -147,11 +95,71 @@ public final class PortletWrappingControllerTests {
 		assertEquals(BEAN_NAME, response.getRenderParameter(RESULT_RENDER_PARAMETER_NAME));
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void destroyingTheControllerPropagatesDestroyToWrappedPortlet() throws Exception {
+		final PortletWrappingController controller = new PortletWrappingController();
+		controller.setPortletClass(MyPortlet.class);
+		controller.afterPropertiesSet();
+
+		// test for destroy() call being propagated via exception being thrown
+		controller.destroy();
+	}
+
+	@Test
+	public void portletName() throws Exception {
+		MockActionRequest request = new MockActionRequest();
+		MockActionResponse response = new MockActionResponse();
+		request.setParameter(PORTLET_NAME_ACTION_REQUEST_PARAMETER_NAME, "test");
+		controller.handleActionRequest(request, response);
+		assertEquals("wrappedPortlet", response.getRenderParameter(RESULT_RENDER_PARAMETER_NAME));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsIfPortletClassIsNotSupplied() throws Exception {
+		PortletWrappingController controller = new PortletWrappingController();
+		controller.setPortletClass(null);
+
+		controller.afterPropertiesSet();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsPortletClassThatDoesNotImplementPortletInterface() throws Exception {
+		PortletWrappingController controller = new PortletWrappingController();
+		controller.setPortletClass(String.class);
+
+		controller.afterPropertiesSet();
+	}
+
+	@Test
+	public void renderRequest() throws Exception {
+		MockRenderResponse response = new MockRenderResponse();
+
+		controller.handleRenderRequest(new MockRenderRequest(), response);
+		assertEquals(RENDERED_RESPONSE_CONTENT, response.getContentAsString());
+	}
+
+	@Before
+	@SuppressWarnings("resource")
+	public void setUp() {
+		ConfigurablePortletApplicationContext applicationContext = new MyApplicationContext();
+		MockPortletConfig config = new MockPortletConfig(new MockPortletContext(), "wrappedPortlet");
+		applicationContext.setPortletConfig(config);
+		applicationContext.refresh();
+		controller = (PortletWrappingController) applicationContext.getBean(PORTLET_WRAPPING_CONTROLLER_BEAN_NAME);
+	}
 
 	public static final class MyPortlet implements Portlet {
 
 		private PortletConfig portletConfig;
 
+		@Override
+		public void destroy() {
+			throw new IllegalStateException("Being destroyed...");
+		}
+
+		public PortletConfig getPortletConfig() {
+			return this.portletConfig;
+		}
 
 		@Override
 		public void init(PortletConfig portletConfig) {
@@ -160,6 +168,7 @@ public final class PortletWrappingControllerTests {
 
 		@Override
 		public void processAction(ActionRequest request, ActionResponse response) throws PortletException {
+
 			if (request.getParameter("test") != null) {
 				response.setRenderParameter(RESULT_RENDER_PARAMETER_NAME, "myPortlet-action");
 			}
@@ -174,15 +183,6 @@ public final class PortletWrappingControllerTests {
 		@Override
 		public void render(RenderRequest request, RenderResponse response) throws IOException {
 			response.getWriter().write(RENDERED_RESPONSE_CONTENT);
-		}
-
-		public PortletConfig getPortletConfig() {
-			return this.portletConfig;
-		}
-
-		@Override
-		public void destroy() {
-			throw new IllegalStateException("Being destroyed...");
 		}
 
 	}

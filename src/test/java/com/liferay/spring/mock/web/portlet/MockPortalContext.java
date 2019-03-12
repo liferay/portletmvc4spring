@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.spring.mock.web.portlet;
 
 import java.util.ArrayList;
@@ -22,16 +21,18 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.portlet.PortalContext;
 import javax.portlet.PortletMode;
 import javax.portlet.WindowState;
 
+
 /**
  * Mock implementation of the {@link javax.portlet.PortalContext} interface.
  *
- * @author John A. Lewis
- * @author Juergen Hoeller
- * @since 2.0
+ * @author  John A. Lewis
+ * @author  Juergen Hoeller
+ * @since   2.0
  */
 public class MockPortalContext implements PortalContext {
 
@@ -41,13 +42,12 @@ public class MockPortalContext implements PortalContext {
 
 	private final List<WindowState> windowStates;
 
-
 	/**
-	 * Create a new MockPortalContext
-	 * with default PortletModes (VIEW, EDIT, HELP)
-	 * and default WindowStates (NORMAL, MAXIMIZED, MINIMIZED).
-	 * @see javax.portlet.PortletMode
-	 * @see javax.portlet.WindowState
+	 * Create a new MockPortalContext with default PortletModes (VIEW, EDIT, HELP) and default WindowStates (NORMAL,
+	 * MAXIMIZED, MINIMIZED).
+	 *
+	 * @see  javax.portlet.PortletMode
+	 * @see  javax.portlet.WindowState
 	 */
 	public MockPortalContext() {
 		this.portletModes = new ArrayList<PortletMode>(3);
@@ -63,24 +63,21 @@ public class MockPortalContext implements PortalContext {
 
 	/**
 	 * Create a new MockPortalContext with the given PortletModes and WindowStates.
-	 * @param supportedPortletModes the List of supported PortletMode instances
-	 * @param supportedWindowStates the List of supported WindowState instances
-	 * @see javax.portlet.PortletMode
-	 * @see javax.portlet.WindowState
+	 *
+	 * @param  supportedPortletModes  the List of supported PortletMode instances
+	 * @param  supportedWindowStates  the List of supported WindowState instances
+	 *
+	 * @see    javax.portlet.PortletMode
+	 * @see    javax.portlet.WindowState
 	 */
 	public MockPortalContext(List<PortletMode> supportedPortletModes, List<WindowState> supportedWindowStates) {
 		this.portletModes = new ArrayList<PortletMode>(supportedPortletModes);
 		this.windowStates = new ArrayList<WindowState>(supportedWindowStates);
 	}
 
-
 	@Override
 	public String getPortalInfo() {
 		return "MockPortal/1.0";
-	}
-
-	public void setProperty(String name, String value) {
-		this.properties.put(name, value);
 	}
 
 	@Override
@@ -101,6 +98,10 @@ public class MockPortalContext implements PortalContext {
 	@Override
 	public Enumeration<WindowState> getSupportedWindowStates() {
 		return Collections.enumeration(this.windowStates);
+	}
+
+	public void setProperty(String name, String value) {
+		this.properties.put(name, value);
 	}
 
 }

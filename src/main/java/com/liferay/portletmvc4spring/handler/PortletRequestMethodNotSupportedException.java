@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.handler;
 
 import javax.portlet.PortletException;
 
 import org.springframework.util.StringUtils;
 
+
 /**
- * Exception thrown when a request handler does not support a
- * specific request method.
+ * Exception thrown when a request handler does not support a specific request method.
  *
- * @author Juergen Hoeller
- * @since 3.0
+ * @author  Juergen Hoeller
+ * @since   3.0
  */
 @SuppressWarnings("serial")
 public class PortletRequestMethodNotSupportedException extends PortletException {
@@ -34,10 +33,10 @@ public class PortletRequestMethodNotSupportedException extends PortletException 
 
 	private String[] supportedMethods;
 
-
 	/**
 	 * Create a new PortletRequestMethodNotSupportedException.
-	 * @param method the unsupported HTTP request method
+	 *
+	 * @param  method  the unsupported HTTP request method
 	 */
 	public PortletRequestMethodNotSupportedException(String method) {
 		this(method, null);
@@ -45,25 +44,26 @@ public class PortletRequestMethodNotSupportedException extends PortletException 
 
 	/**
 	 * Create a new PortletRequestMethodNotSupportedException.
-	 * @param method the unsupported HTTP request method
-	 * @param supportedMethods the actually supported HTTP methods
+	 *
+	 * @param  supportedMethods  the actually supported HTTP methods
+	 */
+	public PortletRequestMethodNotSupportedException(String[] supportedMethods) {
+		super("Mapped handler only supports client data requests with methods " +
+			StringUtils.arrayToCommaDelimitedString(supportedMethods));
+		this.supportedMethods = supportedMethods;
+	}
+
+	/**
+	 * Create a new PortletRequestMethodNotSupportedException.
+	 *
+	 * @param  method            the unsupported HTTP request method
+	 * @param  supportedMethods  the actually supported HTTP methods
 	 */
 	public PortletRequestMethodNotSupportedException(String method, String[] supportedMethods) {
 		super("Request method '" + method + "' not supported by mapped handler");
 		this.method = method;
 		this.supportedMethods = supportedMethods;
 	}
-
-	/**
-	 * Create a new PortletRequestMethodNotSupportedException.
-	 * @param supportedMethods the actually supported HTTP methods
-	 */
-	public PortletRequestMethodNotSupportedException(String[] supportedMethods) {
-		super("Mapped handler only supports client data requests with methods " +
-				StringUtils.arrayToCommaDelimitedString(supportedMethods));
-		this.supportedMethods = supportedMethods;
-	}
-
 
 	/**
 	 * Return the HTTP request method that caused the failure.

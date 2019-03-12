@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2015 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.handler;
 
 import javax.portlet.PortletMode;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
 import com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext;
 import com.liferay.portletmvc4spring.context.XmlPortletApplicationContext;
 
-import static org.junit.Assert.*;
+import com.liferay.spring.mock.web.portlet.MockPortletContext;
+import com.liferay.spring.mock.web.portlet.MockPortletRequest;
+
 
 /**
- * @author Mark Fisher
- * @author Sam Brannen
+ * @author  Mark Fisher
+ * @author  Sam Brannen
  */
 public class PortletModeHandlerMappingTests {
 
@@ -44,22 +45,9 @@ public class PortletModeHandlerMappingTests {
 
 	private PortletModeHandlerMapping hm;
 
-
-	@Before
-	public void setUp() throws Exception {
-		pac.setPortletContext(portletContext);
-		pac.setConfigLocations(new String[] {CONF});
-		pac.refresh();
-
-		hm = pac.getBean(PortletModeHandlerMapping.class);
-	}
-
-	@Test
-	public void portletModeView() throws Exception {
-		request.setPortletMode(PortletMode.VIEW);
-
-		Object handler = hm.getHandler(request).getHandler();
-		assertEquals(pac.getBean("viewHandler"), handler);
+	@Test(expected = IllegalStateException.class)
+	public void duplicateMappingAttempt() {
+		hm.registerHandler(PortletMode.VIEW, new Object());
 	}
 
 	@Test
@@ -78,9 +66,21 @@ public class PortletModeHandlerMappingTests {
 		assertEquals(pac.getBean("helpHandler"), handler);
 	}
 
-	@Test(expected = IllegalStateException.class)
-	public void duplicateMappingAttempt() {
-		hm.registerHandler(PortletMode.VIEW, new Object());
+	@Test
+	public void portletModeView() throws Exception {
+		request.setPortletMode(PortletMode.VIEW);
+
+		Object handler = hm.getHandler(request).getHandler();
+		assertEquals(pac.getBean("viewHandler"), handler);
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		pac.setPortletContext(portletContext);
+		pac.setConfigLocations(new String[] { CONF });
+		pac.refresh();
+
+		hm = pac.getBean(PortletModeHandlerMapping.class);
 	}
 
 }

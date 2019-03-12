@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2015 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.context;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
+
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import com.liferay.spring.mock.web.portlet.MockPortletConfig;
 import com.liferay.spring.mock.web.portlet.MockPortletContext;
 
-import static org.junit.Assert.*;
 
 /**
- * @author Mark Fisher
- * @author Sam Brannen
+ * @author  Mark Fisher
+ * @author  Sam Brannen
  */
 public class PortletContextAwareProcessorTests {
 
@@ -40,65 +40,32 @@ public class PortletContextAwareProcessorTests {
 
 	private final PortletContextAwareBean bean = new PortletContextAwareBean();
 
-
 	@Test
-	public void portletContextAwareWithPortletContext() {
-		assertNull(bean.getPortletContext());
-		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("PortletContext should have been set", bean.getPortletContext());
-		assertEquals(portletContext, bean.getPortletContext());
-	}
-
-	@Test
-	public void portletContextAwareWithPortletConfig() {
-		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(portletConfig);
-		assertNull(bean.getPortletContext());
-		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("PortletContext should have been set", bean.getPortletContext());
-		assertEquals(portletContext, bean.getPortletContext());
-	}
-
-	@Test
-	public void portletContextAwareWithPortletContextAndPortletConfig() {
-		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(portletContext, portletConfig);
-		assertNull(bean.getPortletContext());
-		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("PortletContext should have been set", bean.getPortletContext());
-		assertEquals(portletContext, bean.getPortletContext());
-	}
-
-	@Test
-	public void portletContextAwareWithNullPortletContextAndNonNullPortletConfig() {
-		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(null, portletConfig);
-		assertNull(bean.getPortletContext());
-		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("PortletContext should have been set", bean.getPortletContext());
-		assertEquals(portletContext, bean.getPortletContext());
-	}
-
-	@Test
-	public void portletContextAwareWithNonNullPortletContextAndNullPortletConfig() {
+	public void portletConfigAwareWithNonNullPortletContextAndNullPortletConfig() {
 		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(portletContext, null);
-		assertNull(bean.getPortletContext());
-		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("PortletContext should have been set", bean.getPortletContext());
-		assertEquals(portletContext, bean.getPortletContext());
-	}
-
-	@Test
-	public void portletContextAwareWithNullPortletContext() {
-		PortletContextAwareProcessor processor = new PortletContextAwareProcessor((PortletContext) null);
-		assertNull(bean.getPortletContext());
-		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getPortletContext());
-	}
-
-	@Test
-	public void portletConfigAwareWithPortletContextOnly() {
 		PortletConfigAwareBean bean = new PortletConfigAwareBean();
 		assertNull(bean.getPortletConfig());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNull(bean.getPortletConfig());
+	}
+
+	@Test
+	public void portletConfigAwareWithNullPortletContext() {
+		PortletContextAwareProcessor processor = new PortletContextAwareProcessor((PortletContext) null);
+		PortletConfigAwareBean bean = new PortletConfigAwareBean();
+		assertNull(bean.getPortletConfig());
+		processor.postProcessBeforeInitialization(bean, "testBean");
+		assertNull(bean.getPortletConfig());
+	}
+
+	@Test
+	public void portletConfigAwareWithNullPortletContextAndNonNullPortletConfig() {
+		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(null, portletConfig);
+		PortletConfigAwareBean bean = new PortletConfigAwareBean();
+		assertNull(bean.getPortletConfig());
+		processor.postProcessBeforeInitialization(bean, "testBean");
+		assertNotNull("PortletConfig should have been set", bean.getPortletConfig());
+		assertEquals(portletConfig, bean.getPortletConfig());
 	}
 
 	@Test
@@ -122,31 +89,63 @@ public class PortletContextAwareProcessorTests {
 	}
 
 	@Test
-	public void portletConfigAwareWithNullPortletContextAndNonNullPortletConfig() {
-		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(null, portletConfig);
+	public void portletConfigAwareWithPortletContextOnly() {
 		PortletConfigAwareBean bean = new PortletConfigAwareBean();
 		assertNull(bean.getPortletConfig());
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("PortletConfig should have been set", bean.getPortletConfig());
-		assertEquals(portletConfig, bean.getPortletConfig());
+		assertNull(bean.getPortletConfig());
 	}
 
 	@Test
-	public void portletConfigAwareWithNonNullPortletContextAndNullPortletConfig() {
+	public void portletContextAwareWithNonNullPortletContextAndNullPortletConfig() {
 		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(portletContext, null);
-		PortletConfigAwareBean bean = new PortletConfigAwareBean();
-		assertNull(bean.getPortletConfig());
+		assertNull(bean.getPortletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getPortletConfig());
+		assertNotNull("PortletContext should have been set", bean.getPortletContext());
+		assertEquals(portletContext, bean.getPortletContext());
 	}
 
 	@Test
-	public void portletConfigAwareWithNullPortletContext() {
+	public void portletContextAwareWithNullPortletContext() {
 		PortletContextAwareProcessor processor = new PortletContextAwareProcessor((PortletContext) null);
-		PortletConfigAwareBean bean = new PortletConfigAwareBean();
-		assertNull(bean.getPortletConfig());
+		assertNull(bean.getPortletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getPortletConfig());
+		assertNull(bean.getPortletContext());
+	}
+
+	@Test
+	public void portletContextAwareWithNullPortletContextAndNonNullPortletConfig() {
+		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(null, portletConfig);
+		assertNull(bean.getPortletContext());
+		processor.postProcessBeforeInitialization(bean, "testBean");
+		assertNotNull("PortletContext should have been set", bean.getPortletContext());
+		assertEquals(portletContext, bean.getPortletContext());
+	}
+
+	@Test
+	public void portletContextAwareWithPortletConfig() {
+		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(portletConfig);
+		assertNull(bean.getPortletContext());
+		processor.postProcessBeforeInitialization(bean, "testBean");
+		assertNotNull("PortletContext should have been set", bean.getPortletContext());
+		assertEquals(portletContext, bean.getPortletContext());
+	}
+
+	@Test
+	public void portletContextAwareWithPortletContext() {
+		assertNull(bean.getPortletContext());
+		processor.postProcessBeforeInitialization(bean, "testBean");
+		assertNotNull("PortletContext should have been set", bean.getPortletContext());
+		assertEquals(portletContext, bean.getPortletContext());
+	}
+
+	@Test
+	public void portletContextAwareWithPortletContextAndPortletConfig() {
+		PortletContextAwareProcessor processor = new PortletContextAwareProcessor(portletContext, portletConfig);
+		assertNull(bean.getPortletContext());
+		processor.postProcessBeforeInitialization(bean, "testBean");
+		assertNotNull("PortletContext should have been set", bean.getPortletContext());
+		assertEquals(portletContext, bean.getPortletContext());
 	}
 
 }

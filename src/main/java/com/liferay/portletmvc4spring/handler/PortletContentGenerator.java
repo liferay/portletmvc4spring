@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring.handler;
 
 import javax.portlet.MimeResponse;
@@ -23,19 +22,19 @@ import javax.portlet.PortletResponse;
 
 import com.liferay.portletmvc4spring.context.PortletApplicationObjectSupport;
 
+
 /**
- * Convenient superclass for any kind of web content generator,
- * like {@link com.liferay.portletmvc4spring.mvc.AbstractController}.
- * Can also be used for custom handlers that have their own
+ * Convenient superclass for any kind of web content generator, like {@link
+ * com.liferay.portletmvc4spring.mvc.AbstractController}. Can also be used for custom handlers that have their own
  * {@link com.liferay.portletmvc4spring.HandlerAdapter}.
  *
  * <p>Supports portlet cache control options.
  *
- * @author Juergen Hoeller
- * @author John A. Lewis
- * @since 2.0
- * @see #setCacheSeconds
- * @see #setRequireSession
+ * @author  Juergen Hoeller
+ * @author  John A. Lewis
+ * @since   2.0
+ * @see     #setCacheSeconds
+ * @see     #setRequireSession
  */
 public abstract class PortletContentGenerator extends PortletApplicationObjectSupport {
 
@@ -43,12 +42,11 @@ public abstract class PortletContentGenerator extends PortletApplicationObjectSu
 
 	private int cacheSeconds = -1;
 
-
 	/**
-	 * Set whether a session should be required to handle requests.
+	 * Return the number of seconds that content is cached.
 	 */
-	public final void setRequireSession(boolean requireSession) {
-		this.requireSession = requireSession;
+	public final int getCacheSeconds() {
+		return this.cacheSeconds;
 	}
 
 	/**
@@ -59,10 +57,11 @@ public abstract class PortletContentGenerator extends PortletApplicationObjectSu
 	}
 
 	/**
-	 * Cache content for the given number of seconds. Default is -1,
-	 * indicating no override of portlet content caching.
-	 * <p>Only if this is set to 0 (no cache) or a positive value (cache for
-	 * this many seconds) will this class override the portlet settings.
+	 * Cache content for the given number of seconds. Default is -1, indicating no override of portlet content caching.
+	 *
+	 * <p>Only if this is set to 0 (no cache) or a positive value (cache for this many seconds) will this class override
+	 * the portlet settings.
+	 *
 	 * <p>The cache setting can be overwritten by subclasses, before content is generated.
 	 */
 	public final void setCacheSeconds(int seconds) {
@@ -70,23 +69,54 @@ public abstract class PortletContentGenerator extends PortletApplicationObjectSu
 	}
 
 	/**
-	 * Return the number of seconds that content is cached.
+	 * Set whether a session should be required to handle requests.
 	 */
-	public final int getCacheSeconds() {
-		return this.cacheSeconds;
+	public final void setRequireSession(boolean requireSession) {
+		this.requireSession = requireSession;
 	}
 
+	/**
+	 * Apply the given cache seconds to the render response
+	 *
+	 * @param  response  current portlet render response
+	 * @param  seconds   positive number of seconds into the future that the response should be cacheable for, 0 to
+	 *                   prevent caching
+	 */
+	protected final void applyCacheSeconds(MimeResponse response, int seconds) {
+
+		if (seconds > 0) {
+			cacheForSeconds(response, seconds);
+		}
+		else if (seconds == 0) {
+			preventCaching(response);
+		}
+		// Leave caching to the portlet configuration otherwise.
+	}
 
 	/**
-	 * Check and prepare the given request and response according to the settings
-	 * of this generator. Checks for a required session, and applies the number of
-	 * cache seconds configured for this generator (if it is a render request/response).
-	 * @param request current portlet request
-	 * @param response current portlet response
-	 * @throws PortletException if the request cannot be handled because a check failed
+	 * Set portlet response to allow caching for the given number of seconds.
+	 *
+	 * @param  response  current portlet render response
+	 * @param  seconds   number of seconds into the future that the response should be cacheable for
+	 */
+	protected final void cacheForSeconds(MimeResponse response, int seconds) {
+		response.setProperty(MimeResponse.EXPIRATION_CACHE, Integer.toString(seconds));
+	}
+
+	/**
+	 * Check and prepare the given request and response according to the settings of this generator. Checks for a
+	 * required session, and applies the number of cache seconds configured for this generator (if it is a render
+	 * request/response).
+	 *
+	 * @param   request   current portlet request
+	 * @param   response  current portlet response
+	 *
+	 * @throws  PortletException  if the request cannot be handled because a check failed
 	 */
 	protected final void check(PortletRequest request, PortletResponse response) throws PortletException {
+
 		if (this.requireSession) {
+
 			if (request.getPortletSession(false) == null) {
 				throw new PortletSessionRequiredException("Pre-existing session required but none found");
 			}
@@ -94,31 +124,33 @@ public abstract class PortletContentGenerator extends PortletApplicationObjectSu
 	}
 
 	/**
-	 * Check and prepare the given request and response according to the settings
-	 * of this generator. Checks for a required session, and applies the number of
-	 * cache seconds configured for this generator (if it is a render request/response).
-	 * @param request current portlet request
-	 * @param response current portlet response
-	 * @throws PortletException if the request cannot be handled because a check failed
+	 * Check and prepare the given request and response according to the settings of this generator. Checks for a
+	 * required session, and applies the number of cache seconds configured for this generator (if it is a render
+	 * request/response).
+	 *
+	 * @param   request   current portlet request
+	 * @param   response  current portlet response
+	 *
+	 * @throws  PortletException  if the request cannot be handled because a check failed
 	 */
-	protected final void checkAndPrepare(PortletRequest request, MimeResponse response)
-			throws PortletException {
+	protected final void checkAndPrepare(PortletRequest request, MimeResponse response) throws PortletException {
 
 		checkAndPrepare(request, response, this.cacheSeconds);
 	}
 
 	/**
-	 * Check and prepare the given request and response according to the settings
-	 * of this generator. Checks for a required session, and applies the given
-	 * number of cache seconds (if it is a render request/response).
-	 * @param request current portlet request
-	 * @param response current portlet response
-	 * @param cacheSeconds positive number of seconds into the future that the
-	 * response should be cacheable for, 0 to prevent caching
-	 * @throws PortletException if the request cannot be handled because a check failed
+	 * Check and prepare the given request and response according to the settings of this generator. Checks for a
+	 * required session, and applies the given number of cache seconds (if it is a render request/response).
+	 *
+	 * @param   request       current portlet request
+	 * @param   response      current portlet response
+	 * @param   cacheSeconds  positive number of seconds into the future that the response should be cacheable for, 0 to
+	 *                        prevent caching
+	 *
+	 * @throws  PortletException  if the request cannot be handled because a check failed
 	 */
 	protected final void checkAndPrepare(PortletRequest request, MimeResponse response, int cacheSeconds)
-			throws PortletException {
+		throws PortletException {
 
 		check(request, response);
 		applyCacheSeconds(response, cacheSeconds);
@@ -129,32 +161,6 @@ public abstract class PortletContentGenerator extends PortletApplicationObjectSu
 	 */
 	protected final void preventCaching(MimeResponse response) {
 		cacheForSeconds(response, 0);
-	}
-
-	/**
-	 * Set portlet response to allow caching for the given number of seconds.
-	 * @param response current portlet render response
-	 * @param seconds number of seconds into the future that the response
-	 * should be cacheable for
-	 */
-	protected final void cacheForSeconds(MimeResponse response, int seconds) {
-		response.setProperty(MimeResponse.EXPIRATION_CACHE, Integer.toString(seconds));
-	}
-
-	/**
-	 * Apply the given cache seconds to the render response
-	 * @param response current portlet render response
-	 * @param seconds positive number of seconds into the future that the
-	 * response should be cacheable for, 0 to prevent caching
-	 */
-	protected final void applyCacheSeconds(MimeResponse response, int seconds) {
-		if (seconds > 0) {
-			cacheForSeconds(response, seconds);
-		}
-		else if (seconds == 0) {
-			preventCaching(response);
-		}
-		// Leave caching to the portlet configuration otherwise.
 	}
 
 }

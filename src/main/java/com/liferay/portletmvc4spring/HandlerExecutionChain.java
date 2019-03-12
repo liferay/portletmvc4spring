@@ -1,11 +1,11 @@
-/*
- * Copyright 2002-2014 the original author or authors.
+/**
+ * Copyright (c) 2000-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.liferay.portletmvc4spring;
 
 import java.util.ArrayList;
@@ -23,14 +22,15 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+
 /**
- * Handler execution chain, consisting of handler object and any handler interceptors.
- * Returned by HandlerMapping's {@link HandlerMapping#getHandler} method.
+ * Handler execution chain, consisting of handler object and any handler interceptors. Returned by HandlerMapping's
+ * {@link HandlerMapping#getHandler} method.
  *
- * @author Juergen Hoeller
- * @author John A. Lewis
- * @since 2.0
- * @see HandlerInterceptor
+ * @author  Juergen Hoeller
+ * @author  John A. Lewis
+ * @since   2.0
+ * @see     HandlerInterceptor
  */
 public class HandlerExecutionChain {
 
@@ -40,10 +40,10 @@ public class HandlerExecutionChain {
 
 	private List<HandlerInterceptor> interceptorList;
 
-
 	/**
 	 * Create a new HandlerExecutionChain.
-	 * @param handler the handler object to execute
+	 *
+	 * @param  handler  the handler object to execute
 	 */
 	public HandlerExecutionChain(Object handler) {
 		this(handler, (HandlerInterceptor[]) null);
@@ -51,11 +51,12 @@ public class HandlerExecutionChain {
 
 	/**
 	 * Create a new HandlerExecutionChain.
-	 * @param handler the handler object to execute
-	 * @param interceptors the array of interceptors to apply
-	 * (in the given order) before the handler itself executes
+	 *
+	 * @param  handler       the handler object to execute
+	 * @param  interceptors  the array of interceptors to apply (in the given order) before the handler itself executes
 	 */
 	public HandlerExecutionChain(Object handler, HandlerInterceptor... interceptors) {
+
 		if (handler instanceof HandlerExecutionChain) {
 			HandlerExecutionChain originalChain = (HandlerExecutionChain) handler;
 			this.handler = originalChain.getHandler();
@@ -69,48 +70,39 @@ public class HandlerExecutionChain {
 		}
 	}
 
-
-	/**
-	 * Return the handler object to execute.
-	 * @return the handler object
-	 */
-	public Object getHandler() {
-		return this.handler;
-	}
-
 	public void addInterceptor(HandlerInterceptor interceptor) {
 		initInterceptorList().add(interceptor);
 	}
 
 	public void addInterceptors(HandlerInterceptor... interceptors) {
+
 		if (!ObjectUtils.isEmpty(interceptors)) {
 			initInterceptorList().addAll(Arrays.asList(interceptors));
 		}
 	}
 
-	private List<HandlerInterceptor> initInterceptorList() {
-		if (this.interceptorList == null) {
-			this.interceptorList = new ArrayList<HandlerInterceptor>();
-			if (this.interceptors != null) {
-				// An interceptor array specified through the constructor
-				this.interceptorList.addAll(Arrays.asList(this.interceptors));
-			}
-		}
-		this.interceptors = null;
-		return this.interceptorList;
+	/**
+	 * Return the handler object to execute.
+	 *
+	 * @return  the handler object
+	 */
+	public Object getHandler() {
+		return this.handler;
 	}
 
 	/**
 	 * Return the array of interceptors to apply (in the given order).
-	 * @return the array of HandlerInterceptors instances (may be {@code null})
+	 *
+	 * @return  the array of HandlerInterceptors instances (may be {@code null})
 	 */
 	public HandlerInterceptor[] getInterceptors() {
-		if (this.interceptors == null && this.interceptorList != null) {
+
+		if ((this.interceptors == null) && (this.interceptorList != null)) {
 			this.interceptors = this.interceptorList.toArray(new HandlerInterceptor[this.interceptorList.size()]);
 		}
+
 		return this.interceptors;
 	}
-
 
 	/**
 	 * Delegates to the handler's {@code toString()}.
@@ -118,6 +110,23 @@ public class HandlerExecutionChain {
 	@Override
 	public String toString() {
 		return String.valueOf(this.handler);
+	}
+
+	private List<HandlerInterceptor> initInterceptorList() {
+
+		if (this.interceptorList == null) {
+			this.interceptorList = new ArrayList<HandlerInterceptor>();
+
+			if (this.interceptors != null) {
+
+				// An interceptor array specified through the constructor
+				this.interceptorList.addAll(Arrays.asList(this.interceptors));
+			}
+		}
+
+		this.interceptors = null;
+
+		return this.interceptorList;
 	}
 
 }
