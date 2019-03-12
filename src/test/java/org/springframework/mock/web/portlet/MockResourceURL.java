@@ -17,7 +17,10 @@
 package org.springframework.mock.web.portlet;
 
 import java.util.Map;
+import javax.portlet.MutableResourceParameters;
+import javax.portlet.PortletMode;
 import javax.portlet.ResourceURL;
+import javax.portlet.WindowState;
 
 /**
  * Mock implementation of the {@link javax.portlet.ResourceURL} interface.
@@ -27,14 +30,35 @@ import javax.portlet.ResourceURL;
  */
 public class MockResourceURL extends MockBaseURL implements ResourceURL {
 
-	private String resourceID;
-
 	private String cacheability;
 
+	private MutableResourceParameters mutableResourceParameters;
+
+	private PortletMode portletMode;
+
+	private String resourceID;
+
+	private WindowState windowState;
+
+	public MockResourceURL() {
+	}
+
+	public MockResourceURL(PortletMode portletMode, WindowState windowState) {
+		this.portletMode = portletMode;
+		this.windowState = windowState;
+	}
 
 	//---------------------------------------------------------------------
 	// ResourceURL methods
 	//---------------------------------------------------------------------
+
+	@Override
+	public MutableResourceParameters getResourceParameters() {
+		if (mutableResourceParameters == null) {
+			mutableResourceParameters = new MockMutableResourceParameters();
+		}
+		return mutableResourceParameters;
+	}
 
 	@Override
 	public void setResourceID(String resourceID) {
@@ -70,4 +94,13 @@ public class MockResourceURL extends MockBaseURL implements ResourceURL {
 				"//localhost/mockportlet?" + sb.toString();
 	}
 
+	@Override
+	public PortletMode getPortletMode() {
+		return portletMode;
+	}
+
+	@Override
+	public WindowState getWindowState() {
+		return windowState;
+	}
 }

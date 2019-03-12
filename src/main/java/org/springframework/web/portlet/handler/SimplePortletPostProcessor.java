@@ -25,6 +25,8 @@ import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
+import javax.portlet.PortletMode;
+import javax.portlet.WindowState;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -210,6 +212,21 @@ public class SimplePortletPostProcessor
 		@Override
 		public Map<String, String[]> getContainerRuntimeOptions() {
 			return (this.portletConfig != null ? this.portletConfig.getContainerRuntimeOptions() : null);
+		}
+
+		@Override
+		public Enumeration<PortletMode> getPortletModes(String mimeType) {
+			return (this.portletConfig != null ? this.portletConfig.getPortletModes(mimeType) : Collections.emptyEnumeration());
+		}
+
+		@Override
+		public Enumeration<WindowState> getWindowStates(String mimeType) {
+			return (this.portletConfig != null ? this.portletConfig.getWindowStates(mimeType) : Collections.emptyEnumeration());
+		}
+
+		@Override
+		public Map<String, QName> getPublicRenderParameterDefinitions() {
+			return (this.portletConfig != null ? this.portletConfig.getPublicRenderParameterDefinitions() : Collections.emptyMap());
 		}
 	}
 

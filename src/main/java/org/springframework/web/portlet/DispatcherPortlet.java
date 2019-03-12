@@ -18,6 +18,7 @@ package org.springframework.web.portlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -1093,6 +1094,22 @@ public class DispatcherPortlet extends FrameworkPortlet {
 			String paramName = paramNames.nextElement();
 			String[] paramValues = request.getParameterValues(paramName);
 			if (paramValues != null && !response.getRenderParameterMap().containsKey(paramName)) {
+
+				// Ensure compatibility with new Portlet 3.0 requirements in
+				// StateAwareResponse.setRenderParameter(String,String...) by
+				// filtering-out null values.
+				List<String> filteredParamValues = new ArrayList<>();
+
+				for (String paramValue : paramValues) {
+					if (paramValue != null) {
+						filteredParamValues.add(paramValue);
+					}
+				}
+
+				Object[] filteredArray = filteredParamValues.toArray();
+
+				paramValues = Arrays.copyOf(filteredArray, filteredArray.length, paramValues.getClass());
+
 				response.setRenderParameter(paramName, paramValues);
 			}
 		}

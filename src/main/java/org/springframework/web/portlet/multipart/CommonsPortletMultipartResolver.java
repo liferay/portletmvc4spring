@@ -21,19 +21,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.portlet.ActionParameters;
 import javax.portlet.ActionRequest;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletSession;
+import javax.portlet.RenderParameters;
 import javax.portlet.ResourceRequest;
 import javax.portlet.WindowState;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.Part;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -335,13 +340,10 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 			return resourceRequest.getContentLength();
 		}
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public long getContentLengthLong() {
 			return resourceRequest.getContentLengthLong();
 		}
-		*/
 
 		@Override
 		public String getContentType() {
@@ -373,22 +375,16 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 			return resourceRequest.getMethod();
 		}
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public Part getPart(String name) throws IOException, PortletException {
 			return resourceRequest.getPart(name);
 		}
-		*/
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public Collection<Part> getParts()
 			throws IOException, PortletException {
 			return resourceRequest.getParts();
 		}
-		*/
 
 		@Override
 		public String getParameter(String name) {
@@ -415,26 +411,20 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 			return resourceRequest.getPortalContext();
 		}
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public PortletContext getPortletContext() {
 			return resourceRequest.getPortletContext();
 		}
-		*/
 
 		@Override
 		public InputStream getPortletInputStream() throws IOException {
 			return resourceRequest.getPortletInputStream();
 		}
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public RenderParameters getRenderParameters() {
 			return resourceRequest.getRenderParameters();
 		}
-		*/
 
 		@Override
 		public PortletMode getPortletMode() {
@@ -481,13 +471,10 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 			return resourceRequest.getPublicParameterMap();
 		}
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public String getUserAgent() {
 			return resourceRequest.getUserAgent();
 		}
-		*/
 
 		@Override
 		public BufferedReader getReader() throws IOException {
@@ -585,12 +572,9 @@ public class CommonsPortletMultipartResolver extends CommonsFileUploadSupport
 			resourceRequest.setCharacterEncoding(enc);
 		}
 
-		// TODO: Requires Portlet 3.0 API
-		/*
 		@Override
 		public ActionParameters getActionParameters() {
 			return null;
 		}
-		*/
 	}
 }

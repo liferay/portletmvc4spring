@@ -32,6 +32,7 @@ import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
+import javax.portlet.RenderParameters;
 import javax.portlet.WindowState;
 import javax.servlet.http.Cookie;
 
@@ -78,6 +79,8 @@ public class MockPortletRequest implements PortletRequest {
 	private final Set<String> userRoles = new HashSet<String>();
 
 	private boolean secure = false;
+
+	private RenderParameters renderParameters;
 
 	private boolean requestedSessionIdValid = true;
 
@@ -187,6 +190,14 @@ public class MockPortletRequest implements PortletRequest {
 	}
 
 	@Override
+	public RenderParameters getRenderParameters() {
+		if (renderParameters == null) {
+			renderParameters = new MockRenderParameters();
+		}
+		return renderParameters;
+	}
+
+	@Override
 	public PortletMode getPortletMode() {
 		return this.portletMode;
 	}
@@ -289,6 +300,11 @@ public class MockPortletRequest implements PortletRequest {
 	@Override
 	public PortalContext getPortalContext() {
 		return this.portalContext;
+	}
+
+	@Override
+	public PortletContext getPortletContext() {
+		return this.portletContext;
 	}
 
 	public void setAuthType(String authType) {
@@ -556,6 +572,11 @@ public class MockPortletRequest implements PortletRequest {
 		else {
 			return Collections.emptyMap();
 		}
+	}
+
+	@Override
+	public String getUserAgent() {
+		return null;
 	}
 
 	public void registerPublicParameter(String name) {

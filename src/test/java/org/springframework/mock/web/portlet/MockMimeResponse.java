@@ -26,11 +26,13 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
+import javax.portlet.ActionURL;
 import javax.portlet.CacheControl;
 import javax.portlet.MimeResponse;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
+import javax.portlet.RenderURL;
 import javax.portlet.ResourceURL;
 
 import org.springframework.util.CollectionUtils;
@@ -216,13 +218,23 @@ public class MockMimeResponse extends MockPortletResponse implements MimeRespons
 	}
 
 	@Override
-	public PortletURL createRenderURL() {
-		return new MockPortletURL(getPortalContext(), MockPortletURL.URL_TYPE_RENDER);
+	public RenderURL createRenderURL(Copy copy) {
+		return new MockRenderURL(getPortalContext(), copy);
 	}
 
 	@Override
-	public PortletURL createActionURL() {
-		return new MockPortletURL(getPortalContext(), MockPortletURL.URL_TYPE_ACTION);
+	public ActionURL createActionURL(Copy copy) {
+		return new MockActionURL(getPortalContext(), copy);
+	}
+
+	@Override
+	public <T extends PortletURL & RenderURL> T createRenderURL() {
+		return (T) new MockPortletURL(getPortalContext(), MockPortletURL.URL_TYPE_RENDER);
+	}
+
+	@Override
+	public <T extends PortletURL & ActionURL> T createActionURL() {
+		return (T) new MockPortletURL(getPortalContext(), MockPortletURL.URL_TYPE_ACTION);
 	}
 
 	@Override

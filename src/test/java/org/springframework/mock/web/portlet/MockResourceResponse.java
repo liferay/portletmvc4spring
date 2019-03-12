@@ -26,7 +26,9 @@ import javax.portlet.ResourceResponse;
  */
 public class MockResourceResponse extends MockMimeResponse implements ResourceResponse {
 
-	private int contentLength = 0;
+	private long contentLength;
+
+	private int status;
 
 
 	@Override
@@ -34,8 +36,23 @@ public class MockResourceResponse extends MockMimeResponse implements ResourceRe
 		this.contentLength = len;
 	}
 
+	@Override
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	@Override
+	public int getStatus() {
+		return status;
+	}
+
+	@Override
+	public void setContentLengthLong(long contentLengthLong) {
+		this.contentLength = contentLengthLong;
+	}
+
 	public int getContentLength() {
-		return this.contentLength;
+		return (int) this.contentLength;
 	}
 
 }

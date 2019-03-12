@@ -19,9 +19,11 @@ package org.springframework.mock.web.portlet;
 import java.io.IOException;
 import java.util.Map;
 import javax.portlet.ActionResponse;
+import javax.portlet.MimeResponse;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
+import javax.portlet.RenderURL;
 import javax.portlet.WindowState;
 import javax.portlet.WindowStateException;
 
@@ -120,6 +122,11 @@ public class MockActionResponse extends MockStateAwareResponse implements Action
 		if (renderUrlParamName != null) {
 			setRenderParameter(renderUrlParamName, location);
 		}
+	}
+
+	@Override
+	public RenderURL createRedirectURL(MimeResponse.Copy copy) throws IllegalStateException {
+		return new MockRenderURL(getPortalContext(), copy);
 	}
 
 	public String getRedirectedUrl() {

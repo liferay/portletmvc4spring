@@ -20,9 +20,13 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.portlet.PortalContext;
+import javax.portlet.PortletAsyncContext;
 import javax.portlet.PortletContext;
 import javax.portlet.RenderRequest;
+import javax.portlet.ResourceParameters;
 import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.servlet.DispatcherType;
 
 /**
  * Mock implementation of the {@link javax.portlet.ResourceRequest} interface.
@@ -38,6 +42,7 @@ public class MockResourceRequest extends MockClientDataRequest implements Resour
 
 	private final Map<String, String[]> privateRenderParameterMap = new LinkedHashMap<String, String[]>();
 
+	private ResourceParameters resourceParameters;
 
 	/**
 	 * Create a new MockResourceRequest with a default {@link MockPortalContext}
@@ -112,6 +117,39 @@ public class MockResourceRequest extends MockClientDataRequest implements Resour
 	}
 
 	@Override
+	public PortletAsyncContext startPortletAsync()
+		throws IllegalStateException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public PortletAsyncContext startPortletAsync(
+		ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws IllegalStateException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isAsyncStarted() {
+		return false;
+	}
+
+	@Override
+	public boolean isAsyncSupported() {
+		return false;
+	}
+
+	@Override
+	public PortletAsyncContext getPortletAsyncContext() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public DispatcherType getDispatcherType() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public String getETag() {
 		return getProperty(RenderRequest.ETAG);
 	}
@@ -127,6 +165,14 @@ public class MockResourceRequest extends MockClientDataRequest implements Resour
 	@Override
 	public Map<String, String[]> getPrivateRenderParameterMap() {
 		return Collections.unmodifiableMap(this.privateRenderParameterMap);
+	}
+
+	@Override
+	public ResourceParameters getResourceParameters() {
+		if (resourceParameters == null) {
+			resourceParameters = new MockResourceParameters();
+		}
+		return resourceParameters;
 	}
 
 }

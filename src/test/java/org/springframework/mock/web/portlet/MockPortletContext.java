@@ -282,4 +282,24 @@ public class MockPortletContext implements PortletContext {
 		return Collections.enumeration(this.containerRuntimeOptions);
 	}
 
+	@Override
+	public int getEffectiveMajorVersion() {
+		return 3;
+	}
+
+	@Override
+	public int getEffectiveMinorVersion() {
+		return 0;
+	}
+
+	@Override
+	public String getContextPath() {
+		return "/mock-context-path";
+	}
+
+	@Override
+	public ClassLoader getClassLoader() {
+		return getClass().getClassLoader();
+	}
+
 }

@@ -30,12 +30,14 @@ import javax.portlet.EventResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ResourceServingPortlet;
+import javax.portlet.WindowState;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -313,6 +315,21 @@ public class PortletWrappingController extends AbstractController
 		@Override
 		public Map<String, String[]> getContainerRuntimeOptions() {
 			return (portletConfig != null ? portletConfig.getContainerRuntimeOptions() : null);
+		}
+
+		@Override
+		public Enumeration<PortletMode> getPortletModes(String mimeType) {
+			return (portletConfig != null ? portletConfig.getPortletModes(mimeType) : Collections.emptyEnumeration());
+		}
+
+		@Override
+		public Enumeration<WindowState> getWindowStates(String mimeType) {
+			return (portletConfig != null ? portletConfig.getWindowStates(mimeType) : Collections.emptyEnumeration());
+		}
+
+		@Override
+		public Map<String, QName> getPublicRenderParameterDefinitions() {
+			return (portletConfig != null ? portletConfig.getPublicRenderParameterDefinitions() : Collections.emptyMap());
 		}
 	}
 

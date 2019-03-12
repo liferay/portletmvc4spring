@@ -16,6 +16,8 @@
 
 package org.springframework.mock.web.portlet;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -114,6 +116,12 @@ public class MockPortletResponse implements PortletResponse {
 		Assert.notNull(key, "Property key must not be null");
 		String[] arr = this.properties.get(key);
 		return (arr != null && arr.length > 0 ? arr[0] : null);
+	}
+
+	@Override
+	public Collection<String> getPropertyValues(String key) {
+		Assert.notNull(key, "Property key must not be null");
+		return Arrays.asList(this.properties.get(key));
 	}
 
 	public String[] getProperties(String key) {

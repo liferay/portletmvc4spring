@@ -23,6 +23,7 @@ import javax.portlet.PortletModeException;
 import javax.portlet.PortletURL;
 import javax.portlet.WindowState;
 import javax.portlet.WindowStateException;
+import javax.portlet.annotations.PortletSerializable;
 
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -100,6 +101,10 @@ public class MockPortletURL extends MockBaseURL implements PortletURL {
 		this.parameters.remove(name);
 	}
 
+	@Override
+	public void setBeanParameter(PortletSerializable portletSerializable) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public String toString() {

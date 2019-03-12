@@ -16,6 +16,7 @@
 
 package org.springframework.mock.web.portlet;
 
+import javax.portlet.ActionParameters;
 import javax.portlet.ActionRequest;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletContext;
@@ -29,6 +30,8 @@ import javax.portlet.PortletMode;
  * @since 2.0
  */
 public class MockActionRequest extends MockClientDataRequest implements ActionRequest {
+
+	private ActionParameters actionParameters;
 
 	/**
 	 * Create a new MockActionRequest with a default {@link MockPortalContext}
@@ -83,4 +86,11 @@ public class MockActionRequest extends MockClientDataRequest implements ActionRe
 		return ACTION_PHASE;
 	}
 
+	@Override
+	public ActionParameters getActionParameters() {
+		if (actionParameters == null) {
+			actionParameters = new MockActionParameters();
+		}
+		return actionParameters;
+	}
 }

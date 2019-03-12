@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.portlet.MutableRenderParameters;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
@@ -41,13 +42,15 @@ import org.springframework.util.CollectionUtils;
  */
 public class MockStateAwareResponse extends MockPortletResponse implements StateAwareResponse {
 
-	private WindowState windowState;
+	private final Map<QName, Serializable> events = new HashMap<QName, Serializable>();
+
+	private MutableRenderParameters mutableRenderParameters;
 
 	private PortletMode portletMode;
 
 	private final Map<String, String[]> renderParameters = new LinkedHashMap<String, String[]>();
 
-	private final Map<QName, Serializable> events = new HashMap<QName, Serializable>();
+	private WindowState windowState;
 
 
 	/**
@@ -79,6 +82,14 @@ public class MockStateAwareResponse extends MockPortletResponse implements State
 	@Override
 	public WindowState getWindowState() {
 		return this.windowState;
+	}
+
+	@Override
+	public MutableRenderParameters getRenderParameters() {
+		if (mutableRenderParameters == null) {
+			mutableRenderParameters = new MockMutableRenderParameters();
+		}
+		return mutableRenderParameters;
 	}
 
 	@Override

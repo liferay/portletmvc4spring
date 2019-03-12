@@ -25,7 +25,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.portlet.BaseURL;
+import javax.portlet.MutableRenderParameters;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletSecurityException;
+import javax.portlet.WindowState;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -44,8 +47,9 @@ public abstract class MockBaseURL implements BaseURL {
 
 	private static final String ENCODING = "UTF-8";
 
-
 	protected final Map<String, String[]> parameters = new LinkedHashMap<String, String[]>();
+
+	private MutableRenderParameters mutableRenderParameters;
 
 	private boolean secure = false;
 
@@ -115,6 +119,17 @@ public abstract class MockBaseURL implements BaseURL {
 	}
 
 	@Override
+	public Appendable append(Appendable appendable) throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Appendable append(Appendable appendable, boolean b)
+		throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void addProperty(String key, String value) {
 		String[] values = this.properties.get(key);
 		if (values != null) {
@@ -158,4 +173,11 @@ public abstract class MockBaseURL implements BaseURL {
 		}
 	}
 
+	@Override
+	public MutableRenderParameters getRenderParameters() {
+		if (mutableRenderParameters == null) {
+			mutableRenderParameters = new MockMutableRenderParameters();
+		}
+		return mutableRenderParameters;
+	}
 }
