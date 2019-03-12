@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename"><value>com/liferay/portletmvc4spring/context/WEB-INF/test-messages</value></property>
+	</bean>
+
+	<bean id="themeSource" class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+		<property name="basenamePrefix"><value>com/liferay/portletmvc4spring/context/WEB-INF/test-</value></property>
+	</bean>
+
+	<bean id="aca" class="com.liferay.spring.context.ACATester"/>
+
+	<bean id="aca-prototype" class="com.liferay.spring.context.ACATester" scope="prototype"/>
+
+	<bean id="rod" class="com.liferay.spring.tests.sample.beans.TestBean">
+		<property name="name"><value>Rod</value></property>
+		<property name="age"><value>31</value></property>
+		<property name="spouse"><ref bean="father"/></property>
+	</bean>
+
+	<bean id="testListener" class="com.liferay.spring.context.TestListener"/>
+
+	<bean id="roderick" parent="rod">
+		<property name="name"><value>Roderick</value></property>
+		<property name="age"><value>31</value></property>
+	</bean>
+
+	<bean id="kathy" class="com.liferay.spring.tests.sample.beans.TestBean" scope="prototype"/>
+
+	<bean id="kerry" class="com.liferay.spring.tests.sample.beans.TestBean">
+		<property name="name"><value>Kerry</value></property>
+		<property name="age"><value>34</value></property>
+		<property name="spouse"><ref bean="rod"/></property>
+	</bean>
+
+	<bean id="typeMismatch" class="com.liferay.spring.tests.sample.beans.TestBean" scope="prototype">
+		<property name="name"><value>typeMismatch</value></property>
+		<property name="age"><value>34x</value></property>
+		<property name="spouse"><ref bean="rod"/></property>
+	</bean>
+
+	<bean id="singletonFactory" class="com.liferay.spring.tests.sample.beans.factory.DummyFactory">
+	</bean>
+
+	<bean id="prototypeFactory" class="com.liferay.spring.tests.sample.beans.factory.DummyFactory">
+		<property name="singleton"><value>false</value></property>
+	</bean>
+
+	<bean id="listenerVeto" class="com.liferay.spring.tests.sample.beans.TestBean">
+		<property name="name"><value>listenerVeto</value></property>
+		<property name="age"><value>66</value></property>
+	</bean>
+
+	<bean id="validEmpty" class="com.liferay.spring.tests.sample.beans.TestBean"/>
+
+</beans>

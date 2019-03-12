@@ -129,7 +129,7 @@ your web application:
 ----
 	<portlet>
 		<portlet-name>sample</portlet-name>
-		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+		<portlet-class>com.liferay.portletmvc4spring.DispatcherPortlet</portlet-class>
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>view</portlet-mode>
@@ -295,7 +295,7 @@ The controllers in Portlet MVC are very similar to the Web MVC Controllers, and 
 code from one to the other should be simple.
 
 The basis for the Portlet MVC controller architecture is the
-`org.springframework.web.portlet.mvc.Controller` interface, which is listed below.
+`com.liferay.portletmvc4spring.mvc.Controller` interface, which is listed below.
 
 [source,java,indent=0]
 ----
@@ -392,8 +392,8 @@ context.
 	import javax.portlet.RenderRequest;
 	import javax.portlet.RenderResponse;
 
-	import org.springframework.web.portlet.mvc.AbstractController;
-	import org.springframework.web.portlet.ModelAndView;
+	import com.liferay.portletmvc4spring.mvc.AbstractController;
+	import com.liferay.portletmvc4spring.ModelAndView;
 
 	public class SampleController extends AbstractController {
 
@@ -486,7 +486,7 @@ can instantiate an existing `Portlet` as a `Controller` as follows:
 [source,xml,indent=0]
 [subs="verbatim,quotes"]
 ----
-	<bean id="myPortlet" class="org.springframework.web.portlet.mvc.PortletWrappingController">
+	<bean id="myPortlet" class="com.liferay.portletmvc4spring.mvc.PortletWrappingController">
 		<property name="portletClass" value="sample.MyPortlet"/>
 		<property name="portletName" value="my-portlet"/>
 		<property name="initParameters">
@@ -564,7 +564,7 @@ of the portlet (e.g. 'view', 'edit', 'help'). An example:
 [source,xml,indent=0]
 [subs="verbatim,quotes"]
 ----
-	<bean class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
+	<bean class="com.liferay.portletmvc4spring.handler.PortletModeHandlerMapping">
 		<property name="portletModeMap">
 			<map>
 				<entry key="view" value-ref="viewHandler"/>
@@ -593,7 +593,7 @@ The bean configuration for this mapping will look something like this:
 [source,xml,indent=0]
 [subs="verbatim,quotes"]
 ----
-	<bean class="org.springframework.web.portlet.handler.ParameterHandlerMapping">
+	<bean class="com.liferay.portletmvc4spring.handler.ParameterHandlerMapping">
 		<property name="parameterMap">
 			<map>
 				<entry key="add" value-ref="addItemHandler"/>
@@ -626,7 +626,7 @@ The bean configuration for this mapping will look something like this:
 [source,xml,indent=0]
 [subs="verbatim,quotes"]
 ----
-	<bean class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+	<bean class="com.liferay.portletmvc4spring.handler.PortletModeParameterHandlerMapping">
 		<property name="portletModeParameterMap">
 			<map>
 				<entry key="view"> <!-- 'view' portlet mode -->
@@ -661,7 +661,7 @@ example, checking for a principal. Again Spring Portlet MVC implements these con
 the same way as Web MVC.
 
 Interceptors located in the handler mapping must implement `HandlerInterceptor` from the
-`org.springframework.web.portlet` package. Just like the servlet version, this interface
+`com.liferay.portletmvc4spring` package. Just like the servlet version, this interface
 defines three methods: one that will be called before the actual handler will be
 executed ( `preHandle`), one that will be called after the handler is executed (
 `postHandle`), and one that is called after the complete request has finished (
@@ -746,7 +746,7 @@ work in portlet views in exactly the same way that they work in servlet views.
 Spring Portlet MVC has built-in multipart support to handle file uploads in portlet
 applications, just like Web MVC does. The design for the multipart support is done with
 pluggable `PortletMultipartResolver` objects, defined in the
-`org.springframework.web.portlet.multipart` package. Spring provides a
+`com.liferay.portletmvc4spring.multipart` package. Spring provides a
 `PortletMultipartResolver` for use with
 http://jakarta.apache.org/commons/fileupload[Commons FileUpload]. How uploading files is
 supported will be described in the rest of this section.
@@ -779,7 +779,7 @@ The following example shows how to use the `CommonsPortletMultipartResolver`:
 [subs="verbatim,quotes"]
 ----
 	<bean id="portletMultipartResolver"
-			class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver">
+			class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<property name="maxUploadSize" value="100000"/>
 	</bean>
@@ -840,9 +840,9 @@ controller that will process the bean, and the controller itself.
 [subs="verbatim,quotes"]
 ----
 	<bean id="portletMultipartResolver"
-			class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver"/>
+			class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver"/>
 
-	<bean class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
+	<bean class="com.liferay.portletmvc4spring.handler.PortletModeHandlerMapping">
 		<property name="portletModeMap">
 			<map>
 				<entry key="view" value-ref="fileUploadController"/>
@@ -1051,9 +1051,9 @@ need to make sure that a corresponding custom `DefaultAnnotationHandlerMapping` 
 		xsi:schemaLocation="http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-		<bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+		<bean class="com.liferay.portletmvc4spring.mvc.annotation.DefaultAnnotationHandlerMapping"/>
 
-		<bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+		<bean class="com.liferay.portletmvc4spring.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 
 		// ... (controller bean definitions) ...
 
