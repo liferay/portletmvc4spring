@@ -26,7 +26,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 /**
- * Portlet MVC framework SPI interface, allowing parameterization of core MVC workflow.
+ * PortletMVC4Spring framework SPI interface, allowing parameterization of core MVC workflow.
  *
  * <p>Interface that must be implemented for each handler type to handle a request.
  * This interface is used to allow the DispatcherPortlet to be indefinitely

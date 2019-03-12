@@ -28,7 +28,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.util.NestedServletException;
 
 /**
- * ViewRendererServlet is a bridge servlet, mainly for the Portlet MVC support.
+ * ViewRendererServlet is a bridge servlet that supports PortletMVC4Spring.
  *
  * <p>For usage with Portlets, this Servlet is necessary to force the portlet container
  * to convert the PortletRequest to a ServletRequest, which it has to do when

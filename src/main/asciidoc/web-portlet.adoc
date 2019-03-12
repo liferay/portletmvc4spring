@@ -1,5 +1,5 @@
 [[portlet]]
-= Portlet MVC Framework
+= PortletMVC4Spring
 
 
 [[portlet-introduction]]
@@ -12,14 +12,14 @@ https://jcp.org/en/jsr/detail?id=286[JSR-286 Specification] itself.
 ****
 
 In addition to supporting conventional (servlet-based) Web development, Spring also
-supports JSR-286 Portlet development. As much as possible, the Portlet MVC framework is
+supports JSR-286 Portlet development. As much as possible, PortletMVC4Spring is
 a mirror image of the Web MVC framework, and also uses the same underlying view
 abstractions and integration technology. So, be sure to review the chapters entitled
 <<mvc>> and <<view>> before continuing with this chapter.
 
 [NOTE]
 ====
-Bear in mind that while the concepts of Spring MVC are the same in Spring Portlet MVC,
+Bear in mind that while the concepts of Spring MVC are the same in PortletMVC4Spring,
 there are some notable differences created by the unique workflow of JSR-286 portlets.
 ====
 
@@ -56,7 +56,7 @@ display without the user explicitly rerunning the search. Most other portlet MVC
 frameworks attempt to completely hide the two phases from the developer and make it look
 as much like traditional servlet development as possible - we think this approach
 removes one of the main benefits of using portlets. So, the separation of the two phases
-is preserved throughout the Spring Portlet MVC framework. The primary manifestation of
+is preserved throughout PortletMVC4Spring. The primary manifestation of
 this approach is that where the servlet version of the MVC classes will have one method
 that deals with the request, the portlet version of the MVC classes will have two
 methods that deal with the request: one for the action phase and one for the render
@@ -69,7 +69,7 @@ handlers, with configurable handler mappings and view resolution, just as the
 `DispatcherServlet` in the web framework does. File upload is also supported in the same
 way.
 
-Locale resolution and theme resolution are not supported in Portlet MVC - these areas
+Locale resolution and theme resolution are not supported in PortletMVC4Spring - these areas
 are in the purview of the portal/portlet container and are not appropriate at the Spring
 level. However, all mechanisms in Spring that depend on the locale (such as
 internationalization of messages) will still function properly because
@@ -103,10 +103,10 @@ JSP, Velocity, etc., can still be used within the portlet.
 
 [[portlet-introduction-scope]]
 === Web-scoped beans
-Spring Portlet MVC supports beans whose lifecycle is scoped to the current HTTP request
+PortletMVC4Spring supports beans whose lifecycle is scoped to the current HTTP request
 or HTTP `Session` (both normal and global). This is not a specific feature of Spring
-Portlet MVC itself, but rather of the `WebApplicationContext` container(s) that Spring
-Portlet MVC uses. These bean scopes are described in detail in
+PortletMVC4Spring itself, but rather of the `WebApplicationContext` container(s) that Spring
+PortletMVC4Spring uses. These bean scopes are described in detail in
 <<beans-factory-scopes-other>>
 
 
@@ -115,7 +115,7 @@ Portlet MVC uses. These bean scopes are described in detail in
 [[portlet-dispatcher]]
 == The DispatcherPortlet
 
-Portlet MVC is a request-driven web MVC framework, designed around a portlet that
+PortletMVC4Spring is a request-driven web MVC framework, designed around a portlet that
 dispatches requests to controllers and offers other functionality facilitating the
 development of portlet applications. Spring's `DispatcherPortlet` however, does more
 than just that. It is completely integrated with the Spring `ApplicationContext` and
@@ -142,7 +142,7 @@ your web application:
 
 The `DispatcherPortlet` now needs to be configured.
 
-In the Portlet MVC framework, each `DispatcherPortlet` has its own
+In PortletMVC4Spring, each `DispatcherPortlet` has its own
 `WebApplicationContext`, which inherits all the beans already defined in the Root
 `WebApplicationContext`. These inherited beans can be overridden in the portlet-specific
 scope, and new scope-specific beans can be defined local to a given portlet instance.
@@ -248,7 +248,7 @@ You can customize Spring's `DispatcherPortlet` by adding context parameters in t
 [[portlet-viewservlet]]
 == The ViewRendererServlet
 
-The rendering process in Portlet MVC is a bit more complex than in Web MVC. In order to
+The rendering process in PortletMVC4Spring is a bit more complex than in Web MVC. In order to
 reuse all the <<view,view technologies>> from Spring Web MVC, we must convert the
 `PortletRequest` / `PortletResponse` to `HttpServletRequest` / `HttpServletResponse` and
 then call the `render` method of the `View`. To do this, `DispatcherPortlet` uses a
@@ -291,10 +291,10 @@ The actual URL for the `ViewRendererServlet` can be changed using `DispatcherPor
 
 [[portlet-controller]]
 == Controllers
-The controllers in Portlet MVC are very similar to the Web MVC Controllers, and porting
+The controllers in PortletMVC4Spring are very similar to the Web MVC Controllers, and porting
 code from one to the other should be simple.
 
-The basis for the Portlet MVC controller architecture is the
+The basis for the PortletMVC4Spring controller architecture is the
 `com.liferay.portletmvc4spring.mvc.Controller` interface, which is listed below.
 
 [source,java,indent=0]
@@ -321,7 +321,7 @@ As you can see, the Portlet `Controller` interface requires two methods that han
 two phases of a portlet request: the action request and the render request. The action
 phase should be capable of handling an action request, and the render phase should be
 capable of handling a render request and returning an appropriate model and view. While
-the `Controller` interface is quite abstract, Spring Portlet MVC offers several
+the `Controller` interface is quite abstract, PortletMVC4Spring offers several
 controllers that already contain a lot of the functionality you might need; most of
 these are very similar to controllers from Spring Web MVC. The `Controller` interface
 just defines the most common functionality required of every controller: handling an
@@ -333,7 +333,7 @@ action request, handling a render request, and returning a model and a view.
 === AbstractController and PortletContentGenerator
 
 Of course, just a `Controller` interface isn't enough. To provide a basic
-infrastructure, all of Spring Portlet MVC's ``Controller``s inherit from
+infrastructure, all of PortletMVC4Spring's ``Controller``s inherit from
 `AbstractController`, a class offering access to Spring's `ApplicationContext` and
 control over caching.
 
@@ -422,7 +422,7 @@ simple controller working.
 
 [[portlet-controller-simple]]
 === Other simple controllers
-Although you can extend `AbstractController`, Spring Portlet MVC provides a number of
+Although you can extend `AbstractController`, PortletMVC4Spring provides a number of
 concrete implementations which offer functionality that is commonly used in simple MVC
 applications.
 
@@ -438,7 +438,7 @@ as the view name.
 
 [[portlet-controller-command]]
 === Command Controllers
-Spring Portlet MVC has the exact same hierarchy of __command controllers__ as Spring Web
+PortletMVC4Spring has the exact same hierarchy of __command controllers__ as Spring Web
 MVC. They provide a way to interact with data objects and dynamically bind parameters
 from the `PortletRequest` to the data object specified. Your data objects don't have to
 implement a framework-specific interface, so you can directly manipulate your persistent
@@ -512,7 +512,7 @@ There are some handler mappings you can use out of the box, for example, the
 
 Note: We are intentionally using the term "Handler" here instead of "Controller".
 `DispatcherPortlet` is designed to be used with other ways to process requests than just
-Spring Portlet MVC's own Controllers. A Handler is any Object that can handle portlet
+PortletMVC4Spring's own Controllers. A Handler is any Object that can handle portlet
 requests. Controllers are an example of Handlers, and they are of course the default. To
 use some other framework with `DispatcherPortlet`, a corresponding implementation of
 `HandlerAdapter` is all that is needed.
@@ -538,7 +538,7 @@ such thing as a URL within a Portlet, we must use other mechanisms to control ma
 The two most common are the portlet mode and a request parameter, but anything available
 to the portlet request can be used in a custom handler mapping.
 
-The rest of this section describes three of Spring Portlet MVC's most commonly used
+The rest of this section describes three of PortletMVC4Spring's most commonly used
 handler mappings. They all extend `AbstractHandlerMapping` and share the following
 properties:
 
@@ -657,7 +657,7 @@ provide defaults for each mode and an overall default as well.
 
 Spring's handler mapping mechanism has a notion of handler interceptors, which can be
 extremely useful when you want to apply specific functionality to certain requests, for
-example, checking for a principal. Again Spring Portlet MVC implements these concepts in
+example, checking for a principal. Again PortletMVC4Spring implements these concepts in
 the same way as Web MVC.
 
 Interceptors located in the handler mapping must implement `HandlerInterceptor` from the
@@ -714,7 +714,7 @@ the mapping parameter manually or write a different interceptor to handle this f
 
 [[portlet-viewresolver]]
 == Views and resolving them
-As mentioned previously, Spring Portlet MVC directly reuses all the view technologies
+As mentioned previously, PortletMVC4Spring directly reuses all the view technologies
 from Spring Web MVC. This includes not only the various `View` implementations
 themselves, but also the `ViewResolver` implementations. For more information, refer to
 <<view>> and <<mvc-viewresolver>> respectively.
@@ -729,8 +729,8 @@ mentioning:
 * There is no such thing as an HTTP redirect from within a portlet (the
   `sendRedirect(..)` method of `ActionResponse` cannot be used to stay within the
   portal). So, `RedirectView` and use of the `'redirect:'` prefix will __not__ work
-  correctly from within Portlet MVC.
-* It may be possible to use the `'forward:'` prefix from within Portlet MVC. However,
+  correctly from within PortletMVC4Spring.
+* It may be possible to use the `'forward:'` prefix from within PortletMVC4Spring. However,
   remember that since you are in a portlet, you have no idea what the current URL looks
   like. This means you cannot use a relative URL to access other resources in your web
   application and that you will have to use an absolute URL.
@@ -743,7 +743,7 @@ work in portlet views in exactly the same way that they work in servlet views.
 
 [[portlet-multipart]]
 == Multipart (file upload) support
-Spring Portlet MVC has built-in multipart support to handle file uploads in portlet
+PortletMVC4Spring has built-in multipart support to handle file uploads in portlet
 applications, just like Web MVC does. The design for the multipart support is done with
 pluggable `PortletMultipartResolver` objects, defined in the
 `com.liferay.portletmvc4spring.multipart` package. Spring provides a
@@ -751,7 +751,7 @@ pluggable `PortletMultipartResolver` objects, defined in the
 http://jakarta.apache.org/commons/fileupload[Commons FileUpload]. How uploading files is
 supported will be described in the rest of this section.
 
-By default, no multipart handling will be done by Spring Portlet MVC, as some developers
+By default, no multipart handling will be done by PortletMVC4Spring, as some developers
 will want to handle multiparts themselves. You will have to enable it yourself by adding
 a multipart resolver to the web application's context. After you have done that,
 `DispatcherPortlet` will inspect each request to see if it contains a multipart. If no
@@ -790,7 +790,7 @@ resolver to work. In the case of the `CommonsMultipartResolver`, you need to use
 `commons-fileupload.jar`. Be sure to use at least version 1.1 of Commons FileUpload as
 previous versions do not support JSR-286 Portlet applications.
 
-Now that you have seen how to set Portlet MVC up to handle multipart requests, let's
+Now that you have seen how to set PortletMVC4Spring up to handle multipart requests, let's
 talk about how to actually use it. When `DispatcherPortlet` detects a multipart request,
 it activates the resolver that has been declared in your context and hands over the
 request. What the resolver then does is wrap the current `ActionRequest` in a
@@ -1006,9 +1006,9 @@ register any custom property editor because there is no type conversion to be pe
 
 [[portlet-exceptionresolver]]
 == Handling exceptions
-Just like Servlet MVC, Portlet MVC provides ``HandlerExceptionResolver``s to ease the
+Just like Spring MVC, PortletMVC4Spring provides ``HandlerExceptionResolver``s to ease the
 pain of unexpected exceptions that occur while your request is being processed by a
-handler that matched the request. Portlet MVC also provides a portlet-specific, concrete
+handler that matched the request. PortletMVC4Spring also provides a portlet-specific, concrete
 `SimpleMappingExceptionResolver` that enables you to take the class name of any
 exception that might be thrown and map it to a view name.
 
@@ -1019,7 +1019,7 @@ exception that might be thrown and map it to a view name.
 == Annotation-based controller configuration
 Spring 2.5 introduced an annotation-based programming model for MVC controllers, using
 annotations such as `@RequestMapping`, `@RequestParam`, `@ModelAttribute`, etc. This
-annotation support is available for both Servlet MVC and Portlet MVC. Controllers
+annotation support is available for both Spring MVC and PortletMVC4Spring. Controllers
 implemented in this style do not have to extend specific base classes or implement
 specific interfaces. Furthermore, they do not usually have direct dependencies on
 Servlet or Portlet API's, although they can easily get access to Servlet or Portlet
@@ -1487,7 +1487,7 @@ configuration.
 
 [[portlet-deployment]]
 == Portlet application deployment
-The process of deploying a Spring Portlet MVC application is no different than deploying
+The process of deploying a PortletMVC4Spring application is no different than deploying
 any JSR-286 Portlet application. However, this area is confusing enough in general that
 it is worth talking about here briefly.
 

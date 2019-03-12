@@ -37,7 +37,7 @@ import javax.portlet.PortletRequest;
  * itself if all {@code preHandle} methods have returned {@code true}.
  *
  * <p>The ability to parameterize this mapping is a powerful and unusual
- * capability of this Portlet MVC framework. For example, it is possible to
+ * capability of the PortletMVC4Spring framework. For example, it is possible to
  * write a custom mapping based on session state, cookie state or many other
  * variables. No other MVC framework seems to be equally flexible.
  *

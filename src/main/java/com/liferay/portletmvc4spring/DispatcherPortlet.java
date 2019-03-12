@@ -63,12 +63,12 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
 /**
- * Central dispatcher for use within the Portlet MVC framework, e.g. for web UI
+ * Central dispatcher for use within the PortletMVC4Spring framework, e.g. for web UI
  * controllers. Dispatches to registered handlers for processing a portlet request.
  *
  * <p>This portlet is very flexible: It can be used with just about any workflow,
  * with the installation of the appropriate adapter classes. It offers the following
- * functionality that distinguishes it from other request-driven Portlet MVC frameworks:
+ * functionality that distinguishes it from other request-driven portlet MVC frameworks:
  *
  * <ul>
  * <li>It is based around a JavaBeans configuration mechanism.
