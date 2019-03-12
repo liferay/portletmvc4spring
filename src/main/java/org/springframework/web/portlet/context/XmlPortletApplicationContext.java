@@ -22,6 +22,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.util.StringUtils;
 
 /**
  * Portlet-based {@link org.springframework.web.context.WebApplicationContext}
@@ -52,6 +53,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
  *
  * @author Juergen Hoeller
  * @author John A. Lewis
+ * @author Neil Griffin
  * @since 2.0
  * @see #setNamespace
  * @see #setConfigLocations
@@ -125,6 +127,23 @@ public class XmlPortletApplicationContext extends AbstractRefreshablePortletAppl
 				reader.loadBeanDefinitions(configLocations[i]);
 			}
 		}
+	}
+
+	@Override
+	public void setConfigLocation(String location) {
+		String[] locations = StringUtils.tokenizeToStringArray(location, CONFIG_LOCATION_DELIMITERS);
+
+		if ((locations != null) && (locations.length == 0)) {
+
+			// Work-around a breaking change in
+			// StringUtils.tokenizeToStringArray(String,String,boolean,boolean)
+			// introduced by commit f813712f5b413b354560cd7cc006352e9defa9a3 as
+			// part of SPR-15540 (version 5.0.x) on 2017-06-07.
+
+			locations = null;
+		}
+
+		setConfigLocations(locations);
 	}
 
 	/**
