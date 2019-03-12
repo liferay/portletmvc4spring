@@ -19,6 +19,7 @@ package org.springframework.web.portlet.mvc.annotation;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +49,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.Nullable;
 import org.springframework.mock.web.portlet.MockActionRequest;
 import org.springframework.mock.web.portlet.MockActionResponse;
 import org.springframework.mock.web.portlet.MockEvent;
@@ -78,12 +80,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.bind.support.WebBindingInitializer;
+import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.portlet.DispatcherPortlet;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.NoHandlerFoundException;
@@ -96,9 +100,11 @@ import org.springframework.web.portlet.mvc.AbstractController;
 import org.springframework.web.portlet.mvc.method.annotation.PortletRequestMappingHandlerAdapter;
 
 import static org.junit.Assert.*;
+import static org.springframework.web.bind.support.WebArgumentResolver.UNRESOLVED;
 
 /**
  * @author Juergen Hoeller
+ * @author Neil Griffin
  * @since 3.0
  */
 public class Portlet20AnnotationControllerTests {
@@ -308,7 +314,9 @@ public class Portlet20AnnotationControllerTests {
 				wac.registerBeanDefinition("controller2", new RootBeanDefinition(MyOtherTypedCommandProvidingFormController.class));
 				RootBeanDefinition adapterDef = new RootBeanDefinition(PortletRequestMappingHandlerAdapter.class);
 				adapterDef.getPropertyValues().add("webBindingInitializer", new MyWebBindingInitializer());
-				adapterDef.getPropertyValues().add("customArgumentResolver", new MySpecialArgumentResolver());
+				List<HandlerMethodArgumentResolver> customArgumentResolvers = new ArrayList<>();
+				customArgumentResolvers.add(new MySpecialArgumentResolver());
+				adapterDef.getPropertyValues().add("customArgumentResolvers", customArgumentResolvers);
 				wac.registerBeanDefinition("handlerAdapter", adapterDef);
 				wac.refresh();
 				return wac;
@@ -345,7 +353,11 @@ public class Portlet20AnnotationControllerTests {
 		request.addParameter("date", "2007-10-02");
 		response = new MockRenderResponse();
 		portlet.render(request, response);
-		assertEquals("myView-myName-typeMismatch-tb1-myOriginalValue", response.getContentAsString());
+		String responseContentAsString = response.getContentAsString();
+		assertTrue(
+			responseContentAsString.contains("argument type mismatch") &&
+			responseContentAsString.contains("Field error in object 'testBean' on field 'age': rejected value [value2];") &&
+			responseContentAsString.contains("java.lang.NumberFormatException"));
 	}
 
 	@Test
@@ -1013,8 +1025,11 @@ public class Portlet20AnnotationControllerTests {
 	private static class MyTypedCommandProvidingFormController
 			extends MyCommandProvidingFormController<Integer, TestBean, ITestBean> {
 
+		@ExceptionHandler
+		public void handleException(Exception ex, Writer writer) throws IOException {
+			writer.write(ex.getMessage());
+		}
 	}
-
 
 	@Controller
 	@RequestMapping(params = "myParam=myOtherValue")
@@ -1070,13 +1085,20 @@ public class Portlet20AnnotationControllerTests {
 	}
 
 
-	private static class MySpecialArgumentResolver implements WebArgumentResolver {
+	private static class MySpecialArgumentResolver implements HandlerMethodArgumentResolver {
 
 		@Override
-		public Object resolveArgument(MethodParameter methodParameter, NativeWebRequest webRequest) {
-			if (methodParameter.getParameterType().equals(MySpecialArg.class)) {
-				return new MySpecialArg("myValue");
-			}
+		public boolean supportsParameter(MethodParameter methodParameter) {
+			return MySpecialArg.class.isAssignableFrom(methodParameter.getParameterType());
+		}
+
+		@Nullable
+		@Override
+		public Object resolveArgument(MethodParameter methodParameter,
+			@Nullable ModelAndViewContainer modelAndViewContainer,
+			NativeWebRequest nativeWebRequest,
+			@Nullable WebDataBinderFactory webDataBinderFactory)
+			throws Exception {
 			return UNRESOLVED;
 		}
 	}
