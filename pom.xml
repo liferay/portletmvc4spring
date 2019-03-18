@@ -47,13 +47,34 @@
 	<modules>
 		<module>framework</module>
 		<module>security</module>
+		<module>demo</module>
 	</modules>
 	<properties>
 		<full.version>${project.version} (${timestamp} AD)</full.version>
+		<spring.framework.scope>compile</spring.framework.scope>
 		<spring.framework.version>5.1.4.RELEASE</spring.framework.version>
 		<surefire.version>2.22.1</surefire.version>
+		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 	</properties>
 	<profiles>
+		<profile>
+			<id>liferay-spring-thin</id>
+			<properties>
+				<spring.framework.scope>provided</spring.framework.scope>
+			</properties>
+		</profile>
+		<profile>
+			<id>pluto</id>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.taglibs</groupId>
+						<artifactId>taglibs-standard-jstlel</artifactId>
+						<version>1.2.1</version>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
 		<profile>
 			<id>release</id>
 			<build>
@@ -119,6 +140,11 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>2.0.1.Final</version>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
@@ -144,8 +170,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
-				<version>5.0.0.Final</version>
-				<scope>test</scope>
+				<version>6.0.14.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
@@ -160,19 +185,45 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.7.25</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
 				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jcl</artifactId>
+				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -182,8 +233,15 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -195,11 +253,23 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
 				<version>${spring.framework.version}</version>
+				<scope>${spring.framework.scope}</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf</artifactId>
+				<version>${thymeleaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf-spring5</artifactId>
+				<version>${thymeleaf.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

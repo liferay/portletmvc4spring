@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
+		  xmlns:spring="http://www.springframework.org/tags"
+		  xmlns:form="http://www.springframework.org/tags/form"
+		  version="2.1">
+	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
+	<portlet:actionURL var="mainFormActionURL"/>
+	<form:form id="${namespace}mainForm" method="post" action="${mainFormActionURL}" modelAttribute="preferences">
+		<fieldset>
+			<div class="form-group">
+				<form:label for="${namespace}datePattern" path="datePattern">
+					<spring:message code="date-format" />
+				</form:label>
+				<form:input id="${namespace}datePattern" cssClass="form-control" path="datePattern"/>
+				<form:errors path="datePattern" cssClass="portlet-msg-error"/>
+			</div>
+		</fieldset>
+		<hr />
+		<button class="btn btn-primary" name="action" value="submit" type="submit">
+			<spring:message code="submit" />
+		</button>
+		<button class="btn" name="action" value="reset" type="submit">
+			<spring:message code="reset" />
+		</button>
+	</form:form>
+</jsp:root>

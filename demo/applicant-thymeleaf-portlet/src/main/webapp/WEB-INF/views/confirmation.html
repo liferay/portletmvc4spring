@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns:th="http://www.thymeleaf.org">
+	<p th:text="#{thank-you-for-applying-for-a-job-with-our-organization(${applicant.firstName})}"/>
+	<p>
+		<form action="#" th:action="${submitAnotherRenderURL}" method="get">
+			<input class="btn btn-primary" th:value="#{submit-another-application}" type="submit" />
+		</form>
+	</p>
+</div>

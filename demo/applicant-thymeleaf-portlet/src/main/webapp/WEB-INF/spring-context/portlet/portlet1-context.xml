@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	<context:component-scan base-package="com.liferay.portletmvc4spring.demo.applicant.thymeleaf**"/>
+	<mvc:annotation-driven/>
+	<!--
+	NOTE: Requires commons-fileupload dependency and transitive commons-io dependency (see pom.xml)
+	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver" />
+	-->
+	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
+</beans>

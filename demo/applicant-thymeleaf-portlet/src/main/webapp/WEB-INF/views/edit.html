@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns:th="http://www.thymeleaf.org">
+	<form th:id="|${namespace}mainForm|" method="post" th:action="${mainFormActionURL}" th:object="${preferences}">
+		<fieldset>
+			<div class="form-group">
+				<label th:for="|${namespace}datePattern|" path="datePattern" th:text="#{date-format}"/>
+				<input th:id="|${namespace}datePattern|" cssClass="form-control" th:field="*{datePattern}"/>
+				<span class="portlet-msg-error" th:if="${#fields.hasErrors('datePattern')}" th:errors="*{datePattern}"/>
+			</div>
+		</fieldset>
+		<hr />
+		<button class="btn btn-primary" name="action" th:text="#{submit}" type="submit" value="submit"/>
+		<button class="btn" name="action" th:text="#{reset}" type="submit" value="reset"/>
+	</form>
+</div>

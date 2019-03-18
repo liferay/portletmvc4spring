@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:spring="http://www.springframework.org/tags"
+		  version="2.1">
+	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
+	<spring:message code="portlet-help" />
+</jsp:root>

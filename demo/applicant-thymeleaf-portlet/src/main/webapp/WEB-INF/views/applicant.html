@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns:th="http://www.thymeleaf.org">
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var [(${namespace})]_updateAttachments = function(responseJSON) {
+			$('#[(${namespace})]attachmentsTableBody').empty();
+			$('#[(${namespace})]inputFile').val('');
+			$.each(responseJSON, function(i, item) {
+				$('<tr>').append(
+					$('<td>').append(
+						$('<input>').attr(
+							'type', 'image').attr(
+							'src',
+							'[(${contextPath})]/images/icon-delete.png').attr(
+							'name', 'attachmentIndex').attr('value', i)),
+					$('<td>').text(item.fileName),
+					$('<td>').text(item.size)
+				).appendTo('#[(${namespace})]attachmentsTableBody');
+			});
+		}
+		/*]]>*/
+	</script>
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		$(document).ready(function(){
+			$('#[(${namespace})]postalCode').on('change', function submitXHR(){
+				$.ajax({
+					data: {
+						postalCode: $(this).val(),
+						[(${_csrf.parameterName})]: '[(${_csrf.token})]'
+					},
+					type: 'post',
+					url: '[(${autoFillResourceURL})]'
+				}).done(function(responseData) {
+					var responseJSON = JSON.parse(responseData);
+					$('#[(${namespace})]city').val(responseJSON['cityName']).change();
+					$('#[(${namespace})]provinceId').val(responseJSON['provinceId']).change();
+				}).fail(function() {
+					console.log('XHR failed');
+				});
+			});
+		});
+		/*]]>*/
+	</script>
+	<script type="text/javascript" th:inline="text">
+		/*<![CDATA[*/
+		$(document).ready(function(){
+			$('#[(${namespace})]deleteFileForm').on('click', 'input', function (event) {
+				event.preventDefault();
+				if (confirm('[(#{are-you-sure-you-want-to-delete-this})]')) {
+					$.ajax({
+						data: {
+							attachmentIndex: event.target.value,
+							[(${_csrf.parameterName})]: '[(${_csrf.token})]'
+						},
+						type: 'post',
+						url: '[(${deleteFileResourceURL})]'
+					}).done(function (responseData) {
+						[(${namespace})]_updateAttachments(JSON.parse(responseData));
+					}).fail(function () {
+						console.log('XHR failed');
+					});
+				}
+			});
+		});
+		/*]]>*/
+	</script>
+	<script type="text/javascript" th:inline="text">
+		/*<![CDATA[*/
+		$(document).ready(function(){
+			$('#[(${namespace})]fileUploadForm').submit(function (event) {
+				event.preventDefault();
+				var formData = new FormData($(this)[0]);
+				$.ajax({
+					async: false,
+					cache: false,
+					contentType: false,
+					data: formData,
+					processData: false,
+					type: 'post',
+					url: '[(${uploadFilesResourceURL})]'
+				}).done(function(responseData) {
+					[(${namespace})]_updateAttachments(JSON.parse(responseData));
+				}).fail(function() {
+					console.log('XHR failed');
+				});
+			});
+		});
+		/*]]>*/
+	</script>
+	<script type="text/javascript" th:inline="text">
+		/*<![CDATA[*/
+		$(document).ready(function(){
+			$('#[(${namespace})]mainForm input[type=email],input[type=tel],input[type=text],select').on('blur change', function(event) {
+				$(event.target).parent().children('span').remove();
+				if ($.trim(event.target.value) == 0) {
+					$('<span>').attr(
+						'class', 'portlet-msg-error').text(
+						'[(#{value-is-required})]').appendTo(
+						$(event.target).parent());
+				}
+			});
+			$('#[(${namespace})]dateOfBirth').datepicker({dateFormat:'[(${jQueryDatePattern})]'});
+			$('#[(${namespace})]hideComments').click(function(){
+				$('#[(${namespace})]comments').hide();
+				$('#[(${namespace})]hideComments').hide();
+				$('#[(${namespace})]showComments').show();
+			});
+			$('#[(${namespace})]showComments').click(function(){
+				$('#[(${namespace})]comments').show();
+				$('#[(${namespace})]hideComments').show();
+				$('#[(${namespace})]showComments').hide();
+			});
+		});
+		/*]]>*/
+	</script>
+	<div class="container">
+		<div class="row">
+			<div class="col-6">
+				<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
+				<form th:id="|${namespace}mainForm|" method="post" th:action="${mainFormActionURL}" th:object="${applicant}">
+					<span class="portlet-msg-info" th:if="${globalInfoMessage != null}" th:text="${globalInfoMessage}"/>
+					<span class="portlet-msg-error" th:if="${globalErrorMessage != null}" th:text="${globalErrorMessage}"/>
+					<fieldset>
+						<div class="row">
+							<div class="col-6">
+								<div class="form-group">
+									<label th:for="|${namespace}firstName|" th:text="#{first-name}"/>
+									<input th:id="|${namespace}firstName|" class="form-control" type="text" th:field="*{firstName}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"/>
+								</div>
+								<div class="form-group">
+									<label th:for="|${namespace}lastName|" th:text="#{last-name}"/>
+									<input th:id="|${namespace}lastName|" class="form-control" type="text" th:field="*{lastName}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"/>
+								</div>
+								<div class="form-group">
+									<label th:for="|${namespace}emailAddress|" th:text="#{email-address}"/>
+									<input th:id="|${namespace}emailAddress|" class="form-control" type="email" th:field="*{emailAddress}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"/>
+								</div>
+								<div class="form-group">
+									<label th:for="|${namespace}phoneNumber|" th:text="#{phone-number}"/>
+									<input th:id="|${namespace}phoneNumber|" class="form-control" type="tel" th:field="*{phoneNumber}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"/>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="form-group">
+									<label th:for="|${namespace}dateOfBirth|" th:text="#{date-of-birth}"/>
+									<input th:id="|${namespace}dateOfBirth|" class="form-control" type="text" th:field="*{dateOfBirth}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"/>
+								</div>
+								<div class="form-group">
+									<label th:for="|${namespace}city|" th:text="#{city}"/>
+									<input th:id="|${namespace}city|" class="form-control" type="text" th:field="*{city}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"/>
+								</div>
+								<div class="form-group">
+									<label th:for="|${namespace}provinceId|" th:text="#{state-province}"/>
+									<select th:id="|${namespace}provinceId|" class="form-control" th:field="*{provinceId}">
+										<option th:text="#{select}" value=""/>
+										<option th:each="province: ${provinces}" th:text="${province.provinceName}" th:selected="(${province.provinceId} == *{provinceId})" th:value="${province.provinceId}"/>
+									</select>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('provinceId')}" th:errors="*{provinceId}"/>
+								</div>
+								<div class="form-group">
+									<label th:for="|${namespace}postalCode|" th:text="#{zip-postal}"/>
+									<input th:id="|${namespace}postalCode|" class="form-control" type="text" th:field="*{postalCode}"/>
+									<img th:src="|${contextPath}/images/icon-help.png|" th:title="#{postal-code-hint}"/>
+									<span class="portlet-msg-error" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"/>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset>
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<label th:for="|${namespace}comments|" th:text="#{comments}"/>
+									<div>
+										<a th:id="|${namespace}hideComments|" href="javascript:;" th:text="#{hide}"/>
+									</div>
+									<div>
+										<a th:id="|${namespace}showComments|" href="javascript:;" style="display:none;" th:text="#{show}"/>
+									</div>
+									<textarea th:id="|${namespace}comments|" class="form-control" th:field="*{comments}"></textarea>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<input class="btn btn-primary" th:text="${submit}" type="submit"/>
+				</form>
+			</div>
+			<div class="col-6">
+				<div class="row">
+					<div class="col">
+						<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
+						<form th:id="|${namespace}deleteFileForm|" method="post" th:action="${deleteFileResourceURL}" th:object="${applicant}">
+							<h3 th:text="#{attachments}"/>
+							<table class="table">
+								<thead>
+									<tr>
+										<th><img th:src="|${contextPath}/images/icon-delete.png|" style="display:none;"/></th>
+										<th th:text="#{file-name}"/>
+										<th th:text="#{size}"/>
+									</tr>
+								</thead>
+								<tbody th:id="|${namespace}attachmentsTableBody|">
+									<tr th:each="attachment,attachmentStatus: *{attachments}">
+										<td>
+											<input name="attachmentIndex" th:src="|${contextPath}/images/icon-delete.png|" th:value="${attachmentStatus.index}" type="image"/>
+										</td>
+										<td th:text="${attachment.name}"/>
+										<td th:text="${attachment.size}"/>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<hr/>
+						<!--/* The CSRF hidden field must be explicitly provided since the form element does not have a th:action attribute. */-->
+						<form th:id="|${namespace}fileUploadForm|" enctype="multipart/form-data">
+							<div class="form-group">
+								<input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+								<input th:id="|${namespace}inputFile|" class="form-control" th:name="multipartFiles" multiple="multiple" type="file"/>
+								<input class="btn btn-primary" th:value="#{submit}" type="submit"/>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+	<ul>
+		<li th:text="|Spring Framework ${springFrameworkVersion}|"/>
+		<li th:text="|PortletMVC4Spring ${portletMVC4SpringVersion}|"/>
+	</ul>
+</div>
