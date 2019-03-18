@@ -59,10 +59,22 @@ import org.springframework.security.web.access.AccessDeniedHandler;
          <portlet-name>portlet1</portlet-name>
      </filter-mapping>
  </portlet>
- * }
+ }
  * </pre>
- *
- * It is also necessary to
+ * Finally, it is necessary to specify the following in the WEB-INF/web.xml descriptor:
+ * <pre>
+{@code
+<filter>
+	<filter-name>delegatingFilterProxy</filter-name>
+	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>delegatingFilterProxy</filter-name>
+	<servlet-name>ViewRendererServlet</servlet-name>
+	<dispatcher>INCLUDE</dispatcher>
+</filter-mapping>
+}
+ * </pre>
  *
  * @author  Neil Griffin
  */
