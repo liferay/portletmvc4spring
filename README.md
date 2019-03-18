@@ -21,8 +21,8 @@ software defects.
 
 	<dependencies>
 		<dependency>
-			<groupId>com.liferay</groupId>
-			<artifactId>com.liferay.portletmvc4spring</artifactId>
+			<groupId>com.liferay.portletmvc4spring</groupId>
+			<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
 			<version>5.1.0</version>	
 		</dependency>
 	<dependencies>
