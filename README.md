@@ -4,10 +4,22 @@ The PortletMVC4Spring project began as Spring Portlet MVC and was part of the
 [Spring Framework](https://spring.io/projects/spring-framework). When the project was pruned from version 5.0.x of the
 Spring Framework under [SPR-14129](https://github.com/spring-projects/spring-framework/issues/18701), it became
 necessary to fork and rename the project. This made it possible to improve and maintain the project for compatibility
-with the latest versions of the Portlet API and Spring Framework.
+with the latest versions of the Spring Framework and the Portlet API.
 
 [Liferay, Inc.](http://www.liferay.com) adopted Spring Portlet MVC in March of 2019 and the project was renamed to
 **PortletMVC4Spring**.
+
+## Library Modules
+
+PortletMVC4Spring contains two library modules:
+- [com.liferay.portletmvc4spring.framework](framework)
+- [com.liferay.portletmvc4spring.security](security)
+
+The **framework** module contains the MVC framework.
+
+The **security** module contains convenience and utility classes that help support
+[Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) protection
+provided by [Spring Security](https://spring.io/projects/spring-security).
 
 ## Requirements
 
