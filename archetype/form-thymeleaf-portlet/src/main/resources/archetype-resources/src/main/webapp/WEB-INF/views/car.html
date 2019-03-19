@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns:th="http://www.thymeleaf.org">
+	<link th:href="|${contextPath}/resources/css/main.css|" rel="stylesheet" type="text/css"/>
+	<p class="favorite-car" th:text="#{favorite-car}"/>
+	<span class="portlet-msg-info" th:if="${globalInfoMessage != null}" th:text="${globalInfoMessage}"/>
+	<form th:id="|${namespace}mainForm|" method="post" th:action="${mainFormActionURL}" th:object="${car}">
+		<fieldset>
+			<div class="form-group">
+				<label th:for="|${namespace}make|" path="make" th:text="#{make}"/>
+				<input th:id="|${namespace}make|" cssClass="form-control" th:field="*{make}"/>
+				<span class="portlet-msg-error" th:if="${#fields.hasErrors('make')}" th:errors="*{make}"/>
+			</div>
+			<div class="form-group">
+				<label th:for="|${namespace}model|" path="model" th:text="#{model}"/>
+				<input th:id="|${namespace}model|" cssClass="form-control" th:field="*{model}"/>
+				<span class="portlet-msg-error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"/>
+			</div>
+			<div class="form-group">
+				<label th:for="|${namespace}year|" path="year" th:text="#{year}"/>
+				<input th:id="|${namespace}year|" cssClass="form-control" th:field="*{year}"/>
+				<span class="portlet-msg-error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"/>
+			</div>
+		</fieldset>
+		<hr />
+		<button class="btn btn-primary" name="action" th:text="#{submit}" type="submit" value="submit"/>
+	</form>
+</div>

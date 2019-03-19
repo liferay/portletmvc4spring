@@ -33,6 +33,24 @@ software defects.
 		compile group: 'com.liferay', name: 'com.liferay.portletmvc4spring', version: '5.1.0'
 	}
 
+## Archetypes
+
+	# JSP Form
+	mvn archetype:generate \
+		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
+		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.jsp.portlet \
+		-DarchetypeVersion=5.1.0-SNAPSHOT \
+		-DgroupId=com.mycompany \
+		-DartifactId=com.mycompany.my.form.jsp.portlet \
+
+	# Thymeleaf Form
+	mvn archetype:generate \
+		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
+		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.thymeleaf.portlet \
+		-DarchetypeVersion=5.1.0-SNAPSHOT \
+		-DgroupId=com.mycompany \
+		-DartifactId=com.mycompany.my.form.thymeleaf.portlet \
+
 ## Dependency Upgrades
 
 PortletMVC4Spring requires JDK 8+ and has been upgraded from version 2.0 of the Portlet API to version 3.0. In

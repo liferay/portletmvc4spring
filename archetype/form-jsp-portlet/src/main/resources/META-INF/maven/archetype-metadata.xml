@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<archetype-descriptor name="com.liferay.portletmvc4spring.archetype.form.jsp.portlet">
+	<fileSets>
+		<fileSet filtered="true">
+			<directory>src/main/java</directory>
+		</fileSet>
+		<fileSet filtered="true">
+			<directory>src/main/resources</directory>
+		</fileSet>
+		<fileSet filtered="true">
+			<directory>src/main/webapp</directory>
+			<excludes>
+				<exclude>resources/images/*</exclude>
+				<exclude>WEB-INF/views/*</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet filtered="false">
+			<directory>src/main/webapp</directory>
+			<includes>
+				<include>resources/images/*</include>
+				<include>WEB-INF/views/*</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true">
+			<directory>src/test/java</directory>
+		</fileSet>
+		<fileSet filtered="true">
+			<directory></directory>
+			<includes>
+				<include>build.gradle</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</archetype-descriptor>

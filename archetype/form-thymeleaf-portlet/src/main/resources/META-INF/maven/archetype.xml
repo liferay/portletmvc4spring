@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<archetype>
+	<id>com.liferay.portletmvc4spring.archetype.form.thymeleaf.portlet</id>
+	<resources>
+		<resource>src/main/webapp/WEB-INF/liferay-plugin-package.properties</resource>
+		<resource>src/main/webapp/WEB-INF/web.xml</resource>
+		<resource>src/main/webapp/WEB-INF/views/view.xhtml</resource>
+		<resource>src/main/webapp/WEB-INF/resources/css/main.css</resource>
+		<resource>src/main/webapp/WEB-INF/resources/images/icon.png</resource>
+	</resources>
+</archetype>
