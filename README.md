@@ -11,15 +11,10 @@ with the latest versions of the Spring Framework and the Portlet API.
 
 ## Library Modules
 
-PortletMVC4Spring contains two library modules:
-- [com.liferay.portletmvc4spring.framework](framework)
-- [com.liferay.portletmvc4spring.security](security)
-
-The **framework** module contains the MVC framework.
-
-The **security** module contains convenience and utility classes that help support
-[Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) protection
-provided by [Spring Security](https://spring.io/projects/spring-security).
+| Module | Description |
+| ------ | ----------- |
+| [com.liferay.portletmvc4spring.framework](framework) | Provides the Model/View/Controller (MVC) portlet framework. |
+| [com.liferay.portletmvc4spring.security](security) | Provides convenience and utility classes that help support [Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) protection provided by [Spring Security](https://spring.io/projects/spring-security). |
 
 ## Requirements
 
@@ -85,7 +80,7 @@ containing patches for software defects.
 
 There are two demos available that have been tested in both Liferay Portal and Apache Pluto:
 
-| Source Code  | Maven Central |
+| Source Code   | Maven Central |
 | ------------- | ------------- |
 | [applicant-jsp-portlet](demo/applicant-jsp-portlet)  |  [com.liferay.portletmvc4spring.demo.applicant.jsp.portlet.war](https://search.maven.org/search?q=a:com.liferay.portletmvc4spring.demo.applicant.jsp.portlet) |
 | [applicant-thymeleaf-portlet](demo/applicant-thymeleaf-portlet)  |  [com.liferay.portletmvc4spring.demo.applicant.thymeleaf.portlet.war](https://search.maven.org/search?q=a:com.liferay.portletmvc4spring.demo.applicant.thymeleaf.portlet) |
