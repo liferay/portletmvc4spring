@@ -1,6 +1,6 @@
 # PortletMVC4Spring
 
-The PortletMVC4Spring project began as Spring Portlet MVC which was part of the
+The PortletMVC4Spring project began as Spring Portlet MVC and was part of the
 [Spring Framework](https://spring.io/projects/spring-framework). When the project was pruned from version 5.0.x of the
 Spring Framework under [SPR-14129](https://github.com/spring-projects/spring-framework/issues/18701), it became
 necessary to fork and rename the project. This made it possible to improve and maintain the project for compatibility
@@ -37,12 +37,18 @@ containing patches for software defects.
 			<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
 			<version>5.1.0</version>	
 		</dependency>
+		<dependency>
+			<groupId>com.liferay.portletmvc4spring</groupId>
+			<artifactId>com.liferay.portletmvc4spring.security</artifactId>
+			<version>5.1.0</version>	
+		</dependency>
 	<dependencies>
 	
 **Gradle:**
 
 	dependencies {
-		compile group: 'com.liferay', name: 'com.liferay.portletmvc4spring', version: '5.1.0'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.1.0'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.1.0'
 	}
 
 ## Archetypes
@@ -51,7 +57,7 @@ containing patches for software defects.
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.jsp.portlet \
-		-DarchetypeVersion=5.1.0-SNAPSHOT \
+		-DarchetypeVersion=5.1.0 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.jsp.portlet \
 
@@ -59,7 +65,7 @@ containing patches for software defects.
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.thymeleaf.portlet \
-		-DarchetypeVersion=5.1.0-SNAPSHOT \
+		-DarchetypeVersion=5.1.0 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.thymeleaf.portlet \
 
@@ -92,7 +98,7 @@ Using [Maven](https://maven.apache.org/) 3.x:
 
 ## Documentation
 
-* [Official Documentation](src/main/asciidoc/portletmvc4spring.adoc)
+* [Official Documentation](framework/src/main/asciidoc/portletmvc4spring.adoc)
 
 ## Community Participation
 
