@@ -52,11 +52,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.portals.pluto</groupId>
-			<artifactId>portlet-servlet-adapter</artifactId>
-			<version>@portlet-servlet-adapter-version@</version>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>@hibernate-version@</version>
