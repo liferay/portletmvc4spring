@@ -112,15 +112,16 @@ see [Dependency Coordinates](#dependency-coordinates).
 
 2. Add the following to your WEB-INF/spring-context/portlet-application-context.xml descriptor:
 
-
+````
 	<bean id="springSecurityPortletConfigurer" class="com.liferay.portletmvc4spring.security.SpringSecurityPortletConfigurer" />
 	<bean id="delegatingFilterProxy" class="org.springframework.web.filter.DelegatingFilterProxy">
 		<property name="targetBeanName" value="springSecurityFilterChain" />
 	</bean>
+````
 
 3. Add the following to your WEB-INF/portlet.xml descriptor:
 
-
+````
 	<filter>
 		<filter-name>SpringSecurityPortletFilter</filter-name>
 		<filter-class>com.liferay.portletmvc4spring.security.SpringSecurityPortletFilter</filter-class>
@@ -132,10 +133,11 @@ see [Dependency Coordinates](#dependency-coordinates).
 		<filter-name>SpringSecurityPortletFilter</filter-name>
 		<portlet-name>portlet1</portlet-name>
 	</filter-mapping>
+````
 
 4. Add the following to your WEB-INF/web.xml descriptor:
  
- 
+````
 	<filter>
 		<filter-name>delegatingFilterProxy</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -145,6 +147,7 @@ see [Dependency Coordinates](#dependency-coordinates).
 		<servlet-name>ViewRendererServlet</servlet-name>
 		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
+````
  
 ## Issues
 
