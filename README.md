@@ -97,7 +97,7 @@ If you are migrating a portlet project from Spring Portlet MVC to PortletMVC4Spr
 
 2. Replace the `spring-webmvc-portlet` dependency in your pom.xml or build.gradle descriptor with the
 `com.liferay.portletmvc4spring.framework` dependency. For more information about adding dependencies, see
-][Dependency Coordinates](#dependency-coordinates).
+[Dependency Coordinates](#dependency-coordinates).
 
 3. Replace `org.springframework.web.portlet.DispatcherPortlet` with `com.liferay.portletmvc4spring.DispatcherPortlet`
 in your WEB-INF/portlet.xml descriptor.
@@ -109,7 +109,9 @@ In order to enable CSRF protection, follow these steps:
 1. Add the `com.liferay.portletmvc.security` library as a dependency to your portlet project. For more information,
 see [Dependency Coordinates](#dependency-coordinates).
 
+
 2. Add the following to your WEB-INF/spring-context/portlet-application-context.xml descriptor:
+
 
 	<bean id="springSecurityPortletConfigurer" class="com.liferay.portletmvc4spring.security.SpringSecurityPortletConfigurer" />
 	<bean id="delegatingFilterProxy" class="org.springframework.web.filter.DelegatingFilterProxy">
@@ -118,19 +120,21 @@ see [Dependency Coordinates](#dependency-coordinates).
 
 3. Add the following to your WEB-INF/portlet.xml descriptor:
 
-     <filter>
-         <filter-name>SpringSecurityPortletFilter</filter-name>
-         <filter-class>com.liferay.portletmvc4spring.security.SpringSecurityPortletFilter</filter-class>
-         <lifecycle>ACTION_PHASE</lifecycle>
-         <lifecycle>RENDER_PHASE</lifecycle>
-         <lifecycle>RESOURCE_PHASE</lifecycle>
-     </filter>
-     <filter-mapping>
-         <filter-name>SpringSecurityPortletFilter</filter-name>
-         <portlet-name>portlet1</portlet-name>
-     </filter-mapping>
- 
+
+	<filter>
+		<filter-name>SpringSecurityPortletFilter</filter-name>
+		<filter-class>com.liferay.portletmvc4spring.security.SpringSecurityPortletFilter</filter-class>
+		<lifecycle>ACTION_PHASE</lifecycle>
+		<lifecycle>RENDER_PHASE</lifecycle>
+		<lifecycle>RESOURCE_PHASE</lifecycle>
+	<filter>
+	<filter-mapping>
+		<filter-name>SpringSecurityPortletFilter</filter-name>
+		<portlet-name>portlet1</portlet-name>
+	</filter-mapping>
+
 4. Add the following to your WEB-INF/web.xml descriptor:
+ 
  
 	<filter>
 		<filter-name>delegatingFilterProxy</filter-name>
