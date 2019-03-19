@@ -16,7 +16,6 @@
 package com.liferay.portletmvc4spring.demo.applicant.jsp.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
