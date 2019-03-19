@@ -89,6 +89,59 @@ The demos exercise **many** of the features of PortletMVC4Spring that developers
 applications. The demos are **identical** _except_ that one uses JSPX views and the other uses
 [Thymeleaf](https://www.thymeleaf.org) views.
 
+## Migration
+
+If you are migrating a portlet project from Spring Portlet MVC to PortletMVC4Spring, then follow these steps:
+
+1. Upgrade your pom.xml or build.gradle descriptor to version 5.1.x of the Spring Framework.
+
+2. Replace the `spring-webmvc-portlet` dependency in your pom.xml or build.gradle descriptor with the
+`com.liferay.portletmvc4spring.framework` dependency. For more information about adding dependencies, see
+][Dependency Coordinates](#dependency-coordinates).
+
+3. Replace `org.springframework.web.portlet.DispatcherPortlet` with `com.liferay.portletmvc4spring.DispatcherPortlet`
+in your WEB-INF/portlet.xml descriptor.
+
+## Enabling CSRF Protection
+
+In order to enable CSRF protection, follow these steps:
+
+1. Add the `com.liferay.portletmvc.security` library as a dependency to your portlet project. For more information,
+see [Dependency Coordinates](#dependency-coordinates).
+
+2. Add the following to your WEB-INF/spring-context/portlet-application-context.xml descriptor:
+
+	<bean id="springSecurityPortletConfigurer" class="com.liferay.portletmvc4spring.security.SpringSecurityPortletConfigurer" />
+	<bean id="delegatingFilterProxy" class="org.springframework.web.filter.DelegatingFilterProxy">
+		<property name="targetBeanName" value="springSecurityFilterChain" />
+	</bean>
+
+3. Add the following to your WEB-INF/portlet.xml descriptor:
+
+     <filter>
+         <filter-name>SpringSecurityPortletFilter</filter-name>
+         <filter-class>com.liferay.portletmvc4spring.security.SpringSecurityPortletFilter</filter-class>
+         <lifecycle>ACTION_PHASE</lifecycle>
+         <lifecycle>RENDER_PHASE</lifecycle>
+         <lifecycle>RESOURCE_PHASE</lifecycle>
+     </filter>
+     <filter-mapping>
+         <filter-name>SpringSecurityPortletFilter</filter-name>
+         <portlet-name>portlet1</portlet-name>
+     </filter-mapping>
+ 
+4. Add the following to your WEB-INF/web.xml descriptor:
+ 
+	<filter>
+		<filter-name>delegatingFilterProxy</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>delegatingFilterProxy</filter-name>
+		<servlet-name>ViewRendererServlet</servlet-name>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+ 
 ## Issues
 
 Defects and feature requests can be posted in the [PortletMVC4Spring Issue Tracker](http://issues.liferay.com/browse/MVCS).
