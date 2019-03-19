@@ -3,8 +3,8 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.liferay.portletmvc4spring</groupId>
-		<artifactId>com.liferay.portletmvc4spring.demo</artifactId>
+		<groupId>com.liferay.portletmvc4spring.demo</groupId>
+		<artifactId>com.liferay.portletmvc4spring.demo.parent</artifactId>
 		<version>5.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
