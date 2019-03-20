@@ -19,7 +19,7 @@ with the latest versions of the Spring Framework and the Portlet API.
 | Module | Description |
 | ------ | ----------- |
 | [com.liferay.portletmvc4spring.framework](framework) | Provides the Model/View/Controller (MVC) portlet framework. |
-| [com.liferay.portletmvc4spring.security](security) | Provides convenience and utility classes that help support [Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) protection provided by [Spring Security](https://spring.io/projects/spring-security). |
+| [com.liferay.portletmvc4spring.security](security) | Provides convenience and utility classes that help support [Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) protection provided by [Spring Security](https://spring.io/projects/spring-security). For more information, see [Enabling CSRF Protection](#enabling-csrf-protection).|
 
 ## Requirements
 
@@ -154,7 +154,8 @@ see [Dependency Coordinates](#dependency-coordinates).
 	<filter>
 	<filter-mapping>
 		<filter-name>SpringSecurityPortletFilter</filter-name>
-		<!-- NOTE: Specify a portlet-name element for each and every portlet that you want protected! -->
+		<!-- NOTE: Specify a portlet-name element for each and every portlet -->
+		<!--       that you want protected! -->
 		<portlet-name>portlet1</portlet-name>
 	</filter-mapping>
 ````
