@@ -11,10 +11,10 @@
 	<p class="favorite-car">
 		<spring:message code="favorite-car"/>
 	</p>
-	<portlet:actionURL var="mainFormActionURL"/>
 	<c:if test="${not empty globalInfoMessage}">
 		<span class="portlet-msg-info">${globalInfoMessage}</span>
 	</c:if>
+	<portlet:actionURL var="mainFormActionURL"/>
 	<form:form id="${namespace}mainForm" method="post" action="${mainFormActionURL}" modelAttribute="car">
 		<fieldset>
 			<div class="form-group">
