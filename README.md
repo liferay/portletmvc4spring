@@ -9,6 +9,11 @@ with the latest versions of the Spring Framework and the Portlet API.
 [Liferay, Inc.](http://www.liferay.com) adopted Spring Portlet MVC in March of 2019 and the project was renamed to
 **PortletMVC4Spring**.
 
+## Documentation
+
+* [Developer Guide](framework/src/main/asciidoc/portletmvc4spring.adoc)
+* [Javadoc Reference](https://liferay.github.io/portletmvc4spring/apidocs/index.html)
+
 ## Library Modules
 
 | Module | Description |
@@ -102,13 +107,30 @@ If you are migrating a portlet project from Spring Portlet MVC to PortletMVC4Spr
 3. Replace `org.springframework.web.portlet.DispatcherPortlet` with `com.liferay.portletmvc4spring.DispatcherPortlet`
 in your WEB-INF/portlet.xml descriptor.
 
+4. The Spring Portlet MVC
+[AnnotationMethodHandlerAdapter](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/portlet/mvc/annotation/AnnotationMethodHandlerAdapter.html)
+class was replaced with the new PortletMVC4Spring
+[PortletRequestMappingHandlerAdapter](https://liferay.github.io/portletmvc4spring/apidocs/com/liferay/portletmvc4spring/mvc/method/annotation/PortletRequestMappingHandlerAdapter.html)
+class in order to utilize the modern-day HandlerMethod infrastructure that
+[Spring Web MVC](https://docs.spring.io/spring/docs/5.1.x/spring-framework-reference/web.html#spring-web) is based on.
+
+   If you specified `AnnotationMethodHandlerAdapter` as a `<bean>` in a Spring configuration descriptor, then you will
+need to replace the `org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter` fully-qualified
+class name (FQCN) with `com.liferay.portletmvc4spring.mvc.method.annotation.PortletRequestMappingHandlerAdapter`. In
+addition, the following properties have changed:
+ 
+- [customModelAndViewResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/portlet/mvc/annotation/AnnotationMethodHandlerAdapter.html#setCustomModelAndViewResolver-org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver-) (no longer available)
+
+- [customArgumentResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/portlet/mvc/annotation/AnnotationMethodHandlerAdapter.html#setCustomArgumentResolver-org.springframework.web.bind.support.WebArgumentResolver-) (no longer available)
+
+- [customArgumentResolvers](https://liferay.github.io/portletmvc4spring/apidocs/com/liferay/portletmvc4spring/mvc/method/annotation/PortletRequestMappingHandlerAdapter.html#setCustomArgumentResolvers-java.util.List-) (specify a list of [HandlerMethodArgumentResolver](https://docs.spring.io/spring/docs/5.1.4.RELEASE/javadoc-api/org/springframework/web/method/support/HandlerMethodArgumentResolver.html) instead of a list of [WebArgumentResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/bind/support/WebArgumentResolver.html))
+ 
 ## Enabling CSRF Protection
 
 In order to enable CSRF protection, follow these steps:
 
 1. Add the `com.liferay.portletmvc.security` library as a dependency to your portlet project. For more information,
 see [Dependency Coordinates](#dependency-coordinates).
-
 
 2. Add the following to your WEB-INF/spring-context/portlet-application-context.xml descriptor:
 
@@ -162,10 +184,6 @@ PortletMVC4Spring is released under the [Apache License, Version 2.0](http://www
 Using [Maven](https://maven.apache.org/) 3.x:
 
 	mvn clean install
-
-## Documentation
-
-* [Official Documentation](framework/src/main/asciidoc/portletmvc4spring.adoc)
 
 ## Community Participation
 
