@@ -94,7 +94,7 @@ import com.liferay.portletmvc4spring.context.PortletApplicationContextUtils;
  </filter>
  <filter-mapping>
  	<filter-name>delegatingFilterProxy</filter-name>
- 	<servlet-name>ViewRendererServlet</servlet-name>
+ 	<url-pattern>/WEB-INF/servlet/view</url-pattern>
  	<dispatcher>INCLUDE</dispatcher>
  </filter-mapping>
  }
