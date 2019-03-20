@@ -6,7 +6,7 @@
 		  xmlns:spring="http://www.springframework.org/tags"
 		  version="2.1">
 	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
-	<portlet:defineObjects />
+	<portlet:defineObjects/>
 	<script type="text/javascript">
 		/*<![CDATA[*/
 		var ${namespace}_updateAttachments = function(responseJSON) {
