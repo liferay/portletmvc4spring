@@ -11,8 +11,8 @@
 	<groupId>com.liferay.portletmvc4spring</groupId>
 	<artifactId>com.liferay.portletmvc4spring.parent</artifactId>
 	<version>5.1.0-SNAPSHOT</version>
-	<name>PortletMVC4Spring Parent</name>
-	<description>PortletMVC4Spring Parent</description>
+	<name>PortletMVC4Spring</name>
+	<description>PortletMVC4Spring</description>
 	<url>https://github.com/liferay/portletmvc4spring</url>
 	<organization>
 		<name>Liferay, Inc.</name>
@@ -83,20 +83,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -313,6 +303,35 @@
 							</manifestEntries>
 						</archive>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+					<configuration>
+						<additionalparam>-Xdoclint:none -Xdoclint:-missing</additionalparam>
+						<detectLinks/>
+						<excludePackageNames>com.liferay.portletmvc4spring.demo.*</excludePackageNames>
+						<links>
+							<link>http://docs.oracle.com/javaee/7/api/</link>
+							<link>http://docs.jboss.org/jbossas/javadoc/7.1.2.Final/</link>
+							<link>https://docs.spring.io/spring/docs/${spring.framework.version}/javadoc-api/</link>
+							<link>https://docs.spring.io/spring-security/site/docs/${spring.framework.version}/api/</link>
+						</links>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
