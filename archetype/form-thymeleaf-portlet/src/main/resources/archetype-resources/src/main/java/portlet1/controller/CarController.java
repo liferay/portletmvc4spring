@@ -73,6 +73,7 @@ public class CarController {
 
 		model.addAttribute("contextPath", portletRequest.getContextPath());
 		model.addAttribute("mainFormActionURL", mimeResponse.createActionURL());
+		model.addAttribute("namespace", mimeResponse.getNamespace());
 
 		return "car";
 	}

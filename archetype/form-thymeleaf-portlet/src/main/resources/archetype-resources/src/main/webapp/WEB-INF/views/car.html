@@ -7,21 +7,21 @@
 		<fieldset>
 			<div class="form-group">
 				<label th:for="|${namespace}make|" path="make" th:text="#{make}"/>
-				<input th:id="|${namespace}make|" cssClass="form-control" th:field="*{make}"/>
+				<input th:id="|${namespace}make|" class="form-control" th:field="*{make}"/>
 				<span class="portlet-msg-error" th:if="${#fields.hasErrors('make')}" th:errors="*{make}"/>
 			</div>
 			<div class="form-group">
 				<label th:for="|${namespace}model|" path="model" th:text="#{model}"/>
-				<input th:id="|${namespace}model|" cssClass="form-control" th:field="*{model}"/>
+				<input th:id="|${namespace}model|" class="form-control" th:field="*{model}"/>
 				<span class="portlet-msg-error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"/>
 			</div>
 			<div class="form-group">
 				<label th:for="|${namespace}year|" path="year" th:text="#{year}"/>
-				<input th:id="|${namespace}year|" cssClass="form-control" th:field="*{year}"/>
+				<input th:id="|${namespace}year|" class="form-control" th:field="*{year}"/>
 				<span class="portlet-msg-error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"/>
 			</div>
 		</fieldset>
 		<hr />
-		<button class="btn btn-primary" name="action" th:text="#{submit}" type="submit" value="submit"/>
+		<input class="btn btn-primary" th:text="${submit}" type="submit"/>
 	</form>
 </div>
