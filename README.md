@@ -129,13 +129,14 @@ addition, the following properties have changed:
 
 In order to enable CSRF protection, follow these steps:
 
-1. Add the `com.liferay.portletmvc.security` library as a dependency to your portlet project. For more information,
+1. Add the `com.liferay.portletmvc4spring.security` library as a dependency to your portlet project. For more information,
 see [Dependency Coordinates](#dependency-coordinates).
 
 2. Add the following to your WEB-INF/spring-context/portlet-application-context.xml descriptor:
 
 ````
-	<bean id="springSecurityPortletConfigurer" class="com.liferay.portletmvc4spring.security.SpringSecurityPortletConfigurer" />
+	<bean id="springSecurityPortletConfigurer"
+		class="com.liferay.portletmvc4spring.security.SpringSecurityPortletConfigurer" />
 	<bean id="delegatingFilterProxy" class="org.springframework.web.filter.DelegatingFilterProxy">
 		<property name="targetBeanName" value="springSecurityFilterChain" />
 	</bean>
@@ -153,6 +154,7 @@ see [Dependency Coordinates](#dependency-coordinates).
 	<filter>
 	<filter-mapping>
 		<filter-name>SpringSecurityPortletFilter</filter-name>
+		<!-- NOTE: Specify a portlet-name element for each and every portlet that you want protected! -->
 		<portlet-name>portlet1</portlet-name>
 	</filter-mapping>
 ````
