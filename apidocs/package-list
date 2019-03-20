@@ -1,0 +1,14 @@
+com.liferay.portletmvc4spring
+com.liferay.portletmvc4spring.bind
+com.liferay.portletmvc4spring.bind.annotation
+com.liferay.portletmvc4spring.bind.annotation.support
+com.liferay.portletmvc4spring.context
+com.liferay.portletmvc4spring.handler
+com.liferay.portletmvc4spring.multipart
+com.liferay.portletmvc4spring.mvc
+com.liferay.portletmvc4spring.mvc.annotation
+com.liferay.portletmvc4spring.mvc.method
+com.liferay.portletmvc4spring.mvc.method.annotation
+com.liferay.portletmvc4spring.security
+com.liferay.portletmvc4spring.support
+com.liferay.portletmvc4spring.util
