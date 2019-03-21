@@ -157,7 +157,7 @@ addition, the following properties have changed:
 		class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
 ````
 
-- Finally, remove the following dependencies from your pom.xml and or build.gradle descriptor:
+- Finally, remove the following dependencies from your pom.xml or build.gradle descriptor:
 
 ````
 	<dependency>
