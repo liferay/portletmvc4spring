@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title th:text="#{terms-of-service}"/>
+	</head>
+	<body>
+		<p th:text="#{thank-you-for-accepting-our-terms-of-service}"/>
+		<a th:href="${viewTermsAgainResourceURL}" th:text="#{back-to-terms-of-service}"/>
+	</body>
+</html>

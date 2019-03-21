@@ -9,6 +9,7 @@
 			</div>
 		</fieldset>
 		<hr />
+		<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
 		<button class="btn btn-primary" name="action" th:text="#{submit}" type="submit" value="submit"/>
 		<button class="btn" name="action" th:text="#{reset}" type="submit" value="reset"/>
 	</form>

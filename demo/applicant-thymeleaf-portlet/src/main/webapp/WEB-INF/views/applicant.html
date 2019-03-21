@@ -26,8 +26,8 @@
 			$('#[(${namespace})]postalCode').on('change', function submitXHR(){
 				$.ajax({
 					data: {
-						postalCode: $(this).val(),
-						[(${_csrf.parameterName})]: '[(${_csrf.token})]'
+						[(${_csrf.parameterName})]: '[(${_csrf.token})]',
+						postalCode: $(this).val()
 					},
 					type: 'post',
 					url: '[(${autoFillResourceURL})]'
@@ -117,7 +117,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-6">
-				<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
 				<form th:id="|${namespace}mainForm|" method="post" th:action="${mainFormActionURL}" th:object="${applicant}">
 					<span class="portlet-msg-info" th:if="${globalInfoMessage != null}" th:text="${globalInfoMessage}"/>
 					<span class="portlet-msg-error" th:if="${globalErrorMessage != null}" th:text="${globalErrorMessage}"/>
@@ -189,13 +188,13 @@
 							</div>
 						</div>
 					</fieldset>
+					<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
 					<input class="btn btn-primary" th:text="${submit}" type="submit"/>
 				</form>
 			</div>
 			<div class="col-6">
 				<div class="row">
 					<div class="col">
-						<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
 						<form th:id="|${namespace}deleteFileForm|" method="post" th:action="${deleteFileResourceURL}" th:object="${applicant}">
 							<h3 th:text="#{attachments}"/>
 							<table class="table">
@@ -218,9 +217,9 @@
 							</table>
 						</form>
 						<hr/>
-						<!--/* The CSRF hidden field must be explicitly provided since the form element does not have a th:action attribute. */-->
 						<form th:id="|${namespace}fileUploadForm|" enctype="multipart/form-data">
 							<div class="form-group">
+								<!--/* The CSRF hidden field must be explicitly provided since the form element does not have a th:action attribute. */-->
 								<input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
 								<input th:id="|${namespace}inputFile|" class="form-control" th:name="multipartFiles" multiple="multiple" type="file"/>
 								<input class="btn btn-primary" th:value="#{submit}" type="submit"/>
@@ -236,4 +235,5 @@
 		<li th:text="|Spring Framework ${springFrameworkVersion}|"/>
 		<li th:text="|PortletMVC4Spring ${portletMVC4SpringVersion}|"/>
 	</ul>
+	<a th:href="${viewTermsResourceURL}" style="float:right;" target="_blank" th:text="#{terms-of-service}"/>
 </div>

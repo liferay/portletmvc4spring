@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
+		  xmlns:spring="http://www.springframework.org/tags" version="2.1">
+	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
+	<html>
+		<head>
+			<title><spring:message code="terms-of-service"/></title>
+		</head>
+		<body>
+			<p>
+				<spring:message code="thank-you-for-accepting-our-terms-of-service"/>
+			</p>
+			<portlet:resourceURL id="viewTermsAgain" var="viewTermsAgainResourceURL"/>
+			<a href="${viewTermsAgainResourceURL}">
+				<spring:message code="back-to-terms-of-service" />
+			</a>
+		</body>
+	</html>
+</jsp:root>

@@ -17,6 +17,7 @@
 			</div>
 		</fieldset>
 		<hr />
+		<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
 		<button class="btn btn-primary" name="action" value="submit" type="submit">
 			<spring:message code="submit" />
 		</button>

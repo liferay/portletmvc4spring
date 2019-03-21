@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
+		  xmlns:spring="http://www.springframework.org/tags" version="2.1">
+	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
+	<html>
+		<head>
+			<title><spring:message code="terms-of-service"/></title>
+		</head>
+		<body>
+			<h1>
+				<spring:message code="terms-of-service"/>
+			</h1>
+			<p>
+				<ul>
+					<li><spring:message code="terms-of-service-point1"/></li>
+					<li><spring:message code="terms-of-service-point2"/></li>
+					<li><spring:message code="terms-of-service-point3"/></li>
+				</ul>
+				<spring:message code="accept" var="accept" />
+				<portlet:resourceURL id="acceptTerms" var="acceptTermsResourceURL"/>
+				<form:form action="${acceptTermsResourceURL}" method="post">
+					<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
+					<input class="btn btn-primary" value="${accept}" type="submit"/>
+				</form:form>
+
+			</p>
+			<p>
+				<span><spring:message code="copyright"/></span>
+				<span> ${thisYear} </span>
+				<span><spring:message code="all-rights-reserved"/></span>
+			</p>
+		</body>
+	</html>
+</jsp:root>

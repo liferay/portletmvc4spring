@@ -70,7 +70,7 @@ public class PreferencesController {
 		// Thymeleaf
 		model.addAttribute("mainFormActionURL", mimeResponse.createActionURL());
 
-		return "edit";
+		return "preferences";
 	}
 
 	@ActionMapping(params = { "action=reset" })

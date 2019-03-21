@@ -66,7 +66,7 @@ public class PreferencesController {
 
 		model.addAttribute("preferences", new Preferences(portletPreferences.getValue("datePattern", null)));
 
-		return "edit";
+		return "preferences";
 	}
 
 	@ActionMapping(params = { "action=reset" })

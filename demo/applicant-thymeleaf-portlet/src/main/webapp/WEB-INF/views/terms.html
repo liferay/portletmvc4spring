@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title th:text="#{terms-of-service}"/>
+	</head>
+	<body>
+		<h1 th:text="#{terms-of-service}"/>
+		<p>
+			<ul>
+				<li th:text="#{terms-of-service-point1}"/>
+				<li th:text="#{terms-of-service-point2}"/>
+				<li th:text="#{terms-of-service-point3}"/>
+			</ul>
+			<form th:action="${acceptTermsResourceURL}" method="post">
+				<!--/* The CSRF hidden field is automatically added by Thymeleaf because the th:action attribute is present for the form. */-->
+				<input class="btn btn-primary" th:value="#{accept}" type="submit"/>
+			</form>
+		</p>
+		<p>
+			<span th:text="#{copyright}"/>
+			<span th:text="${thisYear}"/>
+			<span th:text="#{all-rights-reserved}"/>
+		</p>
+	</body>
+</html>

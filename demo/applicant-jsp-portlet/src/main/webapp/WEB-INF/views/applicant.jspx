@@ -60,8 +60,8 @@
 				if (confirm('${areYouSure}')) {
 					$.ajax({
 						data: {
-							${_csrf.parameterName}: '${_csrf.token}',
-							attachmentIndex: event.target.value
+							attachmentIndex: event.target.value,
+							${_csrf.parameterName}: '${_csrf.token}'
 						},
 						type: 'post',
 						url: '${deleteFileResourceURL}'
@@ -130,9 +130,6 @@
 		<div class="row">
 			<div class="col-6">
 				<portlet:actionURL var="mainFormActionURL"/>
-				<c:if test="${false}">
-				<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
-				</c:if>
 				<form:form id="${namespace}mainForm" method="post" action="${mainFormActionURL}" modelAttribute="applicant">
 					<c:if test="${not empty globalInfoMessage}">
 						<span class="portlet-msg-info">${globalInfoMessage}</span>
@@ -229,6 +226,9 @@
 							</div>
 						</div>
 					</fieldset>
+					<c:if test="${false}">
+					<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
+					</c:if>
 					<spring:message code="submit" var="submit" />
 					<input class="btn btn-primary" value="${submit}" type="submit"/>
 				</form:form>
@@ -236,9 +236,6 @@
 			<div class="col-6">
 				<div class="row">
 					<div class="col">
-						<c:if test="${false}">
-						<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
-						</c:if>
 						<form:form id="${namespace}deleteFileForm" method="post" action="${deleteFileResourceURL}" modelAttribute="applicant">
 							<h3><spring:message code="attachments"/></h3>
 							<table class="table">
@@ -267,11 +264,11 @@
 							</table>
 						</form:form>
 						<hr/>
-						<c:if test="${false}">
-						<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
-						</c:if>
 						<form:form id="${namespace}fileUploadForm" enctype="multipart/form-data" modelAttribute="transientUpload">
 							<div class="form-group">
+								<c:if test="${false}">
+								<!-- The CSRF hidden field is automatically added by the Spring form:form JSP tag. -->
+								</c:if>
 								<input id="${namespace}inputFile" class="form-control" name="multipartFiles" multiple="multiple" type="file"/>
 								<input class="btn btn-primary" value="${submit}" type="submit"/>
 							</div>
@@ -286,4 +283,8 @@
 		<li>Spring Framework ${springFrameworkVersion}</li>
 		<li>PortletMVC4Spring ${portletMVC4SpringVersion}</li>
 	</ul>
+	<portlet:resourceURL id="viewTerms" var="viewTermsResourceURL"/>
+	<a href="${viewTermsResourceURL}" style="float:right;" target="_blank">
+		<spring:message code="terms-of-service" />
+	</a>
 </jsp:root>
