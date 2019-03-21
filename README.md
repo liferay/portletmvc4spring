@@ -125,6 +125,51 @@ addition, the following properties have changed:
 
 - [customArgumentResolvers](https://liferay.github.io/portletmvc4spring/apidocs/com/liferay/portletmvc4spring/mvc/method/annotation/PortletRequestMappingHandlerAdapter.html#setCustomArgumentResolvers-java.util.List-) (specify a list of [HandlerMethodArgumentResolver](https://docs.spring.io/spring/docs/5.1.4.RELEASE/javadoc-api/org/springframework/web/method/support/HandlerMethodArgumentResolver.html) instead of a list of [WebArgumentResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/bind/support/WebArgumentResolver.html))
  
+5. If using [Apache Commons Fileupload](https://commons.apache.org/proper/commons-fileupload/), then update your Spring configuration descriptor:
+
+- Replace the following legacy bean:
+
+````
+	<bean id="portletMultipartResolver"
+		class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver" />
+````
+
+- With the new one from PortletMVC4Spring:
+
+````
+	<bean id="portletMultipartResolver"
+		class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver" />
+````
+
+  **Alternatively, you can upgrade to the native Portlet 3.0 file upload support** provided by PortletMVC4Spring by updating your Spring configuration descriptor:
+
+- Replace the following legacy bean:
+
+````
+	<bean id="portletMultipartResolver"
+		class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver" />
+````
+
+- With the new one from PortletMVC4Spring:
+
+````
+	<bean id="portletMultipartResolver"
+		class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
+````
+
+- Finally, remove the following dependencies from your pom.xml and or build.gradle descriptor:
+
+````
+	<dependency>
+		<groupId>commons-fileupload</groupId>
+		<artifactId>commons-fileupload</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+	</dependency>
+````
+ 
 ## Enabling CSRF Protection
 
 Liferay Portal provides CSRF protection out-of-the-box for the `ACTION_PHASE` of the portlet lifecycle via the
