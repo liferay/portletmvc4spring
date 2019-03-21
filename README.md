@@ -223,6 +223,7 @@ see [Dependency Coordinates](#dependency-coordinates).
 	<filter-mapping>
 		<filter-name>delegatingFilterProxy</filter-name>
 		<url-pattern>/WEB-INF/servlet/view</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
 ````

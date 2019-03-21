@@ -71,6 +71,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 <filter-mapping>
 	<filter-name>delegatingFilterProxy</filter-name>
 	<url-pattern>/WEB-INF/servlet/view</url-pattern>
+	<dispatcher>FORWARD</dispatcher>
 	<dispatcher>INCLUDE</dispatcher>
 </filter-mapping>
 }
