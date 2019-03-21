@@ -40,8 +40,7 @@ import org.springframework.util.Assert;
  * setParameterName()}.
  *
  * <p>By default, the same parameter value may not be used in two different portlet modes. This is so that if the portal
- * itself changes the portlet mode, the request will no longer be valid in the mapping. This behavior can be changed
- * with {@link #setAllowDuplicateParameters setAllowDupParameters()}.
+ * itself changes the portlet mode, the request will no longer be valid in the mapping.
  *
  * <p>The bean configuration for this mapping will look somthing like this:
  *
