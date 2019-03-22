@@ -5,16 +5,14 @@
 [[portlet-introduction]]
 == Introduction
 
-.JSR-362 The Java Portlet Specification
+While the Spring Framework supports servlet-based development via Spring Web MVC, PortletMVC4Spring supports JSR-362
+portlet development. As much as possible, PortletMVC4Spring is a mirror image of the Spring Web MVC framework, and also
+uses the same underlying view abstractions and integration technology.
 
 ****
 For more general information about portlet development, please review the https://jcp.org/en/jsr/detail?id=362[JSR-362
 Specification] itself.
 ****
-
-While the Spring Framework supports conventional (servlet-based) Web development, PortletMVC4Spring supports JSR-362
-Portlet development. As much as possible, PortletMVC4Spring is a mirror image of the Spring Web MVC] framework, and also
-uses the same underlying view abstractions and integration technology.
 
 [NOTE]
 ====
@@ -23,21 +21,22 @@ differences created by the unique workflow of JSR-362 portlets.
 ====
 
 The main way in which portlet workflow differs from servlet workflow is that the request to the portlet can have two
-distinct phases: the action phase and the render phase. The action phase is executed only once and is where any
-'backend' changes or actions occur, such as making changes in a database. The render phase then produces what is
+distinct phases: the `ACTION_PHASE` and the `RENDER_PHASE`. The `ACTION_PHASE` is executed only once and is where any
+'backend' changes or actions occur, such as making changes in a database. The `RENDER_PHASE` then produces what is
 displayed to the user each time the display is refreshed. The critical point here is that for a single overall request,
-the action phase is executed only once, but the render phase may be executed multiple times. This provides (and
+the `ACTION_PHASE` is executed only once, but the `RENDER_PHASE` may be executed multiple times. This provides (and
 requires) a clean separation between the activities that modify the persistent state of your system and the activities
-that generate what is displayed to the user.
+that generate what is displayed to the user. The Portlet 2.0 Specification added two more phases: The event phase and
+the resource phase, both of which are supported by annotation-driven dispatching. The Portlet 3.0 Specification added
+the header phase, but PortletMVC4Spring does not yet have annotation-driven dispatching support for it.
 
-The dual phases of portlet requests are one of the real strengths of the JSR-362 specification. For example, dynamic
-search results can be updated routinely on the display without the user explicitly rerunning the search. Most other
-portlet MVC frameworks attempt to completely hide the two phases from the developer and make it look as much like
-traditional servlet development as possible - but this approach removes one of the main benefits of using portlets. This
-is why the separation of the two phases is preserved throughout PortletMVC4Spring. The primary manifestation of this
-approach is that where a Spring Web MVC controller might have a single handler method annotated with
-`@RequestMapping`, an equivalent PortletMVC4Spring controller might have multiple handler methods, each utilizing one of
- `@ActionMapping`, `@EventMapping`, `@RenderMapping`, or `@ResourceMapping`.
+The multiple phases of portlet requests are one of the real strengths of the JSR-362 specification. Most other portlet
+MVC frameworks attempt to completely hide the two phases from the developer and make it look as much like traditional
+servlet development as possible - but this approach removes one of the main benefits of using portlets. This is why the
+separation of the two phases is preserved throughout PortletMVC4Spring. The primary manifestation of this approach is
+that where a Spring Web MVC controller might have a single handler method annotated with `@RequestMapping`, an
+equivalent PortletMVC4Spring controller might have multiple handler methods, each utilizing one of `@ActionMapping`,
+`@EventMapping`, `@RenderMapping`, or `@ResourceMapping`.
 
 The framework is designed around a `DispatcherPortlet` that dispatches requests to handlers, with configurable handler
 mappings and view resolution, just as the `DispatcherServlet` in the web framework does. File upload is also supported
@@ -64,7 +63,7 @@ the `AbstractController` class). For detailed information, please refer to the s
 
 [[portlet-introduction-view]]
 === Views - The V in MVC
-All the view rendering capabilities of the servlet framework are used directly via a special bridge servlet named
+All the view rendering capabilities of Spring Web MVC are used directly via a special bridge servlet named
 `ViewRendererServlet`. By using this servlet, the portlet request is converted into a servlet request and the view can
 be rendered using the entire normal Spring Web MVC infrastructure. This means all the existing renderers, such as JSP,
 Thymeleaf, Velocity, etc., can be used within the portlet.
@@ -127,7 +126,7 @@ below. Right now, we'll just mention them, just to let you know they exist and t
   certain criteria (for instance a matching portlet mode specified with the controller)
 
 | controller(s)
-| (<<portlet-controller>>) the beans providing the actual functionality (or at least, access to the functionality) as
+| (<<portlet-annotation>>) the beans providing the actual functionality (or at least, access to the functionality) as
   part of the MVC triad
 
 | view resolver
@@ -137,7 +136,7 @@ below. Right now, we'll just mention them, just to let you know they exist and t
 | (<<portlet-multipart>>) offers functionality to process file uploads from HTML forms
 
 | handler exception resolver
-| (<<portlet-exceptionresolver>>) offers functionality to map exceptions to views or implement other more complex
+| (<<portlet-ann-exceptionhandler]>>) offers functionality to map exceptions to views or implement other more complex
   exception handling code
 |===
 
@@ -194,8 +193,8 @@ init-parameters. The possibilities are listed below.
 [[portlet-viewservlet]]
 == The ViewRendererServlet
 
-The rendering process in PortletMVC4Spring is a bit more complex than in Web MVC. In order to reuse all the view
-technologies from Spring Web MVC, we must convert the `PortletRequest` / `PortletResponse` to `HttpServletRequest` /
+The rendering process in PortletMVC4Spring is a bit more complex than in Spring Web MVC. In order to reuse all the view
+technologies from Spring Web MVC, the `PortletRequest` / `PortletResponse` must be converted to `HttpServletRequest` /
 `HttpServletResponse` and then call the `render` method of the `View`. To do this, `DispatcherPortlet` uses a special
 servlet that exists for just this purpose: the `ViewRendererServlet`.
 
@@ -246,12 +245,12 @@ The following sections document these annotations and how they are most commonly
 
 [[portlet-ann-setup]]
 === Setting up the Dispatcher for Annotation Support
-__`@RequestMapping` will only be processed if a corresponding `HandlerMapping` (for type level annotations) and/or
-`HandlerAdapter` (for method level annotations) is present in the dispatcher.__ This is the case by default in both
-`DispatcherServlet` and `DispatcherPortlet`.
+__The `@RequestMapping` annotation will only be processed if a corresponding `HandlerMapping` (for type level
+annotations) and/or `HandlerAdapter` (for method level annotations) is present in the dispatcher.__ This is the case by
+default in both `DispatcherServlet` and `DispatcherPortlet`.
 
 However, if you are defining custom `HandlerMappings` or `HandlerAdapters`, then you need to make sure that a
-corresponding custom `DefaultAnnotationHandlerMapping` and/or `AnnotationMethodHandlerAdapter` is defined as well -
+corresponding custom `DefaultAnnotationHandlerMapping` and/or `PortletRequestMappingHandlerAdapter` is defined as well -
 provided that you intend to use `@RequestMapping`.
 
 [source,xml,indent=0]
@@ -265,15 +264,15 @@ provided that you intend to use `@RequestMapping`.
 
 		<bean class="com.liferay.portletmvc4spring.mvc.annotation.DefaultAnnotationHandlerMapping"/>
 
-		<bean class="com.liferay.portletmvc4spring.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+		<bean class="com.liferay.portletmvc4spring.mvc.method.annotation.PortletRequestMappingHandlerAdapter"/>
 
 		// ... (controller bean definitions) ...
 
 	</beans>
 ----
 
-Defining a `DefaultAnnotationHandlerMapping` and/or `AnnotationMethodHandlerAdapter` explicitly also makes sense if you
-would like to customize the mapping strategy, e.g. specifying a custom `WebBindingInitializer` (see below).
+Defining a `DefaultAnnotationHandlerMapping` and/or `PortletRequestMappingHandlerAdapter` explicitly also makes sense if
+you would like to customize the mapping strategy, e.g. specifying a custom `WebBindingInitializer` (see below).
 
 
 
@@ -364,7 +363,7 @@ using this annotation:
 			return "petSitesEdit";
 		}
 
-		@RequestMapping(params = "action=add") // render phase
+		@RequestMapping(params = "action=add") // RENDER_PHASE
 		public String showSiteForm(Model model) {
 			// Used for the initial form as well as for redisplaying with errors.
 			if (!model.containsAttribute("site")) {
@@ -374,7 +373,7 @@ using this annotation:
 			return "petSitesAdd";
 		}
 
-		@RequestMapping(params = "action=add") // action phase
+		@RequestMapping(params = "action=add") // ACTION_PHASE
 		public void populateSite(@ModelAttribute("site") PetSite petSite,
 				BindingResult result, SessionStatus status, ActionResponse response) {
 			new PetSiteValidator().validate(petSite, result);
@@ -478,9 +477,9 @@ the corresponding command object, if desired):
   that will be exposed to the web view.
 * Command/form objects to bind parameters to: as bean properties or fields, with customizable type conversion, depending
   on `@InitBinder` methods and/or the HandlerAdapter configuration - see the " `webBindingInitializer`" property on
-  `AnnotationMethodHandlerAdapter`. Such command objects along with their validation results will be exposed as model
-  attributes, by default using the non-qualified command class name in property notation (e.g. "orderAddress" for type
-  "mypackage.OrderAddress"). Specify a parameter-level `ModelAttribute` annotation for declaring a specific model
+  `PortletRequestMappingHandlerAdapter`. Such command objects along with their validation results will be exposed as
+  model attributes, by default using the non-qualified command class name in property notation (e.g. "orderAddress" for
+  type "mypackage.OrderAddress"). Specify a parameter-level `ModelAttribute` annotation for declaring a specific model
   attribute name.
 * `org.springframework.validation.Errors` / `org.springframework.validation.BindingResult` validation results for a
   preceding command/form object (the immediate preceding argument).
@@ -582,7 +581,7 @@ The following code snippet shows these two usages of this annotation:
 			return this.petSites;
 		}
 
-		@RequestMapping(params = "action=add") // action phase
+		@RequestMapping(params = "action=add") // ACTION_PHASE
 		public void populateSite( @ModelAttribute("site") PetSite petSite, BindingResult result, SessionStatus status, ActionResponse response) {
 			new PetSiteValidator().validate(petSite, result);
 			if (!result.hasErrors()) {
@@ -648,10 +647,10 @@ The following example demonstrates the use of `@InitBinder` for configuring a `C
 	public class MyFormController {
 
 		@InitBinder
-		protected void initBinder(WebDataBinder binder) {
+		protected void initBinder(WebDataBinder webDataBinder) {
 		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			dateFormat.setLenient(false);
-			binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+			webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 		}
 
 		// ...
@@ -664,17 +663,57 @@ The following example demonstrates the use of `@InitBinder` for configuring a `C
 ==== Configuring a Custom WebBindingInitializer
 
 To externalize data binding initialization, you can provide a custom implementation of the `WebBindingInitializer`
-interface, which you then enable by supplying a custom bean configuration for an `AnnotationMethodHandlerAdapter`, thus
-overriding the default configuration.
+interface, which you then enable by supplying a custom bean configuration for an `PortletRequestMappingHandlerAdapter`,
+thus overriding the default configuration.
 
 
 
+
+[[portlet-ann-exceptionhandler]]
+=== Exception Handling with @ExceptionHandler
+
+If a controller method throws an exception, then methods annotated with `@ExceptionHandler` will be called in order to
+provide a way for the developer to gracefully handle exceptions. The method signatures can take various different
+arguments. The typical return type is `void` but if the method returns type `String` then the return value will be
+written to the response as portlet markup. For example:
+
+[source,java,indent=0]
+[subs="verbatim,quotes"]
+----
+		@ExceptionHandler
+		public void handleException(Exception ex, Writer writer) throws IOException {
+			// Write the exception message to the response as portlet markup.
+			writer.write(ex.getMessage());
+		}
+
+		@ExceptionHandler(IOException.class)
+		public String handleIOException(IOException ex, PortletRequest request) {
+			// Write the portlet lifecycle and exception message to the response
+			// as portlet markup by returning a String.
+			return portletRequest.getAttribute(PortletRequest.LIFECYCLE_PHASE) + ":" + ex.getMessage();
+		}
+
+		@ExceptionHandler({ BindException.class, IllegalArgumentException.class })
+		public String handle1(Exception ex, PortletRequest request, PortletResponse response) {
+			// Write the exception class name to the response by returning a String.
+			return ClassUtils.getShortName(ex.getClass());
+		}
+----
 
 [[portlet-viewresolver]]
 == Views and View Resolvers
 As mentioned previously, PortletMVC4Spring directly reuses all the view technologies from Spring Web MVC. This includes
 not only the various `View` implementations themselves, but also the `ViewResolver` implementations. For more
-information, refer to <<view>> and <<mvc-viewresolver>> respectively.
+information, refer to https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view[View
+Technologies] in the Spring Framework documentation.
+
+[NOTE]
+====
+In order to help developers get started quickly, the PortletMVC4Spring project includes demos and Maven archetypes that
+show how to use JSP and/or Thymeleaf. See the https://github.com/liferay/portletmvc4spring[Project Page at GitHub] for
+more details.
+====
+
 
 A few items on using the existing `View` and `ViewResolver` implementations are worth mentioning:
 
@@ -755,8 +794,11 @@ context and hands over the request. What the resolver then does is wrap the curr
 request, you can get information about the multiparts contained by this request and actually get access to the multipart
 files themselves in your controllers.
 
-Note that you can only receive multipart file uploads as part of an `ActionRequest` or `ResourceRequest`, but not as
+[NOTE]
+====
+You can only receive multipart file uploads as part of an `ActionRequest` or `ResourceRequest`, but not as
 part of an `EventRequest`, `HeaderRequest`, or `RenderRequest`.
+====
 
 
 
@@ -864,20 +906,6 @@ The following code snippet shows an example of how to register custom editors th
 
 
 
-[[portlet-exceptionresolver]]
-== Legacy Exception Handling
-Just like Spring Web MVC, PortletMVC4Spring provides ``HandlerExceptionResolver``s to ease the pain of unexpected
-exceptions that occur while your request is being processed by a handler that matched the request. PortletMVC4Spring
-also provides a portlet-specific, concrete `SimpleMappingExceptionResolver` that enables you to take the class name of
-any exception that might be thrown and map it to a view name.
-
-
-
-
-
-
-
-
 [[portlet-deployment]]
 == Portlet Application Deployment
 The process of deploying a PortletMVC4Spring application is no different than deploying any JSR-362 Portlet application.
@@ -903,6 +931,16 @@ from your portal for this process.
 
 Once you have deployed your portlet, review the resulting `web.xml` file for sanity. Some older portals have been known
 to corrupt the definition of the `ViewRendererServlet`, thus breaking the rendering of your portlets.
+
+
+
+
+[[portlet-exceptionresolver]]
+== Legacy Exception Handling
+Just like Spring Web MVC, PortletMVC4Spring provides ``HandlerExceptionResolver``s to ease the pain of unexpected
+exceptions that occur while your request is being processed by a handler that matched the request. PortletMVC4Spring
+also provides a portlet-specific, concrete `SimpleMappingExceptionResolver` that enables you to take the class name of
+any exception that might be thrown and map it to a view name.
 
 
 
@@ -942,8 +980,8 @@ interface, which is listed below.
 ----
 
 As you can see, the Portlet `Controller` interface requires two methods that handle the two phases of a portlet request:
-the action request and the render request. The action phase should be capable of handling an action request, and the
-render phase should be capable of handling a render request and returning an appropriate model and view. While the
+the action request and the render request. The `ACTION_PHASE` should be capable of handling an action request, and the
+`RENDER_PHASE` should be capable of handling a render request and returning an appropriate model and view. While the
 `Controller` interface is quite abstract, PortletMVC4Spring offers several controllers that already contain a lot of the
 functionality you might need; most of these are very similar to controllers from Spring Web MVC. The `Controller`
 interface just defines the most common functionality required of every controller: handling an action request, handling
@@ -1079,10 +1117,13 @@ Using a handler mapping you can map incoming portlet requests to appropriate han
 you can use out of the box, for example, the `PortletModeHandlerMapping`, but let's first examine the general concept of
 a `HandlerMapping`.
 
-Note: The term "Handler" is intentionally used here instead of "Controller". `DispatcherPortlet` is designed to be used
+[NOTE]
+====
+The term "Handler" is intentionally used here instead of "Controller". `DispatcherPortlet` is designed to be used
 with other ways to process requests than just PortletMVC4Spring's own Controllers. A Handler is any Object that can
 handle portlet requests. Controllers are an example of Handlers, and they are of course the default. To use some other
 framework with `DispatcherPortlet`, a corresponding implementation of `HandlerAdapter` is all that is needed.
+====
 
 The functionality a basic `HandlerMapping` provides is the delivering of a `HandlerExecutionChain`, which must contain
 the handler that matches the incoming request, and may also contain a list of handler interceptors that are applied to
@@ -1211,7 +1252,7 @@ apply specific functionality to certain requests, for example, checking for a pr
 implements these concepts in the same way as Spring Web MVC.
 
 Interceptors located in the handler mapping must implement `HandlerInterceptor` from the `com.liferay.portletmvc4spring`
-package. Just like the servlet version, this interface defines three methods: one that will be called before the actual
+package. Just like Spring Web MVC, this interface defines three methods: one that will be called before the actual
 handler will be executed ( `preHandle`), one that will be called after the handler is executed (`postHandle`), and one
 that is called after the complete request has finished (`afterCompletion`). These three methods should provide enough
 flexibility to do all kinds of pre- and post- processing.

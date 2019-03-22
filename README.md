@@ -169,6 +169,9 @@ addition, the following properties have changed:
 		<artifactId>commons-io</artifactId>
 	</dependency>
 ````
+
+6. Perform a global search and replace of "org.springframework.web.portlet" with "com.liferay.portletmvc4spring" within
+your project.
  
 ## Enabling CSRF Protection
 
