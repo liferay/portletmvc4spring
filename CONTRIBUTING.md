@@ -10,7 +10,7 @@ must be compatible with the Apache License, Version 2.0.
 ##  Developer Certificate of Origin (DCO)
 
 Contributions must be received in the form of GitHub pull requests and must adhere to the requirements of the
-[DCO](https://developercertificate.org/)] by adding a "Signed-off-by" line to commit messages.
+[DCO](https://developercertificate.org/) by adding a "Signed-off-by" line to commit messages.
 
 For example:
 
@@ -24,4 +24,4 @@ a commit message:
 	$ git commit -s -m 'This is my contribution that implements feature XYZ.'
 
 Pull requests that do not contain the "Signed-off-by" line in commit messages will have their status automatically
-set to 'failed' by the [GitHub DCO Application](https://github.com/apps/dco).
+set to `failed` by the [GitHub DCO Enforcement Application](https://github.com/apps/dco).
