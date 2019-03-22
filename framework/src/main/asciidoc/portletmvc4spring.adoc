@@ -462,6 +462,7 @@ the corresponding command object, if desired):
   render requests).
 * Session object (Portlet API): of type PortletSession. An argument of this type will enforce the presence of a
   corresponding session. As a consequence, such an argument will never be `null`.
+* Preferences (Portlet API): of type PortletPreferences.
 * `org.springframework.web.context.request.WebRequest` or `org.springframework.web.context.request.NativeWebRequest`.
   Allows for generic request parameter access as well as request/session attribute access, without ties to the native
   Servlet/Portlet API.
