@@ -54,10 +54,10 @@ the current locale in the same way as `DispatcherServlet`.
 === Controllers - The C in MVC
 
 The __modern__ approach for developing PortletMVC4Spring controller classes is to use the annotation-based programming
-model. For detailed information, please refer to <<portlet-annotation>>.
+model. For detailed information, please refer to the section titled "<<portlet-annotation>>".
 
-The __legacy__ approach is to have a controller class that implements `Controller` interface (typically by extending
-the `AbstractController` class). For detailed information, please refer to <<portlet-controller>>.
+The __legacy__ approach is to have a controller class that implements the `Controller` interface (typically by extending
+the `AbstractController` class). For detailed information, please refer to the section titled "<<portlet-controller>>".
 
 
 
@@ -233,19 +233,19 @@ parameter.
 
 
 [[portlet-annotation]]
-== Annotation-based controller programming model
+== Annotation-Based Controller Programming Model
 Version 2.5 of the Spring Framework introduced an annotation-based programming model for MVC controllers, using
 annotations such as `@RequestMapping`, `@RequestParam`, `@ModelAttribute`, etc. This annotation support is available for
 both Spring Web MVC and PortletMVC4Spring. Controllers implemented in this style do not have to extend specific base
 classes or implement specific interfaces. Furthermore, they do not usually have direct dependencies on Servlet or
-Portlet API's, although they can easily get access to Servlet or Portlet facilities if desired.
+Portlet APIs, although they can easily get access to Servlet or Portlet facilities if desired.
 
 The following sections document these annotations and how they are most commonly used in a Portlet environment.
 
 
 
 [[portlet-ann-setup]]
-=== Setting up the dispatcher for annotation support
+=== Setting up the Dispatcher for Annotation Support
 __`@RequestMapping` will only be processed if a corresponding `HandlerMapping` (for type level annotations) and/or
 `HandlerAdapter` (for method level annotations) is present in the dispatcher.__ This is the case by default in both
 `DispatcherServlet` and `DispatcherPortlet`.
@@ -278,7 +278,7 @@ would like to customize the mapping strategy, e.g. specifying a custom `WebBindi
 
 
 [[portlet-ann-controller]]
-=== Defining a controller with @Controller
+=== Defining a Controller with @Controller
 
 The `@Controller` annotation indicates that a particular class serves the role of a __controller__. There is no need to
 extend any controller base class or reference the Portlet API. You are of course still able to reference
@@ -319,7 +319,7 @@ easily achieved by using the __spring-context__ schema as shown in the following
 
 
 [[portlet-ann-requestmapping]]
-=== Mapping requests with @RequestMapping
+=== Mapping Requests with @RequestMapping
 
 The `@RequestMapping` annotation is used to map portlet modes like 'VIEW'/'EDIT' onto an entire class or a particular
 handler method. Typically the type-level annotation maps a specific mode (or mode plus parameter condition) onto a form
@@ -452,7 +452,7 @@ annotations which can be used instead:
 
 
 [[portlet-ann-requestmapping-arguments]]
-=== Supported handler method arguments
+=== Supported Handler Method Arguments
 Handler methods which are annotated with `@RequestMapping` are allowed to have very flexible signatures. They may have
 arguments of the following types, in arbitrary order (except for validation results, which need to follow right after
 the corresponding command object, if desired):
@@ -513,7 +513,7 @@ The following return types are supported for handler methods:
 
 
 [[portlet-ann-requestparam]]
-=== Binding request parameters to method parameters with @RequestParam
+=== Binding Request Parameters to Method Parameters with @RequestParam
 
 The `@RequestParam` annotation is used to bind request parameters to a method parameter in your controller.
 
@@ -545,7 +545,7 @@ Parameters using this annotation are required by default, but you can specify th
 
 
 [[portlet-ann-modelattrib]]
-=== Providing a link to data from the model with @ModelAttribute
+=== Providing a Link to Data from the Model with @ModelAttribute
 
 `@ModelAttribute` has two usage scenarios in controllers. When placed on a method parameter, `@ModelAttribute` is used
 to map a model attribute to the specific, annotated method parameter (see the `populateSite()` method below). This is
@@ -597,7 +597,7 @@ The following code snippet shows these two usages of this annotation:
 
 
 [[portlet-ann-sessionattrib]]
-=== Specifying attributes to store in a Session with @SessionAttributes
+=== Specifying Attributes to Store in a Session with @SessionAttributes
 
 The type-level `@SessionAttributes` annotation declares session attributes used by a specific handler. This will
 typically list the names of model attributes or types of model attributes which should be transparently stored in the
@@ -619,7 +619,7 @@ The following code snippet shows the usage of this annotation:
 
 
 [[portlet-ann-webdatabinder]]
-=== Customizing WebDataBinder initialization
+=== Customizing WebDataBinder Initialization
 
 To customize request parameter binding with PropertyEditors, etc. via the Spring Framework's `WebDataBinder`, you can
 either use `@InitBinder`-annotated methods within your controller or externalize your configuration by providing a
@@ -627,7 +627,7 @@ custom `WebBindingInitializer`.
 
 
 [[portlet-ann-initbinder]]
-==== Customizing data binding with @InitBinder
+==== Customizing Data Binding with @InitBinder
 
 Annotating controller methods with `@InitBinder` allows you to configure web data binding directly within your
 controller class. `@InitBinder` identifies methods which initialize the `WebDataBinder` which will be used for
@@ -661,7 +661,7 @@ The following example demonstrates the use of `@InitBinder` for configuring a `C
 
 
 [[portlet-ann-webbindinginitializer]]
-==== Configuring a custom WebBindingInitializer
+==== Configuring a Custom WebBindingInitializer
 
 To externalize data binding initialization, you can provide a custom implementation of the `WebBindingInitializer`
 interface, which you then enable by supplying a custom bean configuration for an `AnnotationMethodHandlerAdapter`, thus
@@ -671,7 +671,7 @@ overriding the default configuration.
 
 
 [[portlet-viewresolver]]
-== Views and resolving them
+== Views and View Resolvers
 As mentioned previously, PortletMVC4Spring directly reuses all the view technologies from Spring Web MVC. This includes
 not only the various `View` implementations themselves, but also the `ViewResolver` implementations. For more
 information, refer to <<view>> and <<mvc-viewresolver>> respectively.
@@ -695,7 +695,7 @@ the same way that they work in servlet views.
 
 
 [[portlet-multipart]]
-== Multipart (file upload) support
+== Multipart (File Upload) Support
 PortletMVC4Spring has built-in multipart support to handle file uploads in portlet applications, just like Spring Web
 MVC does. The design for the multipart support is done with pluggable `PortletMultipartResolver` objects, defined in the
 `com.liferay.portletmvc4spring.multipart` package. PortletMVC4Spring provides a `StandardPortletMultipartResolver`
@@ -728,7 +728,7 @@ The following example shows how to use the `StandardPortletMultipartResolver`:
 [subs="verbatim,quotes"]
 ----
 	<bean id="portletMultipartResolver"
-			class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver">
+		class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver">
 	</bean>
 ----
 
@@ -738,7 +738,7 @@ The following example shows how to use the legacy `CommonsPortletMultipartResolv
 [subs="verbatim,quotes"]
 ----
 	<bean id="portletMultipartResolver"
-			class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver">
+		class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<property name="maxUploadSize" value="100000"/>
 	</bean>
@@ -761,7 +761,7 @@ part of an `EventRequest`, `HeaderRequest`, or `RenderRequest`.
 
 
 [[portlet-multipart-forms]]
-=== Handling a file upload in a form
+=== Handling a File Upload in a Form
 After the `PortletMultipartResolver` has finished doing its job, the request will be processed like any other. To use
 the `PortletMultipartResolver`, you must declare it in your Spring configuration descriptor:
 
@@ -769,7 +769,7 @@ the `PortletMultipartResolver`, you must declare it in your Spring configuration
 [subs="verbatim,quotes"]
 ----
 	<bean id="portletMultipartResolver"
-			class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver"/>
+		class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver"/>
 ----
 
 Next, create a form with an upload field:
@@ -813,7 +813,7 @@ Finally, create the controller that processes the uploaded files from the model:
 [source,java,indent=0]
 [subs="verbatim,quotes"]
 ----
-    @Controller
+	@Controller
 	@RequestMapping("VIEW")
 	public class FileUploadController {
 
@@ -865,7 +865,7 @@ The following code snippet shows an example of how to register custom editors th
 
 
 [[portlet-exceptionresolver]]
-== Handling exceptions
+== Legacy Exception Handling
 Just like Spring Web MVC, PortletMVC4Spring provides ``HandlerExceptionResolver``s to ease the pain of unexpected
 exceptions that occur while your request is being processed by a handler that matched the request. PortletMVC4Spring
 also provides a portlet-specific, concrete `SimpleMappingExceptionResolver` that enables you to take the class name of
@@ -879,7 +879,7 @@ any exception that might be thrown and map it to a view name.
 
 
 [[portlet-deployment]]
-== Portlet application deployment
+== Portlet Application Deployment
 The process of deploying a PortletMVC4Spring application is no different than deploying any JSR-362 Portlet application.
 Generally, the portal/portlet container runs in one webapp in your servlet container and your portlets run in another
 webapp in your servlet container. In order for the portlet container webapp to make calls into your portlet webapp it
@@ -908,7 +908,7 @@ to corrupt the definition of the `ViewRendererServlet`, thus breaking the render
 
 
 [[portlet-controller]]
-== Legacy controller programming model
+== Legacy Controller Programming Model
 
 [NOTE]
 ====
@@ -1074,7 +1074,7 @@ portlets. Alternatively, you can use a portlet filter as defined by the JSR-362 
 
 
 [[portlet-handlermapping]]
-== Handler mappings
+== Handler Mappings
 Using a handler mapping you can map incoming portlet requests to appropriate handlers. There are some handler mappings
 you can use out of the box, for example, the `PortletModeHandlerMapping`, but let's first examine the general concept of
 a `HandlerMapping`.
