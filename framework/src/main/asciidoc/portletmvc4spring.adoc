@@ -908,7 +908,7 @@ The following code snippet shows an example of how to register custom editors th
 
 [[portlet-deployment]]
 == Portlet Application Deployment
-The process of deploying a PortletMVC4Spring application is no different than deploying any JSR-362 Portlet application.
+The process of deploying a PortletMVC4Spring application is no different than deploying any JSR-362 portlet application.
 Generally, the portal/portlet container runs in one webapp in your servlet container and your portlets run in another
 webapp in your servlet container. In order for the portlet container webapp to make calls into your portlet webapp it
 must make cross-context calls to a well-known servlet that provides access to the portlet services defined in your
@@ -954,7 +954,7 @@ The legacy controller programing model is not recommended for new development. I
 programming model should be considered.
 ====
 
-The __legacy__ controller programming model in PortletMVC4Spring are very similar to Spring Web MVC Controllers.
+The __legacy__ controller programming model in PortletMVC4Spring are very similar to Spring Web MVC controllers.
 
 The basis for the PortletMVC4Spring controller architecture is the `com.liferay.portletmvc4spring.mvc.Controller`
 interface, which is listed below.
@@ -1032,8 +1032,8 @@ RenderResponse)` method (or both), implement your logic, and return a `ModelAndV
 `handleRenderRequestInternal`).
 
 The default implementations of both `handleActionRequestInternal(..)` and `handleRenderRequestInternal(..)` throw a
-`PortletException`. This is consistent with the behavior of `GenericPortlet` from the JSR-362 Portlet Specification API.
-So you only need to override the method that your controller is intended to handle.
+`PortletException`. This is consistent with the behavior of `GenericPortlet` from the JSR-362 Specification Portlet 3.0
+API. So you only need to override the method that your controller is intended to handle.
 
 Here is short example consisting of a class and a declaration in the web application context.
 
