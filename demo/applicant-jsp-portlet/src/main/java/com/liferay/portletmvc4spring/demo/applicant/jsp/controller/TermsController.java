@@ -48,19 +48,26 @@ public class TermsController {
 	@ResourceMapping("viewTerms")
 	public String viewTerms(ModelMap modelMap) {
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy");
-
-		Calendar todayCalendar = Calendar.getInstance();
-
-		modelMap.put("thisYear", dateFormat.format(todayCalendar.getTime()));
+		_populateViewTermsModel(modelMap);
 
 		return "terms";
 	}
 
 	@ResourceMapping("viewTermsAgain")
-	public String viewTermsAgain() {
+	public String viewTermsAgain(ModelMap modelMap) {
 		logger.debug("Navigating to Terms of Service");
 
+		_populateViewTermsModel(modelMap);
+
 		return "terms";
+	}
+
+	private void _populateViewTermsModel(ModelMap modelMap) {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy");
+
+		Calendar todayCalendar = Calendar.getInstance();
+
+		modelMap.put("thisYear", dateFormat.format(todayCalendar.getTime()));
 	}
 }

@@ -54,14 +54,7 @@ public class TermsController {
 	@ResourceMapping("viewTerms")
 	public String viewTerms(ModelMap modelMap, ResourceResponse resourceResponse) {
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy");
-
-		Calendar todayCalendar = Calendar.getInstance();
-
-		modelMap.put("thisYear", dateFormat.format(todayCalendar.getTime()));
-
-		// Thymeleaf
-		modelMap.put("acceptTermsResourceURL", ControllerUtil.createResourceURL(resourceResponse, "acceptTerms"));
+		_populateViewTermsModel(modelMap, resourceResponse);
 
 		return "terms";
 	}
@@ -70,9 +63,20 @@ public class TermsController {
 	public String viewTermsAgain(ModelMap modelMap, ResourceResponse resourceResponse) {
 		logger.debug("Navigating to Terms of Service");
 
-		// Thymeleaf
-		modelMap.put("acceptTermsResourceURL", ControllerUtil.createResourceURL(resourceResponse, "acceptTerms"));
+		_populateViewTermsModel(modelMap, resourceResponse);
 
 		return "terms";
+	}
+
+	private void _populateViewTermsModel(ModelMap modelMap, ResourceResponse resourceResponse) {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy");
+
+		Calendar todayCalendar = Calendar.getInstance();
+
+		modelMap.put("thisYear", dateFormat.format(todayCalendar.getTime()));
+
+		// Thymeleaf
+		modelMap.put("acceptTermsResourceURL", ControllerUtil.createResourceURL(resourceResponse, "acceptTerms"));
 	}
 }
