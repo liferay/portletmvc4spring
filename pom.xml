@@ -52,6 +52,8 @@
 	</modules>
 	<properties>
 		<full.version>${project.version} (${timestamp} AD)</full.version>
+		<liferay.version>7.1.0</liferay.version>
+		<liferay.version.dtd>7.1</liferay.version.dtd>
 		<spring.framework.scope>compile</spring.framework.scope>
 		<spring.framework.version>5.1.4.RELEASE</spring.framework.version>
 		<surefire.version>2.22.1</surefire.version>
