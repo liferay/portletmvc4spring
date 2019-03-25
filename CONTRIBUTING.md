@@ -14,14 +14,14 @@ Contributions must be received in the form of GitHub pull requests and must adhe
 
 For example:
 
-	This is my contribution that implements feature XYZ.
+	Implement feature X.
 
 	Signed-off-by: Developer Name <developer@mycompany.com>
 
 Note that Git as has a convenient `-s` command line option that will automatically append the "Signed-off-by" line to
 a commit message:
 
-	$ git commit -s -m 'This is my contribution that implements feature XYZ.'
+	$ git commit -s -m 'Implement feature X.'
 
 Pull requests that do not contain the "Signed-off-by" line in commit messages will have their status automatically
 set to `failed` by the [GitHub DCO Enforcement Application](https://github.com/apps/dco).
