@@ -39,8 +39,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.pluto.adapter.HttpServletRequestAdapter;
-import org.apache.pluto.adapter.HttpServletResponseAdapter;
+import org.apache.pluto.portlet.servlet.adapter.HttpServletRequestAdapter;
+import org.apache.pluto.portlet.servlet.adapter.HttpServletResponseAdapter;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractMessageSource;
