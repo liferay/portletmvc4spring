@@ -136,6 +136,7 @@
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
 				<version>2.0.1.Final</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -164,6 +165,12 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>6.0.14.Final</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.validation</groupId>
+						<artifactId>validation-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
