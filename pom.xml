@@ -152,7 +152,7 @@
 			<dependency>
 				<groupId>org.apache.portals.pluto</groupId>
 				<artifactId>portlet-servlet-adapter</artifactId>
-				<version>3.0.2-SNAPSHOT</version>
+				<version>3.1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
