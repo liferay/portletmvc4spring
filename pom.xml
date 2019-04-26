@@ -153,7 +153,7 @@
 			<dependency>
 				<groupId>org.apache.portals.pluto</groupId>
 				<artifactId>portlet-servlet-adapter</artifactId>
-				<version>3.1.0-SNAPSHOT</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
@@ -162,7 +162,7 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.hibernate</groupId>
+				<groupId>org.hibernate.validator</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>6.0.14.Final</version>
 				<exclusions>
