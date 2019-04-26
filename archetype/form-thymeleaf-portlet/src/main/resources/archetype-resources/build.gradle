@@ -7,7 +7,7 @@ repositories {
 dependencies {
     compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '@portletmvc4spring-version@'
     compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '@portletmvc4spring-version@'
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: '@hibernate-version@'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '@hibernate-version@'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '@slf4j-log4j-version@'
     compile(group: 'org.thymeleaf', name: 'thymeleaf', version: '@thymeleaf-version') {
         exclude group: 'ognl', module: 'ognl'
