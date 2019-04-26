@@ -8,7 +8,16 @@
 	<packaging>war</packaging>
 	<name>${artifactId}</name>
 	<version>${version}</version>
+	<properties>
+		<validation.api.scope>provided</validation.api.scope>
+	</properties>
 	<profiles>
+		<profile>
+			<id>liferay71</id>
+			<properties>
+				<validation.api.scope>compile</validation.api.scope>
+			</properties>
+		</profile>
 		<profile>
 			<id>pluto</id>
 			<dependencies>
@@ -58,9 +67,21 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>@validation-api-version@</version>
+			<scope>${validation.api.scope}</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>@hibernate-version@</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.validation</groupId>
+					<artifactId>validation-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
