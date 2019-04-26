@@ -28,6 +28,9 @@ import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
@@ -59,6 +62,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @see     com.liferay.portletmvc4spring.DispatcherPortlet
  */
 public abstract class PortletApplicationContextUtils {
+
+	private static final Log logger = LogFactory.getLog(PortletApplicationContextUtils.class);
 
 	/**
 	 * Find the root {@link WebApplicationContext} for this web app, typically loaded via {@link
@@ -104,7 +109,15 @@ public abstract class PortletApplicationContextUtils {
 	public static ApplicationContext getWebApplicationContext(PortletContext pc) {
 		Assert.notNull(pc, "PortletContext must not be null");
 
-		Object attr = pc.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		Object attr = null;
+
+		try {
+			attr = pc.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			attr = e;
+		}
 
 		if (attr == null) {
 			return null;
