@@ -1,14 +1,20 @@
 package portlet1.controller;
 
-import portlet1.dto.Car;
+import portlet1.dto.User;
 
 import com.liferay.portletmvc4spring.bind.annotation.ActionMapping;
 import com.liferay.portletmvc4spring.bind.annotation.RenderMapping;
 
+import java.util.Calendar;
 import java.util.Locale;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.portlet.ActionResponse;
 import javax.portlet.MutableRenderParameters;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +37,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Controller
 @RequestMapping("VIEW")
-public class CarController {
+public class UserController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CarController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private LocalValidatorFactoryBean localValidatorFactoryBean;
@@ -42,17 +48,16 @@ public class CarController {
 	private MessageSource messageSource;
 
 	@ActionMapping
-	public void submitApplicant(@ModelAttribute("car") Car car, BindingResult bindingResult, ModelMap modelMap,
+	public void submitApplicant(@ModelAttribute("user") User user, BindingResult bindingResult, ModelMap modelMap,
 								Locale locale, ActionResponse actionResponse, SessionStatus sessionStatus) {
 
-		localValidatorFactoryBean.validate(car, bindingResult);
+		localValidatorFactoryBean.validate(user, bindingResult);
 
 		if (!bindingResult.hasErrors()) {
 
 			if (logger.isDebugEnabled()) {
-				logger.debug("make=" + car.getMake());
-				logger.debug("model=" + car.getModel());
-				logger.debug("year=" + car.getYear());
+				logger.debug("firstName=" + user.getFirstName());
+				logger.debug("lastName=" + user.getLastName());
 			}
 
 			MutableRenderParameters mutableRenderParameters = actionResponse.getRenderParameters();
@@ -60,19 +65,35 @@ public class CarController {
 			mutableRenderParameters.setValue("javax.portlet.action", "success");
 
 			sessionStatus.setComplete();
-
-			modelMap.addAttribute("globalInfoMessage",
-				messageSource.getMessage("your-request-processed-successfully", null, locale));
 		}
 	}
 
 	@RenderMapping
-	public String prepareView(Model model) {
-		return "car";
+	public String prepareView(ModelMap modelMap, RenderRequest renderRequest, RenderResponse renderResponse) {
+
+		modelMap.put("contextPath", renderRequest.getContextPath());
+
+		modelMap.put("mainFormActionURL", renderResponse.createActionURL());
+
+		return "user";
 	}
 
-	@ModelAttribute("car")
-	private Car _getCarModelAttribute() {
-		return new Car();
+	@RenderMapping(params = "javax.portlet.action=success")
+	public String showGreeting(ModelMap model, RenderRequest renderRequest) {
+
+		model.put("contextPath", renderRequest.getContextPath());
+
+		DateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy G");
+
+		Calendar todayCalendar = Calendar.getInstance();
+
+		model.put("todaysDate", dateFormat.format(todayCalendar.getTime()));
+
+		return "greeting";
+	}
+
+	@ModelAttribute("user")
+	private User _getUserModelAttribute() {
+		return new User();
 	}
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns:th="http://www.thymeleaf.org">
+	<link th:href="|${contextPath}/resources/css/main.css|" rel="stylesheet" type="text/css"/>
+	<p class="user-greeting" th:text="#{greetings(${user.firstName},${user.lastName})}" />
+	<p th:text="#{todays-date-is(${todaysDate})}" />
+</div>
