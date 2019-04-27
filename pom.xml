@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
@@ -10,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.liferay.portletmvc4spring</groupId>
 	<artifactId>com.liferay.portletmvc4spring.parent</artifactId>
-	<version>5.1.0-SNAPSHOT</version>
+	<version>5.1.0</version>
 	<name>PortletMVC4Spring</name>
 	<description>PortletMVC4Spring</description>
 	<url>https://github.com/liferay/portletmvc4spring</url>
@@ -39,7 +38,8 @@
 		<connection>scm:git:git://github.com/liferay/portletmvc4spring</connection>
 		<developerConnection>scm:git:git://github.com/liferay/portletmvc4spring</developerConnection>
 		<url>https://github.com/liferay/portletmvc4spring</url>
-	</scm>
+	  <tag>5.1.0</tag>
+  </scm>
 	<issueManagement>
 		<system>JIRA</system>
 		<url>https://issues.liferay.com/browse/MVCS</url>
@@ -319,7 +319,7 @@
 					<version>2.10.4</version>
 					<configuration>
 						<additionalparam>-Xdoclint:none -Xdoclint:-missing</additionalparam>
-						<detectLinks/>
+						<detectLinks />
 						<excludePackageNames>com.liferay.portletmvc4spring.demo.*</excludePackageNames>
 						<links>
 							<link>http://docs.oracle.com/javaee/7/api/</link>
