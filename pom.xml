@@ -45,6 +45,7 @@
 		<url>https://issues.liferay.com/browse/MVCS</url>
 	</issueManagement>
 	<modules>
+		<module>test</module>
 		<module>framework</module>
 		<module>security</module>
 		<module>archetype</module>

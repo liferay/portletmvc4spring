@@ -3,23 +3,19 @@
 	<parent>
 		<groupId>com.liferay.portletmvc4spring</groupId>
 		<artifactId>com.liferay.portletmvc4spring.parent</artifactId>
-		<version>5.1.1-SNAPSHOT</version>
+		<version>5.1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
-	<name>PortletMVC4Spring Framework</name>
-	<description>PortletMVC4Spring Framework</description>
+	<artifactId>com.liferay.portletmvc4spring.test</artifactId>
+	<version>5.1.0-SNAPSHOT</version>
+	<name>PortletMVC4Spring Test</name>
+	<description>PortletMVC4Spring Test</description>
 	<dependencies>
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
-			<artifactId>com.liferay.portletmvc4spring.test</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
+			<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
+			<version>5.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.portlet</groupId>
@@ -30,45 +26,17 @@
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
