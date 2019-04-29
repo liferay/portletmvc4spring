@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>com.liferay.portletmvc4spring.test</artifactId>
-	<version>5.1.0</version>
+	<version>5.1.1-SNAPSHOT</version>
 	<name>PortletMVC4Spring Test</name>
 	<description>PortletMVC4Spring Test</description>
 	<dependencies>
@@ -51,8 +51,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <tag>com.liferay.portletmvc4spring.test-5.1.0</tag>
-  </scm>
 </project>
