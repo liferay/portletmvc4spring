@@ -48,6 +48,7 @@
 		<module>test</module>
 		<module>framework</module>
 		<module>security</module>
+		<module>thin</module>
 		<module>archetype</module>
 		<module>demo</module>
 	</modules>
