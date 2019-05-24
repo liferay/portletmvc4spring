@@ -13,7 +13,7 @@
 	<name>PortletMVC4Spring Thin Enabler</name>
 	<description>PortletMVC4Spring Thin Enabler</description>
 	<properties>
-		<extraction.includes>META-INF/spring-form.tld,META-INF/spring.factories,META-INF/spring.handlers,META-INF/spring.schemas,META-INF/spring.tooling,META-INF/spring.tld</extraction.includes>
+		<extraction.includes>META-INF/spring.factories,META-INF/spring.handlers,META-INF/spring.schemas,META-INF/spring.tooling</extraction.includes>
 		<spring.framework.orm.version>4.3.23.RELEASE</spring.framework.orm.version>
 	</properties>
 	<dependencies>
@@ -192,11 +192,6 @@
 										<include name="**/spring.tooling"></include>
 									</fileset>
 								</concat>
-								<copy todir="${project.build.outputDirectory}/META-INF">
-									<fileset dir="${project.build.directory}/extracted/spring-webmvc/META-INF">
-										<include name="*.tld" />
-									</fileset>
-								</copy>
 							</target>
 						</configuration>
 					</execution>
