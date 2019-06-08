@@ -4,12 +4,12 @@
 		<groupId>com.liferay.portletmvc4spring</groupId>
 		<artifactId>com.liferay.portletmvc4spring.parent</artifactId>
 		<version>5.1.0</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.liferay.portletmvc4spring</groupId>
 	<artifactId>com.liferay.portletmvc4spring.thin</artifactId>
-	<version>5.1.5-SNAPSHOT</version>
+	<version>5.1.5</version>
 	<name>PortletMVC4Spring Thin Enabler</name>
 	<description>PortletMVC4Spring Thin Enabler</description>
 	<properties>
@@ -175,22 +175,22 @@
 							<target>
 								<concat destfile="${project.build.outputDirectory}/META-INF/spring.factories" fixlastline="yes" force="yes">
 									<fileset dir="${project.build.directory}/extracted">
-										<include name="**/spring.factories"></include>
+										<include name="**/spring.factories" />
 									</fileset>
 								</concat>
 								<concat destfile="${project.build.outputDirectory}/META-INF/spring.handlers" fixlastline="yes" force="yes">
 									<fileset dir="${project.build.directory}/extracted">
-										<include name="**/spring.handlers"></include>
+										<include name="**/spring.handlers" />
 									</fileset>
 								</concat>
 								<concat destfile="${project.build.outputDirectory}/META-INF/spring.schemas" fixlastline="yes" force="yes">
 									<fileset dir="${project.build.directory}/extracted">
-										<include name="**/spring.schemas"></include>
+										<include name="**/spring.schemas" />
 									</fileset>
 								</concat>
 								<concat destfile="${project.build.outputDirectory}/META-INF/spring.tooling" fixlastline="yes" force="yes">
 									<fileset dir="${project.build.directory}/extracted">
-										<include name="**/spring.tooling"></include>
+										<include name="**/spring.tooling" />
 									</fileset>
 								</concat>
 							</target>
@@ -208,4 +208,8 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <scm>
+    <tag>com.liferay.portletmvc4spring.thin-5.1.5</tag>
+  </scm>
 </project>
