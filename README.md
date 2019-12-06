@@ -176,7 +176,7 @@ your project.
 ## Enabling CSRF Protection
 
 Liferay Portal provides CSRF protection out-of-the-box for the `ACTION_PHASE` of the portlet lifecycle via the
-`p_p_auth` request parameter (present on all ActionURLs). If a developer uses XmlHttpRequest (XHR) to submit forms with
+`p_auth` request parameter (present on all ActionURLs). If a developer uses XmlHttpRequest (XHR) to submit forms with
 the `RESOURCE_PHASE`, then the developer is responsible for providing CSRF protection.
 
 The PortletMVC4Spring security module has the ability to enable CSRF protection for both the `ACTION_PHASE` and
