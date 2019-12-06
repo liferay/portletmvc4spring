@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * Provides JSR-286 portlets that integrate with the application context infrastructure, and the core interfaces and
+ * Provides JSR-362 portlets that integrate with the application context infrastructure, and the core interfaces and
  * classes for PortletMVC4Spring.
  */
 package com.liferay.portletmvc4spring;
