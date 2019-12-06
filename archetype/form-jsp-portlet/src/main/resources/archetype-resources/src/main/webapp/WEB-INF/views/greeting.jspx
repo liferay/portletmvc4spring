@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
 		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
 		  xmlns:spring="http://www.springframework.org/tags"
 		  version="2.1">
@@ -7,7 +8,7 @@
 	<portlet:defineObjects/>
 	<link href="${contextPath}/resources/css/main.css" rel="stylesheet" type="text/css"/>
 	<p class="user-greeting">
-		<spring:message arguments="${user.firstName},${user.lastName}" code="greetings" />
+		<spring:message arguments="${fn:escapeXml(user.firstName)},${fn:escapeXml(user.lastName)}" code="greetings" />
 	</p>
 	<p>
 		<spring:message arguments="${todaysDate}" argumentSeparator=";" code="todays-date-is" />
