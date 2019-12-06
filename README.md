@@ -123,7 +123,7 @@ addition, the following properties have changed:
 
 - [customArgumentResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/portlet/mvc/annotation/AnnotationMethodHandlerAdapter.html#setCustomArgumentResolver-org.springframework.web.bind.support.WebArgumentResolver-) (no longer available)
 
-- [customArgumentResolvers](https://liferay.github.io/portletmvc4spring/apidocs/com/liferay/portletmvc4spring/mvc/method/annotation/PortletRequestMappingHandlerAdapter.html#setCustomArgumentResolvers-java.util.List-) (specify a list of [HandlerMethodArgumentResolver](https://docs.spring.io/spring/docs/5.1.4.RELEASE/javadoc-api/org/springframework/web/method/support/HandlerMethodArgumentResolver.html) instead of a list of [WebArgumentResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/bind/support/WebArgumentResolver.html))
+- [customArgumentResolvers](https://liferay.github.io/portletmvc4spring/apidocs/com/liferay/portletmvc4spring/mvc/method/annotation/PortletRequestMappingHandlerAdapter.html#setCustomArgumentResolvers-java.util.List-) (specify a list of [HandlerMethodArgumentResolver](https://docs.spring.io/spring/docs/5.2.2.RELEASE/javadoc-api/org/springframework/web/method/support/HandlerMethodArgumentResolver.html) instead of a list of [WebArgumentResolver](https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/org/springframework/web/bind/support/WebArgumentResolver.html))
  
 5. If using [Apache Commons Fileupload](https://commons.apache.org/proper/commons-fileupload/), then update your Spring configuration descriptor:
 
