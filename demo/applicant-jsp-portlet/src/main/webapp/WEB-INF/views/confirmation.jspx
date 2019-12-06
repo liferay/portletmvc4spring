@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
 		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
 		  xmlns:spring="http://www.springframework.org/tags"
 		  version="2.1">
 	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
 	<p>
 		<spring:message
-			arguments="${applicant.firstName}"
+			arguments="${fn:escapeXml(applicant.firstName)}"
 			code="thank-you-for-applying-for-a-job-with-our-organization"/>
 	</p>
 	<p>
