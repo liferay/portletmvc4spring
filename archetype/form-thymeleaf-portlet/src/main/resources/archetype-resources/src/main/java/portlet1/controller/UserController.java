@@ -72,8 +72,8 @@ public class UserController {
 	public String prepareView(ModelMap modelMap, RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		modelMap.put("contextPath", renderRequest.getContextPath());
-
 		modelMap.put("mainFormActionURL", renderResponse.createActionURL());
+		modelMap.put("namespace", renderResponse.getNamespace());
 
 		return "user";
 	}
