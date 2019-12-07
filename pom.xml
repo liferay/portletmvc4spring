@@ -48,7 +48,6 @@
 		<module>test</module>
 		<module>framework</module>
 		<module>security</module>
-		<module>thin</module>
 		<module>archetype</module>
 		<module>demo</module>
 	</modules>
@@ -64,10 +63,22 @@
 	</properties>
 	<profiles>
 		<profile>
+			<id>build-thin</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>thin</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>liferay-spring-thin</id>
 			<properties>
 				<spring.framework.scope>provided</spring.framework.scope>
 			</properties>
+			<modules>
+				<module>thin</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>pluto</id>
@@ -83,13 +94,6 @@
 		</profile>
 		<profile>
 			<id>release</id>
-			<modules>
-				<module>test</module>
-				<module>framework</module>
-				<module>security</module>
-				<module>archetype</module>
-				<module>demo</module>
-			</modules>
 			<build>
 				<plugins>
 					<plugin>
