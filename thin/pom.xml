@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.liferay.portletmvc4spring</groupId>
 	<artifactId>com.liferay.portletmvc4spring.thin</artifactId>
-	<version>5.2.2</version>
+	<version>5.2.3-SNAPSHOT</version>
 	<name>PortletMVC4Spring Thin Enabler</name>
 	<description>PortletMVC4Spring Thin Enabler</description>
 	<properties>
@@ -206,8 +206,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <tag>com.liferay.portletmvc4spring.thin-5.2.2</tag>
-  </scm>
 </project>
