@@ -14,7 +14,7 @@
 	<description>PortletMVC4Spring Thin Enabler</description>
 	<properties>
 		<extraction.includes>META-INF/spring.factories,META-INF/spring.handlers,META-INF/spring.schemas,META-INF/spring.tooling</extraction.includes>
-		<spring.framework.version>5.1.4.RELEASE</spring.framework.version>
+		<spring.framework.version>5.1.5.RELEASE</spring.framework.version>
 		<spring.framework.orm.version>4.3.23.RELEASE</spring.framework.orm.version>
 	</properties>
 	<dependencies>
