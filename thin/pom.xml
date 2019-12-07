@@ -14,6 +14,8 @@
 	<properties>
 		<extraction.includes>META-INF/spring.factories,META-INF/spring.handlers,META-INF/spring.schemas,META-INF/spring.tooling</extraction.includes>
 		<spring.framework.orm.version>4.3.23.RELEASE</spring.framework.orm.version>
+		<!-- Version 5.2.3 not yet released as of December 7, 2019 -->
+		<!-- <spring.framework.version>5.2.3</spring.framework.version> -->
 	</properties>
 	<dependencies>
 		<dependency>
