@@ -1034,11 +1034,6 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 			modelFactory.initModel(webRequest, mavContainer, invocableMethod);
 			mavContainer.setIgnoreDefaultModelOnRedirect(this.ignoreDefaultModelOnRedirect);
 
-			if ((request instanceof RenderRequest) || (request instanceof ResourceRequest)) {
-				SessionStatus sessionStatus = mavContainer.getSessionStatus();
-				sessionStatus.setComplete();
-			}
-
 			invocableMethod.invokeAndHandle(webRequest, mavContainer);
 
 			// Expose implicit model for subsequent render phase.
