@@ -129,8 +129,6 @@ import org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodPro
 import org.springframework.web.servlet.mvc.method.annotation.HttpHeadersReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.MatrixVariableMapMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.MatrixVariableMethodArgumentResolver;
-import org.springframework.web.servlet.mvc.method.annotation.ModelAndViewMethodReturnValueHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ModelAndViewResolverMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.PathVariableMapMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RedirectAttributesMethodArgumentResolver;
@@ -214,7 +212,7 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
 
 	@Nullable
-	private List<ModelAndViewResolver> modelAndViewResolvers;
+	private List<PortletModelAndViewResolver> modelAndViewResolvers;
 
 	private ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager();
 
@@ -337,7 +335,7 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 	 * Return the configured {@link ModelAndViewResolver ModelAndViewResolvers}, or {@code null}.
 	 */
 	@Nullable
-	public List<ModelAndViewResolver> getModelAndViewResolvers() {
+	public List<PortletModelAndViewResolver> getModelAndViewResolvers() {
 		return this.modelAndViewResolvers;
 	}
 
@@ -442,7 +440,7 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 	 * <p>A {@code HandlerMethodReturnValueHandler} provides better access to the return type and controller method
 	 * information and can be ordered freely relative to other return value handlers.
 	 */
-	public void setModelAndViewResolvers(@Nullable List<ModelAndViewResolver> modelAndViewResolvers) {
+	public void setModelAndViewResolvers(@Nullable List<PortletModelAndViewResolver> modelAndViewResolvers) {
 		this.modelAndViewResolvers = modelAndViewResolvers;
 	}
 
@@ -805,7 +803,7 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 		List<HandlerMethodReturnValueHandler> handlers = new ArrayList<>();
 
 		// Single-purpose return value types
-		handlers.add(new ModelAndViewMethodReturnValueHandler());
+		handlers.add(new PortletModelAndViewMethodReturnValueHandler());
 		handlers.add(new ModelMethodProcessor());
 		handlers.add(new ViewMethodReturnValueHandler());
 		handlers.add(new ResponseBodyEmitterReturnValueHandler(getMessageConverters(),
@@ -834,7 +832,7 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 
 		// Catch-all
 		if (!CollectionUtils.isEmpty(getModelAndViewResolvers())) {
-			handlers.add(new ModelAndViewResolverMethodReturnValueHandler(getModelAndViewResolvers()));
+			handlers.add(new PortletModelAndViewResolverMethodReturnValueHandler(getModelAndViewResolvers()));
 		}
 		else {
 			handlers.add(new ModelAttributeMethodProcessor(true));
