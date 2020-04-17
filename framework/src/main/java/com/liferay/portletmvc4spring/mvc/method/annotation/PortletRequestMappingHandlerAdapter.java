@@ -33,15 +33,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.ClientDataRequest;
 import javax.portlet.Event;
 import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.MimeResponse;
+import javax.portlet.MutableRenderParameters;
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
+import javax.portlet.RenderParameters;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -118,6 +121,7 @@ import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.AsyncTaskMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.CallableMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.DeferredResultMethodReturnValueHandler;
@@ -190,7 +194,9 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 	/** MethodFilter that matches {@link ModelAttribute @ModelAttribute} methods. */
 	public static final ReflectionUtils.MethodFilter MODEL_ATTRIBUTE_METHODS = method ->
 		(!AnnotatedElementUtils.hasAnnotation(method, RequestMapping.class) &&
-			AnnotatedElementUtils.hasAnnotation(method, ModelAttribute.class));
+		AnnotatedElementUtils.hasAnnotation(method, ModelAttribute.class));
+
+	private static final String SESSION_COMPLETE_RENDER_PARAMETER = "sessionComplete";
 
 	@Nullable
 	private List<HandlerMethodArgumentResolver> customArgumentResolvers;
@@ -1031,10 +1037,25 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 				defaultModelMap.putAll(implicitModel);
 			}
 
+			RenderParameters renderParameters = request.getRenderParameters();
+			String sessionComplete = renderParameters.getValue(SESSION_COMPLETE_RENDER_PARAMETER);
+
+			if (Boolean.TRUE.toString().equals(sessionComplete)) {
+				mavContainer.getSessionStatus().setComplete();
+			}
+
 			modelFactory.initModel(webRequest, mavContainer, invocableMethod);
 			mavContainer.setIgnoreDefaultModelOnRedirect(this.ignoreDefaultModelOnRedirect);
 
 			invocableMethod.invokeAndHandle(webRequest, mavContainer);
+
+			SessionStatus sessionStatus = mavContainer.getSessionStatus();
+
+			if (sessionStatus.isComplete() && (response instanceof StateAwareResponse)) {
+				StateAwareResponse stateAwareResponse = (StateAwareResponse) response;
+				MutableRenderParameters mutableRenderParameters = stateAwareResponse.getRenderParameters();
+				mutableRenderParameters.setValue(SESSION_COMPLETE_RENDER_PARAMETER, Boolean.TRUE.toString());
+			}
 
 			// Expose implicit model for subsequent render phase.
 			if ((response instanceof StateAwareResponse) && !defaultModelMap.isEmpty()) {

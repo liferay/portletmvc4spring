@@ -830,7 +830,7 @@ public class Portlet20AnnotationControllerTests {
 		portlet.processAction(actionRequest, actionResponse);
 		assertEquals("value", actionResponse.getRenderParameter("test"));
 
-		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW);
+		MockRenderRequest request = new MockRenderRequest(PortletMode.VIEW, actionResponse.getRenderParameters());
 		request.setSession(actionRequest.getPortletSession());
 		request.setParameters(actionResponse.getRenderParameterMap());
 		request.addParameter("name", "name1");
@@ -1029,10 +1029,6 @@ public class Portlet20AnnotationControllerTests {
 	@Controller
 	@SessionAttributes("testBean")
 	private static class MyAdaptedController4 {
-
-		public void MyAdaptedControler4() {
-			System.err.println("!@#$ IN CONSTRUCTOR");
-		}
 
 		@RequestMapping("HELP")
 		@RenderMapping
