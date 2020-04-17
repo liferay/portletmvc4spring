@@ -21,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.ResourceRequest;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -29,6 +31,7 @@ import org.springframework.web.context.request.AbstractRequestAttributes;
 import org.springframework.web.context.request.DestructionCallbackBindingListener;
 import org.springframework.web.context.request.RequestAttributes;
 
+import com.liferay.portletmvc4spring.mvc.method.annotation.PortletRequestMappingHandlerAdapter;
 import com.liferay.portletmvc4spring.util.PortletUtils;
 
 
@@ -217,7 +220,23 @@ public class PortletRequestAttributes extends AbstractRequestAttributes {
 					this.globalSessionAttributesToUpdate.remove(name);
 				}
 				else {
-					session.removeAttribute(name);
+					Map<String, Object> sessionAttributeMap = session.getAttributeMap();
+
+					if (sessionAttributeMap.containsKey(name)) {
+						session.removeAttribute(name);
+					}
+					else if (
+						sessionAttributeMap.containsKey(
+								PortletRequestMappingHandlerAdapter.IMPLICIT_MODEL_SESSION_ATTRIBUTE) &&
+							((request instanceof RenderRequest) || (request instanceof ResourceRequest))) {
+						Map<String, Object> implicitModel = (Map<String, Object>) session.getAttribute(
+								PortletRequestMappingHandlerAdapter.IMPLICIT_MODEL_SESSION_ATTRIBUTE);
+
+						if (implicitModel.containsKey(name)) {
+							implicitModel.remove(name);
+						}
+					}
+
 					this.sessionAttributesToUpdate.remove(name);
 				}
 			}

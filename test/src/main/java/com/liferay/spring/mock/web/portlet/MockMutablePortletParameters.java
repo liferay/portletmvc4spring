@@ -90,7 +90,7 @@ public class MockMutablePortletParameters extends MockPortletParameters implemen
 			parameters.put(name, new String[] { value });
 		}
 
-		if ((prevValues == null) && (prevValues.length > 0)) {
+		if ((prevValues != null) && (prevValues.length > 0)) {
 			return prevValues[0];
 		}
 

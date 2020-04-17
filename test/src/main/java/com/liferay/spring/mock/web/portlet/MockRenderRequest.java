@@ -15,9 +15,11 @@
  */
 package com.liferay.spring.mock.web.portlet;
 
+import javax.portlet.MutableRenderParameters;
 import javax.portlet.PortalContext;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletMode;
+import javax.portlet.RenderParameters;
 import javax.portlet.RenderRequest;
 import javax.portlet.WindowState;
 
@@ -82,6 +84,20 @@ public class MockRenderRequest extends MockPortletRequest implements RenderReque
 		super(portalContext, portletContext);
 	}
 
+	public MockRenderRequest(PortletMode view, MutableRenderParameters renderParameters) {
+		this(view);
+		this.renderParameters = renderParameters;
+	}
+
+	@Override
+	public RenderParameters getRenderParameters() {
+		if (renderParameters == null) {
+			return super.getRenderParameters();
+		}
+
+		return renderParameters;
+	}
+
 	@Override
 	public String getETag() {
 		return getProperty(RenderRequest.ETAG);
@@ -92,4 +108,5 @@ public class MockRenderRequest extends MockPortletRequest implements RenderReque
 		return RENDER_PHASE;
 	}
 
+	private RenderParameters renderParameters;
 }
