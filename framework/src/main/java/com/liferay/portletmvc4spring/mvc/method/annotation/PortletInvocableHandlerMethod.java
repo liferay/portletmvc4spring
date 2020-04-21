@@ -102,11 +102,10 @@ public class PortletInvocableHandlerMethod extends InvocableHandlerMethod {
 
 		if (returnValue == null) {
 
-			if (isRequestNotModified(webRequest) || (getResponseStatus() != null) || mavContainer.isRequestHandled()) {
-				mavContainer.setRequestHandled(true);
+			mavContainer.setRequestHandled(true);
 
-				return;
-			}
+			// Return since there is no reason to invoke a return value handler.
+			return;
 		}
 		else if (StringUtils.hasText(getResponseStatusReason())) {
 			mavContainer.setRequestHandled(true);
