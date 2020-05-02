@@ -180,8 +180,8 @@
 				<version>6.1.0.Final</version>
 				<exclusions>
 					<exclusion>
-						<groupId>javax.validation</groupId>
-						<artifactId>validation-api</artifactId>
+						<groupId>jakarta.validation</groupId>
+						<artifactId>jakarta.validation-api</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
