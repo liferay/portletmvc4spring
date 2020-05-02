@@ -61,18 +61,20 @@ import org.springframework.security.web.access.AccessDeniedHandler;
  </portlet>
  }
  * </pre>
+ *
  * Finally, it is necessary to specify the following in the WEB-INF/web.xml descriptor:
+ *
  * <pre>
 {@code
 <filter>
-	<filter-name>delegatingFilterProxy</filter-name>
-	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    <filter-name>delegatingFilterProxy</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 </filter>
 <filter-mapping>
-	<filter-name>delegatingFilterProxy</filter-name>
-	<url-pattern>/WEB-INF/servlet/view</url-pattern>
-	<dispatcher>FORWARD</dispatcher>
-	<dispatcher>INCLUDE</dispatcher>
+    <filter-name>delegatingFilterProxy</filter-name>
+    <url-pattern>/WEB-INF/servlet/view</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
 </filter-mapping>
 }
  * </pre>
