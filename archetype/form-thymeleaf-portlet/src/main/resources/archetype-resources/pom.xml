@@ -77,10 +77,6 @@
 					<groupId>jakarta.validation</groupId>
 					<artifactId>jakarta.validation-api</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>javax.validation</groupId>
-					<artifactId>validation-api</artifactId>
-				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
