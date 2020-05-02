@@ -41,13 +41,12 @@ import com.liferay.portletmvc4spring.context.PortletConfigAwareBean;
 import com.liferay.portletmvc4spring.context.PortletContextAwareBean;
 import com.liferay.portletmvc4spring.multipart.MultipartActionRequest;
 import com.liferay.portletmvc4spring.multipart.PortletMultipartResolver;
-
-import com.liferay.spring.mock.web.portlet.MockActionRequest;
-import com.liferay.spring.mock.web.portlet.MockActionResponse;
-import com.liferay.spring.mock.web.portlet.MockPortletConfig;
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
-import com.liferay.spring.mock.web.portlet.MockRenderRequest;
-import com.liferay.spring.mock.web.portlet.MockRenderResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletConfig;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
 
 
 /**

@@ -25,11 +25,10 @@ import org.junit.Test;
 
 import com.liferay.portletmvc4spring.ModelAndView;
 import com.liferay.portletmvc4spring.context.StaticPortletApplicationContext;
-
-import com.liferay.spring.mock.web.portlet.MockActionRequest;
-import com.liferay.spring.mock.web.portlet.MockActionResponse;
-import com.liferay.spring.mock.web.portlet.MockRenderRequest;
-import com.liferay.spring.mock.web.portlet.MockRenderResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
 
 
 /**

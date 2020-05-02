@@ -22,9 +22,8 @@ import org.junit.Test;
 
 import com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext;
 import com.liferay.portletmvc4spring.context.XmlPortletApplicationContext;
-
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
 
 
 /**

@@ -28,8 +28,8 @@ import static org.mockito.BDDMockito.*;
 
 import org.springframework.web.context.request.RequestAttributes;
 
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
-import com.liferay.spring.mock.web.portlet.MockPortletSession;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletSession;
 
 
 /**

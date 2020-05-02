@@ -32,8 +32,9 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.NoSuchMessageException;
 
-import com.liferay.spring.mock.web.portlet.MockPortletConfig;
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletConfig;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
+
 import com.liferay.spring.tests.sample.beans.TestBean;
 
 

@@ -31,9 +31,9 @@ import org.junit.Test;
 
 import org.springframework.web.multipart.MultipartRequest;
 
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
-import com.liferay.spring.mock.web.portlet.MockRenderRequest;
-import com.liferay.spring.mock.web.portlet.MockRenderResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
 
 
 /**

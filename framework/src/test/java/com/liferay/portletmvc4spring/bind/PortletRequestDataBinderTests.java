@@ -31,7 +31,8 @@ import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 
 import org.springframework.validation.BindingResult;
 
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
+
 import com.liferay.spring.tests.sample.beans.ITestBean;
 import com.liferay.spring.tests.sample.beans.TestBean;
 
