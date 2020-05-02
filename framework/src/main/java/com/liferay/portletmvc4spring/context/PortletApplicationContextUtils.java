@@ -151,8 +151,8 @@ public abstract class PortletApplicationContextUtils {
 	 *                          org.springframework.web.context.support.StandardServletEnvironment#SERVLET_CONTEXT_PROPERTY_SOURCE_NAME
 	 *                          servlet context property source} has already been initialized)
 	 * @param  portletContext   the current {@link PortletContext} (ignored if {@code null} or if the {@link
-	 *                          StandardPortletEnvironment#PORTLET_CONTEXT_PROPERTY_SOURCE_NAME portlet context property
-	 *                          source} has already been initialized)
+	 *                          StandardPortletEnvironment#PORTLET_CONTEXT_PROPERTY_SOURCE_NAME portlet context
+	 *                          property source} has already been initialized)
 	 * @param  portletConfig    the current {@link PortletConfig} (ignored if {@code null} or if the {@link
 	 *                          StandardPortletEnvironment#PORTLET_CONFIG_PROPERTY_SOURCE_NAME portlet config property
 	 *                          source} has already been initialized)
