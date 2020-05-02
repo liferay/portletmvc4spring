@@ -33,6 +33,8 @@ import javax.portlet.WindowState;
  */
 public class MockRenderRequest extends MockPortletRequest implements RenderRequest {
 
+	private RenderParameters renderParameters;
+
 	/**
 	 * Create a new MockRenderRequest with a default {@link MockPortalContext} and a default {@link MockPortletContext}.
 	 *
@@ -90,7 +92,13 @@ public class MockRenderRequest extends MockPortletRequest implements RenderReque
 	}
 
 	@Override
+	public String getETag() {
+		return getProperty(RenderRequest.ETAG);
+	}
+
+	@Override
 	public RenderParameters getRenderParameters() {
+
 		if (renderParameters == null) {
 			return super.getRenderParameters();
 		}
@@ -99,14 +107,7 @@ public class MockRenderRequest extends MockPortletRequest implements RenderReque
 	}
 
 	@Override
-	public String getETag() {
-		return getProperty(RenderRequest.ETAG);
-	}
-
-	@Override
 	protected String getLifecyclePhase() {
 		return RENDER_PHASE;
 	}
-
-	private RenderParameters renderParameters;
 }
