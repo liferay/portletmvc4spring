@@ -47,20 +47,20 @@ containing patches for software defects.
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
-			<version>5.2.0</version>	
+			<version>5.2.1</version>	
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.security</artifactId>
-			<version>5.2.0</version>	
+			<version>5.2.1</version>	
 		</dependency>
 	<dependencies>
 	
 **Gradle:**
 
 	dependencies {
-		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.2.0'
-		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.2.0'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.2.1'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.2.1'
 	}
 
 ## Archetypes
@@ -69,7 +69,7 @@ containing patches for software defects.
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.jsp.portlet \
-		-DarchetypeVersion=5.2.0 \
+		-DarchetypeVersion=5.2.1 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.jsp.portlet
 
@@ -77,7 +77,7 @@ containing patches for software defects.
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.thymeleaf.portlet \
-		-DarchetypeVersion=5.2.0 \
+		-DarchetypeVersion=5.2.1 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.thymeleaf.portlet
 
