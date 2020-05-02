@@ -39,8 +39,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
-import com.liferay.spring.mock.web.portlet.MockRenderRequest;
-import com.liferay.spring.mock.web.portlet.ServletWrappingPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.ServletWrappingPortletContext;
+
 import com.liferay.spring.tests.sample.beans.DerivedTestBean;
 
 

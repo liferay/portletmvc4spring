@@ -23,7 +23,8 @@ import org.junit.Test;
 
 import org.springframework.util.StopWatch;
 
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
+
 import com.liferay.spring.tests.Assume;
 import com.liferay.spring.tests.TestGroup;
 

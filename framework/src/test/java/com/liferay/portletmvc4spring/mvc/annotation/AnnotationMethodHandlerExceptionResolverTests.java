@@ -35,9 +35,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.liferay.portletmvc4spring.ModelAndView;
-
-import com.liferay.spring.mock.web.portlet.MockRenderRequest;
-import com.liferay.spring.mock.web.portlet.MockRenderResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
 
 
 /**

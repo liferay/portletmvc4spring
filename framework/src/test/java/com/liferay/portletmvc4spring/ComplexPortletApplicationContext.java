@@ -79,9 +79,8 @@ import com.liferay.portletmvc4spring.multipart.MultipartResourceRequest;
 import com.liferay.portletmvc4spring.multipart.PortletMultipartResolver;
 import com.liferay.portletmvc4spring.mvc.Controller;
 import com.liferay.portletmvc4spring.mvc.SimpleControllerHandlerAdapter;
-
-import com.liferay.spring.mock.web.portlet.MockPortletConfig;
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletConfig;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
 
 
 /**

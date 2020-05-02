@@ -33,11 +33,12 @@ import static org.mockito.BDDMockito.*;
 
 import org.springframework.web.util.WebUtils;
 
-import com.liferay.spring.mock.web.portlet.MockActionRequest;
-import com.liferay.spring.mock.web.portlet.MockActionResponse;
-import com.liferay.spring.mock.web.portlet.MockPortletContext;
-import com.liferay.spring.mock.web.portlet.MockPortletRequest;
-import com.liferay.spring.mock.web.portlet.MockPortletSession;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletSession;
+
 import com.liferay.spring.tests.sample.beans.ITestBean;
 import com.liferay.spring.tests.sample.beans.TestBean;
 
