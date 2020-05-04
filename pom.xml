@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.liferay.portletmvc4spring</groupId>
 	<artifactId>com.liferay.portletmvc4spring.parent</artifactId>
-	<version>5.2.1</version>
+	<version>5.2.2-SNAPSHOT</version>
 	<name>PortletMVC4Spring</name>
 	<description>PortletMVC4Spring</description>
 	<url>https://github.com/liferay/portletmvc4spring</url>
@@ -38,7 +38,7 @@
 		<connection>scm:git:git://github.com/liferay/portletmvc4spring</connection>
 		<developerConnection>scm:git:git://github.com/liferay/portletmvc4spring</developerConnection>
 		<url>https://github.com/liferay/portletmvc4spring</url>
-	  <tag>5.2.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<issueManagement>
 		<system>JIRA</system>
