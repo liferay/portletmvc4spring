@@ -56,7 +56,8 @@
 		<liferay.version>7.1.0</liferay.version>
 		<liferay.version.dtd>7.1</liferay.version.dtd>
 		<spring.framework.scope>compile</spring.framework.scope>
-		<spring.framework.version>5.1.4.RELEASE</spring.framework.version>
+		<spring.framework.version>5.1.18.RELEASE</spring.framework.version>
+		<spring.security.version>5.1.13.RELEASE</spring.security.version>
 		<surefire.version>2.22.1</surefire.version>
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 	</properties>
@@ -265,19 +266,19 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>${spring.framework.version}</version>
+				<version>${spring.security.version}</version>
 				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
-				<version>${spring.framework.version}</version>
+				<version>${spring.security.version}</version>
 				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>${spring.framework.version}</version>
+				<version>${spring.security.version}</version>
 				<scope>${spring.framework.scope}</scope>
 			</dependency>
 			<dependency>
