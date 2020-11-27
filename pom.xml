@@ -48,6 +48,7 @@
 		<module>test</module>
 		<module>framework</module>
 		<module>security</module>
+		<module>webflow</module>
 		<module>archetype</module>
 		<module>demo</module>
 	</modules>
@@ -60,6 +61,7 @@
 		<spring.security.version>5.2.7.RELEASE</spring.security.version>
 		<surefire.version>2.22.1</surefire.version>
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+		<webflow.version>2.5.1.RELEASE</webflow.version>
 	</properties>
 	<profiles>
 		<profile>
