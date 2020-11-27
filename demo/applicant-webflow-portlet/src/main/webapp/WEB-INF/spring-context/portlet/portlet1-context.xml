@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
+	<context:component-scan base-package="com.liferay.portletmvc4spring.demo.applicant.webflow.**"/>
+
+	<!-- Maps portlet modes to handlers -->	
+	<bean id="portletModeHandlerMapping" class="com.liferay.portletmvc4spring.handler.PortletModeHandlerMapping">
+		<property name="portletModeMap">
+			<map>
+				<entry key="view">
+					<bean class="com.liferay.portletmvc4spring.demo.applicant.webflow.handler.ViewFlowHandler" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="viewFactoryCreator" class="com.liferay.portletmvc4spring.webflow.mvc.builder.MvcViewFactoryCreator">
+    	<property name="viewResolvers" ref="viewResolver" />
+	</bean>
+ 
+	<!-- Enables FlowHandlers -->
+	<bean class="com.liferay.portletmvc4spring.webflow.mvc.portlet.FlowHandlerAdapter">
+		<property name="flowExecutor" ref="flowExecutor"/>
+	</bean>
+
+	<!-- Executes flows: the central entry point into the Spring Web Flow system -->
+	<webflow:flow-executor id="flowExecutor" flow-registry="flowRegistry">
+		<webflow:flow-execution-attributes>
+			<webflow:always-redirect-on-pause value="false"/>
+			<webflow:redirect-in-same-state value="false"/>
+		</webflow:flow-execution-attributes>
+	</webflow:flow-executor>
+	
+	<!-- The registry of executable flow definitions -->
+	<webflow:flow-registry id="flowRegistry" flow-builder-services="flowBuilderServices">
+		<webflow:flow-location id="applicantFlow" path="/WEB-INF/flows/applicantFlow.xml" />
+	</webflow:flow-registry>
+		
+	<!-- Plugs in Spring's JSR-303 validator adapter -->
+	<webflow:flow-builder-services id="flowBuilderServices" development="true" view-factory-creator="viewFactoryCreator" />
+
+</beans>
