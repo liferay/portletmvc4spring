@@ -17,5 +17,5 @@
 /**
  * Contains the PortletExternalContext implementation for calling into Web Flow from a Portlet.
  */
-package org.springframework.webflow.context.portlet;
+package com.liferay.portletmvc4spring.webflow.context.portlet;
 

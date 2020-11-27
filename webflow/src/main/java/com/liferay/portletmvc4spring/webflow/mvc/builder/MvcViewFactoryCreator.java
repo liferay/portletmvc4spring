@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.mvc.builder;
+package com.liferay.portletmvc4spring.webflow.mvc.builder;
+
+import com.liferay.portletmvc4spring.webflow.mvc.portlet.PortletMvcViewFactory;
 
 import java.util.List;
 
@@ -33,7 +35,6 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.webflow.engine.builder.BinderConfiguration;
 import org.springframework.webflow.engine.builder.ViewFactoryCreator;
 import org.springframework.webflow.execution.ViewFactory;
-import org.springframework.webflow.mvc.portlet.PortletMvcViewFactory;
 import org.springframework.webflow.mvc.servlet.ServletMvcViewFactory;
 import org.springframework.webflow.mvc.view.AbstractMvcViewFactory;
 import org.springframework.webflow.mvc.view.FlowViewResolver;
