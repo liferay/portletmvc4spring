@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.context.portlet;
+package com.liferay.portletmvc4spring.webflow.context.portlet;
+
+import com.liferay.portletmvc4spring.multipart.MultipartActionRequest;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +26,6 @@ import org.springframework.binding.collection.StringKeyedMapAdapter;
 import org.springframework.util.Assert;
 import org.springframework.util.CompositeIterator;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.portlet.multipart.MultipartActionRequest;
 import org.springframework.webflow.core.collection.CollectionUtils;
 
 /**

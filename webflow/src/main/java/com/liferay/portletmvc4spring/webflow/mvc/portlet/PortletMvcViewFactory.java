@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.mvc.portlet;
+package com.liferay.portletmvc4spring.webflow.mvc.portlet;
 
 import org.springframework.binding.convert.ConversionService;
 import org.springframework.binding.expression.Expression;

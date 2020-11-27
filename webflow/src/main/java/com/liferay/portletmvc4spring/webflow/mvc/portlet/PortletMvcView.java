@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.mvc.portlet;
+package com.liferay.portletmvc4spring.webflow.mvc.portlet;
+
+import com.liferay.portletmvc4spring.DispatcherPortlet;
+import com.liferay.portletmvc4spring.ViewRendererServlet;
 
 import java.util.Map;
 
@@ -21,9 +24,7 @@ import javax.portlet.MimeResponse;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletRequest;
 
-import org.springframework.web.portlet.DispatcherPortlet;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewRendererServlet;
 import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.mvc.view.AbstractMvcView;
