@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.mvc.builder;
+package com.liferay.portletmvc4spring.webflow.mvc.builder;
+
+import com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.portlet.context.ConfigurablePortletApplicationContext;
 
 /**
  * Supported Spring Web MVC environments.
@@ -53,7 +54,7 @@ public enum MvcEnvironment {
 	}
 
 	private static boolean isPortletApplicationContext(ApplicationContext applicationContext) {
-		return ClassUtils.isPresent("org.springframework.web.portlet.context.ConfigurablePortletApplicationContext", MvcEnvironment.class.getClassLoader())
+		return ClassUtils.isPresent("com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext", MvcEnvironment.class.getClassLoader())
 				&& applicationContext instanceof ConfigurablePortletApplicationContext;
 	}
 

@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.mvc.portlet;
+package com.liferay.portletmvc4spring.webflow.mvc.portlet;
+
+import com.liferay.portletmvc4spring.HandlerAdapter;
+import com.liferay.portletmvc4spring.ModelAndView;
+import com.liferay.portletmvc4spring.handler.PortletContentGenerator;
+import com.liferay.portletmvc4spring.webflow.context.portlet.DefaultFlowUrlHandler;
+import com.liferay.portletmvc4spring.webflow.context.portlet.FlowUrlHandler;
+import com.liferay.portletmvc4spring.webflow.context.portlet.PortletExternalContext;
 
 import java.util.Map;
 
@@ -32,12 +39,6 @@ import javax.portlet.ResourceResponse;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
-import org.springframework.web.portlet.HandlerAdapter;
-import org.springframework.web.portlet.ModelAndView;
-import org.springframework.web.portlet.handler.PortletContentGenerator;
-import org.springframework.webflow.context.portlet.DefaultFlowUrlHandler;
-import org.springframework.webflow.context.portlet.FlowUrlHandler;
-import org.springframework.webflow.context.portlet.PortletExternalContext;
 import org.springframework.webflow.core.FlowException;
 import org.springframework.webflow.core.collection.LocalAttributeMap;
 import org.springframework.webflow.core.collection.MutableAttributeMap;

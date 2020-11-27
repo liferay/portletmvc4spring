@@ -17,5 +17,5 @@
 /**
  * Support for configuring Spring MVC-based ViewFactory implementations when building a Flow.
  */
-package org.springframework.webflow.mvc.builder;
+package com.liferay.portletmvc4spring.webflow.mvc.builder;
 

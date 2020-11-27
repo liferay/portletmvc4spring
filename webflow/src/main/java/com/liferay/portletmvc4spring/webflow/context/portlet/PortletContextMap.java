@@ -13,48 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.context.portlet;
+package com.liferay.portletmvc4spring.webflow.context.portlet;
 
 import java.util.Iterator;
 
-import javax.portlet.PortletRequest;
+import javax.portlet.PortletContext;
 
+import org.springframework.binding.collection.SharedMap;
 import org.springframework.binding.collection.StringKeyedMapAdapter;
 import org.springframework.webflow.core.collection.CollectionUtils;
 
 /**
- * Map backed by the Portlet request attribute map for accessing request local attributes.
+ * Map backed by the Portlet context for accessing application scoped attributes.
  * 
  * @author Keith Donald
  * @author Scott Andrews
  */
-public class PortletRequestMap extends StringKeyedMapAdapter<Object> {
+public class PortletContextMap extends StringKeyedMapAdapter<Object> implements SharedMap<String, Object> {
 
 	/**
-	 * The wrapped portlet request.
+	 * The wrapped portlet context.
 	 */
-	private PortletRequest request;
+	private PortletContext context;
 
 	/**
-	 * Create a new map wrapping the attributes of given request.
+	 * Create a map wrapping given portlet context.
 	 */
-	public PortletRequestMap(PortletRequest request) {
-		this.request = request;
+	public PortletContextMap(PortletContext context) {
+		this.context = context;
 	}
 
 	protected Object getAttribute(String key) {
-		return request.getAttribute(key);
+		return context.getAttribute(key);
 	}
 
 	protected void setAttribute(String key, Object value) {
-		request.setAttribute(key, value);
+		context.setAttribute(key, value);
 	}
 
 	protected void removeAttribute(String key) {
-		request.removeAttribute(key);
+		context.removeAttribute(key);
 	}
 
 	protected Iterator<String> getAttributeNames() {
-		return CollectionUtils.toIterator(request.getAttributeNames());
+		return CollectionUtils.toIterator(context.getAttributeNames());
+	}
+
+	public Object getMutex() {
+		return context;
 	}
 }

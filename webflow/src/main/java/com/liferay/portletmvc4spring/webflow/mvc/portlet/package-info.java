@@ -17,5 +17,5 @@
 /**
  * The integration between Web Flow and Spring Portlet MVC, Spring's portlet application platform.
  */
-package org.springframework.webflow.mvc.portlet;
+package com.liferay.portletmvc4spring.webflow.mvc.portlet;
 

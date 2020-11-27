@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.webflow.context.portlet;
+package com.liferay.portletmvc4spring.webflow.context.portlet;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
