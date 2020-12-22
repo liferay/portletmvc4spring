@@ -15,6 +15,7 @@
 	<modules>
 		<module>applicant-jsp-portlet</module>
 		<module>applicant-thymeleaf-portlet</module>
+		<module>applicant-webflow-portlet</module>
 	</modules>
 	<build>
 		<plugins>

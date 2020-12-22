@@ -21,7 +21,6 @@
 	<!-- context, rather than the specific portlet context. This is because -->
 	<!-- the PortletMVC4Spring security module will try to lookup the messageSource -->
 	<!-- bean in the portlet application context. -->
-	<!-- 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
@@ -34,5 +33,4 @@
 	<bean id="delegatingFilterProxy" class="org.springframework.web.filter.DelegatingFilterProxy">
 		<property name="targetBeanName" value="springSecurityFilterChain" />
 	</bean>
-	 -->
 </beans>
