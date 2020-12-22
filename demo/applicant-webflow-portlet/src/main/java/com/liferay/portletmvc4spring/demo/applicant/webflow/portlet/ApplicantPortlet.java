@@ -8,5 +8,5 @@ import com.liferay.portletmvc4spring.DispatcherPortlet;
  *
  */
 public class ApplicantPortlet extends DispatcherPortlet {
-
+	
 }

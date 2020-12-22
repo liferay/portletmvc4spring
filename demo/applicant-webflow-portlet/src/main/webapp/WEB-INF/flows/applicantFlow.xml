@@ -4,21 +4,43 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
                           http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
+	<var name="applicant" class="com.liferay.portletmvc4spring.demo.applicant.webflow.dto.Applicant"/>
 
-    <view-state id="page1">
-        <transition on="submit" to="page2"/>
+    <view-state id="page1" model="applicant">
+    	<on-render>
+    		<evaluate expression="provinceService.getAllProvinces()" result="viewScope.provinces" />
+    	</on-render>
+		<transition on="autoFill" to="autoFillCity" validate="false" />
+        <transition on="submit" to="page2" />
     </view-state>
 
-    <view-state id="page2">
-        <transition on="cancel" to="page1"/>
+    <view-state id="page2" model="applicant">
+        <transition on="return" to="page1"/>
+        <transition on="uploadAttachment" to="uploadAttachment"/>
+        <transition on="deleteAttachment" to="deleteAttachment"/>
         <transition on="submit" to="page3"/>
     </view-state>
 
+	<action-state id="uploadAttachment">
+		<evaluate expression="uploadAction.uploadFile(applicant, flowRequestContext)"/>
+		<transition to="page2" />
+	</action-state>
+	
+	<action-state id="autoFillCity">
+		<evaluate expression="autoFillAction.autoFillCity(applicant, flowRequestContext)"/>
+		<transition to="page1" />
+	</action-state>
+
+	<action-state id="deleteAttachment">
+		<evaluate expression="deleteAction.deleteAttachment(applicant, flowRequestContext)"/>
+		<transition to="page2" />
+	</action-state>
+		
     <view-state id="page3">
-        <transition on="cancel" to="page2"/>
-        <transition on="submit" to="my_end"/>
+        <transition on="return" to="page2"/>
+        <transition on="submit" to="applicationEnd"/>
     </view-state>
 
-	<end-state id="my_end" />
+	<end-state id="applicationEnd" />
 	
 </flow>
