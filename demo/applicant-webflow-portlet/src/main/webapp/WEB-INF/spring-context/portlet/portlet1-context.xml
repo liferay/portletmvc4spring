@@ -47,6 +47,14 @@
 	</webflow:flow-registry>
 		
 	<!-- Plugs in Spring's JSR-303 validator adapter -->
-	<webflow:flow-builder-services id="flowBuilderServices" development="true" view-factory-creator="viewFactoryCreator" />
+	<webflow:flow-builder-services id="flowBuilderServices" development="true" view-factory-creator="viewFactoryCreator" validator="validator" />
+
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+	
+	<!--
+	NOTE: Requires commons-fileupload dependency and transitive commons-io dependency (see pom.xml)
+	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver" />
+	-->
+	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
 
 </beans>
