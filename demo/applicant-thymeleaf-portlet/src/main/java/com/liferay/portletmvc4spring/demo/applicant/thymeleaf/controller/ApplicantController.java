@@ -121,7 +121,7 @@ public class ApplicantController {
 		model.addAttribute("jQueryDatePattern",
 			_getJQueryDatePattern(portletPreferences.getValue("datePattern", null)));
 
-		model.addAttribute("portletMVC4SpringVersion", _getPackageVersion("com.liferay.portletmvc4spring"));
+		model.addAttribute("portletMVC4SpringVersion", _getPackageVersion("com.liferay.portletmvc4spring.bind"));
 
 		model.addAttribute("provinces", provinceService.getAllProvinces());
 
