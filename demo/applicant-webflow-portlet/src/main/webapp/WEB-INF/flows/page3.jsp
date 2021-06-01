@@ -1,44 +1,51 @@
-<%@ include file="/WEB-INF/flows/init.jsp" %>
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
+		  xmlns:spring="http://www.springframework.org/tags"
+		  version="2.1">
 
-<portlet:renderURL var="returnURL">
-  <portlet:param name="execution" value="${flowExecutionKey}" />
-  <portlet:param name="_eventId" value="return" />
-</portlet:renderURL>
- 
-<portlet:actionURL var="submitApplicantURL">
-	<portlet:param name="execution" value="${flowExecutionKey}" />
-	<portlet:param name="_eventId" value="submit" />
-</portlet:actionURL>	
+	<portlet:renderURL var="returnURL">
+	  <portlet:param name="execution" value="${flowExecutionKey}" />
+	  <portlet:param name="_eventId" value="return" />
+	</portlet:renderURL>
 
-<h2>Applicant Flow - Comments (<c:out value="${flowExecutionKey}" />)</h2>
+	<portlet:actionURL var="submitApplicantURL">
+		<portlet:param name="execution" value="${flowExecutionKey}" />
+		<portlet:param name="_eventId" value="submit" />
+	</portlet:actionURL>
 
-<div class="container">
-	<form:form id="${namespace}mainForm" method="post" action="${submitApplicantURL}" modelAttribute="applicant">
-		<c:if test="${not empty globalInfoMessage}">
-			<span class="portlet-msg-info">${globalInfoMessage}</span>
-		</c:if>
-		<c:if test="${not empty globalErrorMessage}">
-			<span class="portlet-msg-error">${globalErrorMessage}</span>
-		</c:if>
+	<h2>Applicant Flow - Comments (<c:out value="${flowExecutionKey}" />)</h2>
 
-		<fieldset>
-			<div class="row">
-				<div class="col">
-					<div class="form-group">
-						<form:label for="${namespace}comments" path="comments">
-							<spring:message code="comments" />
-						</form:label>
-						<form:textarea id="${namespace}comments" cssClass="form-control" path="comments"/>
-						<form:errors path="comments" cssClass="portlet-msg-error"/>
+	<div class="container">
+		<form:form id="${namespace}mainForm" method="post" action="${submitApplicantURL}" modelAttribute="applicant">
+			<c:if test="${not empty globalInfoMessage}">
+				<span class="portlet-msg-info">${globalInfoMessage}</span>
+			</c:if>
+			<c:if test="${not empty globalErrorMessage}">
+				<span class="portlet-msg-error">${globalErrorMessage}</span>
+			</c:if>
+
+			<fieldset>
+				<div class="row">
+					<div class="col">
+						<div class="form-group">
+							<form:label for="${namespace}comments" path="comments">
+								<spring:message code="comments" />
+							</form:label>
+							<form:textarea id="${namespace}comments" cssClass="form-control" path="comments"/>
+							<form:errors path="comments" cssClass="portlet-msg-error"/>
+						</div>
 					</div>
 				</div>
-			</div>
-		</fieldset>
+			</fieldset>
 
-		<spring:message code="return" var="return" />
-		<input class="btn btn-primary" formaction="${returnURL}" value="${return}" type="submit"/>
-					
-		<spring:message code="submit" var="submit" />
-		<input class="btn btn-primary" value="${submit}" type="submit"/>
-	</form:form>
-</div>
+			<spring:message code="return" var="return" />
+			<input class="btn btn-primary" formaction="${returnURL}" value="${return}" type="submit"/>
+
+			<spring:message code="submit" var="submit" />
+			<input class="btn btn-primary" value="${submit}" type="submit"/>
+		</form:form>
+	</div>
+</jsp:root>
