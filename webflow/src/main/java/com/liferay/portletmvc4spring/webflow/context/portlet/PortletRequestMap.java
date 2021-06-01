@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,19 @@ import java.util.Iterator;
 import javax.portlet.PortletRequest;
 
 import org.springframework.binding.collection.StringKeyedMapAdapter;
+
 import org.springframework.webflow.core.collection.CollectionUtils;
+
 
 /**
  * Map backed by the Portlet request attribute map for accessing request local attributes.
- * 
- * @author Keith Donald
- * @author Scott Andrews
+ *
+ * @author  Keith Donald
+ * @author  Scott Andrews
  */
 public class PortletRequestMap extends StringKeyedMapAdapter<Object> {
 
-	/**
-	 * The wrapped portlet request.
-	 */
+	/** The wrapped portlet request. */
 	private PortletRequest request;
 
 	/**
@@ -46,15 +46,15 @@ public class PortletRequestMap extends StringKeyedMapAdapter<Object> {
 		return request.getAttribute(key);
 	}
 
-	protected void setAttribute(String key, Object value) {
-		request.setAttribute(key, value);
+	protected Iterator<String> getAttributeNames() {
+		return CollectionUtils.toIterator(request.getAttributeNames());
 	}
 
 	protected void removeAttribute(String key) {
 		request.removeAttribute(key);
 	}
 
-	protected Iterator<String> getAttributeNames() {
-		return CollectionUtils.toIterator(request.getAttributeNames());
+	protected void setAttribute(String key, Object value) {
+		request.setAttribute(key, value);
 	}
 }

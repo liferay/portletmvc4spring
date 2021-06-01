@@ -15,13 +15,13 @@
  */
 package com.liferay.portletmvc4spring.demo.applicant.webflow.service;
 
-import com.liferay.portletmvc4spring.demo.applicant.webflow.dto.Province;
-
 import java.util.List;
+
+import com.liferay.portletmvc4spring.demo.applicant.webflow.dto.Province;
 
 
 /**
- * @author  Neil Griffin
+ * @author  Fabian Bouché
  */
 public interface ProvinceService {
 

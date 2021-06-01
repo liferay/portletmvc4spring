@@ -15,9 +15,6 @@
  */
 package com.liferay.portletmvc4spring.demo.applicant.webflow.service.mock;
 
-import com.liferay.portletmvc4spring.demo.applicant.webflow.dto.Province;
-import com.liferay.portletmvc4spring.demo.applicant.webflow.service.ProvinceService;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +22,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
+import com.liferay.portletmvc4spring.demo.applicant.webflow.dto.Province;
+import com.liferay.portletmvc4spring.demo.applicant.webflow.service.ProvinceService;
+
 
 /**
  * @author  Neil Griffin
+ * @author  Fabian Bouché
  */
 @Service("provinceService")
 public class ProvinceServiceMockImpl implements ProvinceService {

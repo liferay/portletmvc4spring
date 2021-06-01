@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 package com.liferay.portletmvc4spring.webflow.mvc.portlet;
-
-import com.liferay.portletmvc4spring.HandlerAdapter;
-import com.liferay.portletmvc4spring.ModelAndView;
-import com.liferay.portletmvc4spring.handler.PortletContentGenerator;
-import com.liferay.portletmvc4spring.webflow.context.portlet.DefaultFlowUrlHandler;
-import com.liferay.portletmvc4spring.webflow.context.portlet.FlowUrlHandler;
-import com.liferay.portletmvc4spring.webflow.context.portlet.PortletExternalContext;
 
 import java.util.Map;
 
@@ -38,7 +31,9 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.springframework.beans.factory.InitializingBean;
+
 import org.springframework.util.Assert;
+
 import org.springframework.webflow.core.FlowException;
 import org.springframework.webflow.core.collection.LocalAttributeMap;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
@@ -47,14 +42,22 @@ import org.springframework.webflow.execution.repository.NoSuchFlowExecutionExcep
 import org.springframework.webflow.executor.FlowExecutionResult;
 import org.springframework.webflow.executor.FlowExecutor;
 
+import com.liferay.portletmvc4spring.HandlerAdapter;
+import com.liferay.portletmvc4spring.ModelAndView;
+import com.liferay.portletmvc4spring.handler.PortletContentGenerator;
+import com.liferay.portletmvc4spring.webflow.context.portlet.DefaultFlowUrlHandler;
+import com.liferay.portletmvc4spring.webflow.context.portlet.FlowUrlHandler;
+import com.liferay.portletmvc4spring.webflow.context.portlet.PortletExternalContext;
+
+
 /**
  * A custom MVC HandlerAdapter that encapsulates the generic workflow associated with executing flows in a Portlet
  * environment. Delegates to mapped {@link FlowHandler flow handlers} to manage the interaction with executions of
  * specific flow definitions.
- * 
- * @author Keith Donald
- * @author Scott Andrews
- * @author Rossen Stoyanchev
+ *
+ * @author  Keith Donald
+ * @author  Scott Andrews
+ * @author  Rossen Stoyanchev
  */
 public class FlowHandlerAdapter extends PortletContentGenerator implements HandlerAdapter, InitializingBean {
 
@@ -66,13 +69,23 @@ public class FlowHandlerAdapter extends PortletContentGenerator implements Handl
 
 	/**
 	 * Creates a new flow handler adapter.
-	 * @see #setFlowExecutor(FlowExecutor)
-	 * @see #setFlowUrlHandler(FlowUrlHandler)
-	 * @see #afterPropertiesSet()
+	 *
+	 * @see  #setFlowExecutor(FlowExecutor)
+	 * @see  #setFlowUrlHandler(FlowUrlHandler)
+	 * @see  #afterPropertiesSet()
 	 */
 	public FlowHandlerAdapter() {
+
 		// prevent caching of flow pages by default
 		setCacheSeconds(0);
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		Assert.notNull(flowExecutor, "The FlowExecutor to execute flows is required");
+
+		if (flowUrlHandler == null) {
+			flowUrlHandler = new DefaultFlowUrlHandler();
+		}
 	}
 
 	/**
@@ -83,98 +96,178 @@ public class FlowHandlerAdapter extends PortletContentGenerator implements Handl
 	}
 
 	/**
-	 * Sets the central service for executing flows. Required.
-	 * @param flowExecutor
-	 */
-	public void setFlowExecutor(FlowExecutor flowExecutor) {
-		this.flowExecutor = flowExecutor;
-	}
-
-	/**
 	 * Returns the flow url handler.
 	 */
 	public FlowUrlHandler getFlowUrlHandler() {
 		return flowUrlHandler;
 	}
 
-	/**
-	 * Sets the flow url handler
-	 * @param urlHandler the flow url handler
-	 */
-	public void setFlowUrlHandler(FlowUrlHandler urlHandler) {
-		this.flowUrlHandler = urlHandler;
-	}
+	public void handleAction(ActionRequest request, ActionResponse response, Object handler) throws Exception {
+		FlowHandler flowHandler = (FlowHandler) handler;
+		populateConveniencePortletProperties(request);
 
-	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(flowExecutor, "The FlowExecutor to execute flows is required");
-		if (flowUrlHandler == null) {
-			flowUrlHandler = new DefaultFlowUrlHandler();
+		String flowExecutionKey = flowUrlHandler.getFlowExecutionKey(request);
+		PortletExternalContext context = createPortletExternalContext(request, response);
+
+		try {
+			FlowExecutionResult result = flowExecutor.resumeExecution(flowExecutionKey, context);
+
+			if (result.isPaused()) {
+				flowUrlHandler.setFlowExecutionRenderParameter(result.getPausedKey(), response);
+			}
+			else if (result.isEnded()) {
+				handleFlowExecutionOutcome(result.getOutcome(), flowHandler, request, response);
+			}
+			else {
+				throw new IllegalStateException("Execution result should have been one of [paused] or [ended]");
+			}
+		}
+		catch (FlowException e) {
+			request.getPortletSession().setAttribute(ACTION_REQUEST_FLOW_EXCEPTION_ATTRIBUTE, e);
 		}
 	}
 
-	public boolean supports(Object handler) {
-		return handler instanceof FlowHandler;
+	public void handleEvent(EventRequest request, EventResponse response, Object handler) throws Exception {
+
+		// keep render params
+		response.setRenderParameters(request);
 	}
 
 	public ModelAndView handleRender(RenderRequest request, RenderResponse response, Object handler) throws Exception {
 		FlowHandler flowHandler = (FlowHandler) handler;
 		checkAndPrepare(request, response);
 		populateConveniencePortletProperties(request);
+
 		FlowException e = clearActionRequestFlowException(request, response, flowHandler);
+
 		if (e != null) {
 			return handleException(e, flowHandler, request, response);
 		}
+
 		String flowExecutionKey = flowUrlHandler.getFlowExecutionKey(request);
+
 		if (flowExecutionKey != null) {
 			return resumeFlowRender(request, response, flowHandler, flowExecutionKey);
-		} else {
+		}
+		else {
 			MutableAttributeMap<Object> input = flowHandler.createExecutionInputMap(request);
+
 			if (input == null) {
 				input = defaultCreateFlowExecutionInputMap(request);
 			}
+
 			return startFlowRender(flowHandler, input, request, response);
 		}
 	}
 
 	public ModelAndView handleResource(ResourceRequest request, ResourceResponse response, Object handler)
-			throws Exception {
+		throws Exception {
 		FlowHandler flowHandler = (FlowHandler) handler;
 		checkAndPrepare(request, response);
 		populateConveniencePortletProperties(request);
+
 		String flowExecutionKey = flowUrlHandler.getFlowExecutionKey(request);
+
 		if (flowExecutionKey != null) {
 			return resumeFlowResource(request, response, flowHandler, flowExecutionKey);
-		} else {
+		}
+		else {
 			MutableAttributeMap<Object> input = flowHandler.createResourceExecutionInputMap(request);
+
 			if (input == null) {
 				input = defaultCreateFlowExecutionInputMap(request);
 			}
+
 			return startFlowResource(flowHandler, request, response);
 		}
 	}
 
-	public void handleAction(ActionRequest request, ActionResponse response, Object handler) throws Exception {
-		FlowHandler flowHandler = (FlowHandler) handler;
-		populateConveniencePortletProperties(request);
-		String flowExecutionKey = flowUrlHandler.getFlowExecutionKey(request);
-		PortletExternalContext context = createPortletExternalContext(request, response);
-		try {
-			FlowExecutionResult result = flowExecutor.resumeExecution(flowExecutionKey, context);
-			if (result.isPaused()) {
-				flowUrlHandler.setFlowExecutionRenderParameter(result.getPausedKey(), response);
-			} else if (result.isEnded()) {
-				handleFlowExecutionOutcome(result.getOutcome(), flowHandler, request, response);
-			} else {
-				throw new IllegalStateException("Execution result should have been one of [paused] or [ended]");
+	/**
+	 * Sets the central service for executing flows. Required.
+	 *
+	 * @param  flowExecutor
+	 */
+	public void setFlowExecutor(FlowExecutor flowExecutor) {
+		this.flowExecutor = flowExecutor;
+	}
+
+	/**
+	 * Sets the flow url handler
+	 *
+	 * @param  urlHandler  the flow url handler
+	 */
+	public void setFlowUrlHandler(FlowUrlHandler urlHandler) {
+		this.flowUrlHandler = urlHandler;
+	}
+
+	public boolean supports(Object handler) {
+		return handler instanceof FlowHandler;
+	}
+
+	protected PortletExternalContext createPortletExternalContext(PortletRequest request, PortletResponse response) {
+		return new PortletExternalContext(getPortletContext(), request, response);
+	}
+
+	protected MutableAttributeMap<Object> defaultCreateFlowExecutionInputMap(PortletRequest request) {
+		Map<String, String[]> parameterMap = request.getParameterMap();
+
+		if (parameterMap.size() == 0) {
+			return null;
+		}
+
+		LocalAttributeMap<Object> inputMap = new LocalAttributeMap<Object>();
+
+		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+			String[] values = entry.getValue();
+			inputMap.put(entry.getKey(), (values.length == 1) ? values[0] : values);
+		}
+
+		return inputMap;
+	}
+
+	protected ModelAndView defaultHandleException(FlowHandler flowHandler, FlowException e, RenderRequest request,
+		RenderResponse response) {
+
+		if (e instanceof NoSuchFlowExecutionException) {
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Starting a new execution of previously ended flow '" + flowHandler.getFlowId() + "'");
 			}
-		} catch (FlowException e) {
-			request.getPortletSession().setAttribute(ACTION_REQUEST_FLOW_EXCEPTION_ATTRIBUTE, e);
+
+			// by default, attempt to restart the flow
+			try {
+				startFlowRender(flowHandler, null, request, response);
+
+				return null;
+			}
+			catch (FlowException flowException) {
+				return handleException(flowException, flowHandler, request, response);
+			}
+		}
+		else {
+			throw e;
 		}
 	}
 
-	public void handleEvent(EventRequest request, EventResponse response, Object handler) throws Exception {
-		// keep render params
-		response.setRenderParameters(request);
+	protected void defaultHandleExecutionOutcome(FlowExecutionOutcome outcome, FlowHandler flowHandler,
+		ActionRequest request, ActionResponse response) throws PortletModeException {
+	}
+
+	protected ModelAndView defaultHandleResourceException(FlowHandler flowHandler, FlowException e,
+		ResourceRequest request, ResourceResponse response) {
+
+		if (e instanceof NoSuchFlowExecutionException) {
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Starting a new execution of previously ended flow '" + flowHandler.getFlowId() + "'");
+			}
+
+			// by default, attempt to restart the flow
+			return startFlowResource(flowHandler, request, response);
+		}
+		else {
+			throw e;
+		}
 	}
 
 	// subclassing hooks
@@ -184,148 +277,120 @@ public class FlowHandlerAdapter extends PortletContentGenerator implements Handl
 		request.setAttribute("portletWindowState", request.getWindowState().toString());
 	}
 
-	protected PortletExternalContext createPortletExternalContext(PortletRequest request, PortletResponse response) {
-		return new PortletExternalContext(getPortletContext(), request, response);
-	}
+	private FlowException clearActionRequestFlowException(RenderRequest request, RenderResponse response,
+		FlowHandler flowHandler) {
+		PortletSession session = request.getPortletSession(false);
 
-	protected MutableAttributeMap<Object> defaultCreateFlowExecutionInputMap(PortletRequest request) {
-		Map<String, String[]> parameterMap = request.getParameterMap();
-		if (parameterMap.size() == 0) {
-			return null;
-		}
-		LocalAttributeMap<Object> inputMap = new LocalAttributeMap<Object>();
-		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-			String[] values = entry.getValue();
-			inputMap.put(entry.getKey(), values.length == 1 ? values[0] : values);
-		}
-		return inputMap;
-	}
+		if (session != null) {
+			FlowException e = (FlowException) session.getAttribute(ACTION_REQUEST_FLOW_EXCEPTION_ATTRIBUTE);
 
-	protected void defaultHandleExecutionOutcome(FlowExecutionOutcome outcome, FlowHandler flowHandler,
-			ActionRequest request, ActionResponse response) throws PortletModeException {
-	}
+			if (e != null) {
+				session.removeAttribute(ACTION_REQUEST_FLOW_EXCEPTION_ATTRIBUTE);
 
-	protected ModelAndView defaultHandleException(FlowHandler flowHandler, FlowException e, RenderRequest request,
-			RenderResponse response) {
-		if (e instanceof NoSuchFlowExecutionException) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Starting a new execution of previously ended flow '" + flowHandler.getFlowId() + "'");
+				return e;
 			}
-			// by default, attempt to restart the flow
-			try {
-				startFlowRender(flowHandler, null, request, response);
-				return null;
-			} catch (FlowException flowException) {
-				return handleException(flowException, flowHandler, request, response);
-			}
-		} else {
-			throw e;
 		}
-	}
 
-	protected ModelAndView defaultHandleResourceException(FlowHandler flowHandler, FlowException e,
-			ResourceRequest request, ResourceResponse response) {
-		if (e instanceof NoSuchFlowExecutionException) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Starting a new execution of previously ended flow '" + flowHandler.getFlowId() + "'");
-			}
-			// by default, attempt to restart the flow
-			return startFlowResource(flowHandler, request, response);
-		} else {
-			throw e;
-		}
+		return null;
 	}
 
 	// helpers
 
 	private ModelAndView handleException(FlowException e, FlowHandler flowHandler, RenderRequest request,
-			RenderResponse response) {
+		RenderResponse response) {
 		String view = flowHandler.handleException(e, request, response);
+
 		if (view != null) {
 			return new ModelAndView(view);
-		} else {
+		}
+		else {
 			return defaultHandleException(flowHandler, e, request, response);
 		}
 	}
 
-	private ModelAndView handleResourceException(FlowException e, FlowHandler flowHandler, ResourceRequest request,
-			ResourceResponse response) {
-		String view = flowHandler.handleResourceException(e, request, response);
-		if (view != null) {
-			return new ModelAndView(view);
-		} else {
-			return defaultHandleResourceException(flowHandler, e, request, response);
-		}
-	}
-
 	private void handleFlowExecutionOutcome(FlowExecutionOutcome outcome, FlowHandler flowHandler,
-			ActionRequest request, ActionResponse response) throws PortletModeException {
+		ActionRequest request, ActionResponse response) throws PortletModeException {
 		boolean handled = flowHandler.handleExecutionOutcome(outcome, request, response);
+
 		if (!handled) {
 			defaultHandleExecutionOutcome(outcome, flowHandler, request, response);
 		}
 	}
 
-	private ModelAndView startFlowRender(FlowHandler flowHandler, MutableAttributeMap<Object> input,
-			RenderRequest request, RenderResponse response) {
-		PortletExternalContext context = createPortletExternalContext(request, response);
-		try {
-			FlowExecutionResult result = flowExecutor.launchExecution(flowHandler.getFlowId(), input, context);
-			if (result.isPaused()) {
-				flowUrlHandler.setFlowExecutionInSession(result.getPausedKey(), request);
-			}
-			return null;
-		} catch (FlowException flowEx) {
-			return handleException(flowEx, flowHandler, request, response);
-		}
-	}
+	private ModelAndView handleResourceException(FlowException e, FlowHandler flowHandler, ResourceRequest request,
+		ResourceResponse response) {
+		String view = flowHandler.handleResourceException(e, request, response);
 
-	private ModelAndView startFlowResource(FlowHandler flowHandler, ResourceRequest request, ResourceResponse response) {
-		PortletExternalContext context = createPortletExternalContext(request, response);
-		try {
-			FlowExecutionResult result = flowExecutor.launchExecution(flowHandler.getFlowId(), null, context);
-			if (result.isPaused()) {
-				flowUrlHandler.setFlowExecutionInSession(result.getPausedKey(), request);
-			}
-			return null;
-		} catch (FlowException flowEx) {
-			return handleResourceException(flowEx, flowHandler, request, response);
+		if (view != null) {
+			return new ModelAndView(view);
+		}
+		else {
+			return defaultHandleResourceException(flowHandler, e, request, response);
 		}
 	}
 
 	private ModelAndView resumeFlowRender(RenderRequest request, RenderResponse response, FlowHandler flowHandler,
-			String flowExecutionKey) {
+		String flowExecutionKey) {
 		PortletExternalContext context = createPortletExternalContext(request, response);
+
 		try {
 			flowExecutor.resumeExecution(flowExecutionKey, context);
+
 			return null;
-		} catch (FlowException e) {
+		}
+		catch (FlowException e) {
 			return handleException(e, flowHandler, request, response);
 		}
 	}
 
-	private ModelAndView resumeFlowResource(ResourceRequest request, ResourceResponse response,
-			FlowHandler flowHandler, String flowExecutionKey) {
+	private ModelAndView resumeFlowResource(ResourceRequest request, ResourceResponse response, FlowHandler flowHandler,
+		String flowExecutionKey) {
 		PortletExternalContext context = createPortletExternalContext(request, response);
+
 		try {
 			flowExecutor.resumeExecution(flowExecutionKey, context);
+
 			return null;
-		} catch (FlowException e) {
+		}
+		catch (FlowException e) {
 			return handleResourceException(e, flowHandler, request, response);
 		}
 	}
 
-	private FlowException clearActionRequestFlowException(RenderRequest request, RenderResponse response,
-			FlowHandler flowHandler) {
-		PortletSession session = request.getPortletSession(false);
-		if (session != null) {
-			FlowException e = (FlowException) session.getAttribute(ACTION_REQUEST_FLOW_EXCEPTION_ATTRIBUTE);
-			if (e != null) {
-				session.removeAttribute(ACTION_REQUEST_FLOW_EXCEPTION_ATTRIBUTE);
-				return e;
+	private ModelAndView startFlowRender(FlowHandler flowHandler, MutableAttributeMap<Object> input,
+		RenderRequest request, RenderResponse response) {
+		PortletExternalContext context = createPortletExternalContext(request, response);
+
+		try {
+			FlowExecutionResult result = flowExecutor.launchExecution(flowHandler.getFlowId(), input, context);
+
+			if (result.isPaused()) {
+				flowUrlHandler.setFlowExecutionInSession(result.getPausedKey(), request);
 			}
+
+			return null;
 		}
-		return null;
+		catch (FlowException flowEx) {
+			return handleException(flowEx, flowHandler, request, response);
+		}
+	}
+
+	private ModelAndView startFlowResource(FlowHandler flowHandler, ResourceRequest request,
+		ResourceResponse response) {
+		PortletExternalContext context = createPortletExternalContext(request, response);
+
+		try {
+			FlowExecutionResult result = flowExecutor.launchExecution(flowHandler.getFlowId(), null, context);
+
+			if (result.isPaused()) {
+				flowUrlHandler.setFlowExecutionInSession(result.getPausedKey(), request);
+			}
+
+			return null;
+		}
+		catch (FlowException flowEx) {
+			return handleResourceException(flowEx, flowHandler, request, response);
+		}
 	}
 
 }

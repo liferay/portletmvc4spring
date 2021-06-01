@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,22 +22,23 @@ import javax.portlet.PortletSession;
 
 import org.springframework.binding.collection.SharedMap;
 import org.springframework.binding.collection.StringKeyedMapAdapter;
+
 import org.springframework.web.util.WebUtils;
+
 import org.springframework.webflow.context.web.HttpSessionMapBindingListener;
 import org.springframework.webflow.core.collection.AttributeMapBindingListener;
 import org.springframework.webflow.core.collection.CollectionUtils;
 
+
 /**
  * A Shared Map backed by the Portlet session, for accessing session scoped attributes.
- * 
- * @author Keith Donald
- * @author Scott Andrews
+ *
+ * @author  Keith Donald
+ * @author  Scott Andrews
  */
 public class PortletSessionMap extends StringKeyedMapAdapter<Object> implements SharedMap<String, Object> {
 
-	/**
-	 * The wrapped portlet request, providing access to the session.
-	 */
+	/** The wrapped portlet request, providing access to the session. */
 	private PortletRequest request;
 
 	/**
@@ -47,58 +48,71 @@ public class PortletSessionMap extends StringKeyedMapAdapter<Object> implements 
 		this.request = request;
 	}
 
-	/**
-	 * Internal helper to get the portlet session associated with the wrapped request, or null if there is no such
-	 * session.
-	 * <p>
-	 * Note that this method will not force session creation.
-	 */
-	private PortletSession getSession() {
-		return request.getPortletSession(false);
+	public Object getMutex() {
+
+		// force session creation
+		PortletSession session = request.getPortletSession(true);
+		Object mutex = session.getAttribute(WebUtils.SESSION_MUTEX_ATTRIBUTE);
+
+		return (mutex != null) ? mutex : session;
 	}
 
 	protected Object getAttribute(String key) {
 		PortletSession session = getSession();
+
 		if (session == null) {
 			return null;
 		}
+
 		Object value = session.getAttribute(key);
+
 		if (value instanceof HttpSessionMapBindingListener) {
+
 			// unwrap
 			return ((HttpSessionMapBindingListener) value).getListener();
-		} else {
+		}
+		else {
 			return value;
-		}
-	}
-
-	protected void setAttribute(String key, Object value) {
-		// force session creation
-		PortletSession session = request.getPortletSession(true);
-		if (value instanceof AttributeMapBindingListener) {
-			// wrap
-			session.setAttribute(key, new HttpSessionMapBindingListener((AttributeMapBindingListener) value, this));
-		} else {
-			session.setAttribute(key, value);
-		}
-	}
-
-	protected void removeAttribute(String key) {
-		PortletSession session = getSession();
-		if (session != null) {
-			session.removeAttribute(key);
 		}
 	}
 
 	protected Iterator<String> getAttributeNames() {
 		PortletSession session = getSession();
-		return session == null ? CollectionUtils.<String> emptyIterator() : CollectionUtils.toIterator(session
-				.getAttributeNames());
+
+		return (session == null) ? CollectionUtils.<String>emptyIterator()
+								 : CollectionUtils.toIterator(session.getAttributeNames());
 	}
 
-	public Object getMutex() {
+	protected void removeAttribute(String key) {
+		PortletSession session = getSession();
+
+		if (session != null) {
+			session.removeAttribute(key);
+		}
+	}
+
+	protected void setAttribute(String key, Object value) {
+
 		// force session creation
 		PortletSession session = request.getPortletSession(true);
-		Object mutex = session.getAttribute(WebUtils.SESSION_MUTEX_ATTRIBUTE);
-		return mutex != null ? mutex : session;
+
+		if (value instanceof AttributeMapBindingListener) {
+
+			// wrap
+			session.setAttribute(key, new HttpSessionMapBindingListener((AttributeMapBindingListener) value, this));
+		}
+		else {
+			session.setAttribute(key, value);
+		}
+	}
+
+	/**
+	 * Internal helper to get the portlet session associated with the wrapped request, or null if there is no such
+	 * session.
+	 *
+	 * <p>Note that this method will not force session creation.
+	 */
+	private PortletSession getSession() {
+		return request.getPortletSession(false);
 	}
 }

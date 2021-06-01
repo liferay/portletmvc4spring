@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,18 +27,15 @@ import org.springframework.webflow.core.FlowException;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.FlowExecutionOutcome;
 
+
 /**
  * Trivial flow handler base class that simply returns null for all operations. Subclasses should extend and override
  * which operations they need.
- * 
- * @author Keith Donald
- * @author Rossen Stoyanchev
+ *
+ * @author  Keith Donald
+ * @author  Rossen Stoyanchev
  */
 public class AbstractFlowHandler implements FlowHandler {
-
-	public String getFlowId() {
-		return null;
-	}
 
 	public MutableAttributeMap<Object> createExecutionInputMap(RenderRequest request) {
 		return null;
@@ -48,8 +45,8 @@ public class AbstractFlowHandler implements FlowHandler {
 		return null;
 	}
 
-	public boolean handleExecutionOutcome(FlowExecutionOutcome outcome, ActionRequest request, ActionResponse response) {
-		return false;
+	public String getFlowId() {
+		return null;
 	}
 
 	public String handleException(FlowException e, PortletRequest request, RenderResponse response) {
@@ -58,6 +55,11 @@ public class AbstractFlowHandler implements FlowHandler {
 
 	public String handleException(FlowException e, RenderRequest request, RenderResponse response) {
 		return null;
+	}
+
+	public boolean handleExecutionOutcome(FlowExecutionOutcome outcome, ActionRequest request,
+		ActionResponse response) {
+		return false;
 	}
 
 	public String handleResourceException(FlowException e, ResourceRequest request, ResourceResponse response) {

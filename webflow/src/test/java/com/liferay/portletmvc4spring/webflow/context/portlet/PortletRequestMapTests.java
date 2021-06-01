@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,66 @@
  */
 package com.liferay.portletmvc4spring.webflow.context.portlet;
 
-import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
-
 import java.util.Iterator;
+
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
 
 import junit.framework.TestCase;
 
+
 /**
  * Unit test for the {@link PortletRequestMap} class.
- * 
- * @author Ulrik Sandberg
- * @author Scott Andrews
+ *
+ * @author  Ulrik Sandberg
+ * @author  Scott Andrews
  */
 public class PortletRequestMapTests extends TestCase {
 
 	private PortletRequestMap tested;
 
 	private MockPortletRequest request;
+
+	public void testGetAttribute() {
+		request.setAttribute("Some key", "Some value");
+
+		// perform test
+		Object result = tested.getAttribute("Some key");
+		assertEquals("Some value", result);
+	}
+
+	public void testGetAttributeNames() {
+		request.setAttribute("Some key", "Some value");
+
+		// perform test
+		Iterator<String> names = tested.getAttributeNames();
+		assertNotNull("Null result unexpected", names);
+		assertTrue("More elements", names.hasNext());
+
+		while (names.hasNext()) {
+			String name = names.next();
+
+			if ("Some key".equals(name)) {
+				return;
+			}
+		}
+
+		fail("Expected to find: 'Some key'");
+	}
+
+	public void testRemoveAttribute() {
+		request.setAttribute("Some key", "Some value");
+
+		// perform test
+		tested.removeAttribute("Some key");
+		assertNull(request.getAttribute("Some key"));
+	}
+
+	public void testSetAttribute() {
+
+		// perform test
+		tested.setAttribute("Some key", "Some value");
+		assertEquals("Some value", request.getAttribute("Some key"));
+	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -43,40 +86,5 @@ public class PortletRequestMapTests extends TestCase {
 		super.tearDown();
 		request = null;
 		tested = null;
-	}
-
-	public void testGetAttribute() {
-		request.setAttribute("Some key", "Some value");
-		// perform test
-		Object result = tested.getAttribute("Some key");
-		assertEquals("Some value", result);
-	}
-
-	public void testSetAttribute() {
-		// perform test
-		tested.setAttribute("Some key", "Some value");
-		assertEquals("Some value", request.getAttribute("Some key"));
-	}
-
-	public void testRemoveAttribute() {
-		request.setAttribute("Some key", "Some value");
-		// perform test
-		tested.removeAttribute("Some key");
-		assertNull(request.getAttribute("Some key"));
-	}
-
-	public void testGetAttributeNames() {
-		request.setAttribute("Some key", "Some value");
-		// perform test
-		Iterator<String> names = tested.getAttributeNames();
-		assertNotNull("Null result unexpected", names);
-		assertTrue("More elements", names.hasNext());
-		while (names.hasNext()) {
-			String name = names.next();
-			if ("Some key".equals(name)) {
-				return;
-			}
-		}
-		fail("Expected to find: 'Some key'");
 	}
 }

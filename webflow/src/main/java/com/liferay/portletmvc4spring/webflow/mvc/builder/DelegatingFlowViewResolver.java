@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@ import java.util.List;
 
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
+
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.mvc.view.FlowViewResolver;
 
+
 /**
  * Delegates to a configured view resolver chain to resolve the Spring MVC view implementation to render.
- * 
- * @see ViewResolver
- * 
- * @author Keith Donald
+ *
+ * @see     ViewResolver
+ * @author  Keith Donald
  */
 public class DelegatingFlowViewResolver implements FlowViewResolver {
 
@@ -36,30 +37,36 @@ public class DelegatingFlowViewResolver implements FlowViewResolver {
 
 	/**
 	 * Creates a new flow view resolver.
-	 * @param viewResolvers the Spring MVC view resolver chain to delegate to
+	 *
+	 * @param  viewResolvers  the Spring MVC view resolver chain to delegate to
 	 */
 	public DelegatingFlowViewResolver(List<ViewResolver> viewResolvers) {
-		this.viewResolvers = viewResolvers != null ? viewResolvers : Collections.<ViewResolver> emptyList();
-	}
-
-	public View resolveView(String viewId, RequestContext context) {
-		for (ViewResolver viewResolver : viewResolvers) {
-			try {
-				View view = viewResolver.resolveViewName(viewId, context.getExternalContext().getLocale());
-				if (view != null) {
-					return view;
-				}
-			} catch (Exception e) {
-				IllegalStateException ise = new IllegalStateException("Exception resolving view with name '" + viewId
-						+ "'");
-				ise.initCause(e);
-				throw ise;
-			}
-		}
-		return null;
+		this.viewResolvers = (viewResolvers != null) ? viewResolvers : Collections.<ViewResolver>emptyList();
 	}
 
 	public String getViewIdByConvention(String viewStateId) {
 		return viewStateId;
+	}
+
+	public View resolveView(String viewId, RequestContext context) {
+
+		for (ViewResolver viewResolver : viewResolvers) {
+
+			try {
+				View view = viewResolver.resolveViewName(viewId, context.getExternalContext().getLocale());
+
+				if (view != null) {
+					return view;
+				}
+			}
+			catch (Exception e) {
+				IllegalStateException ise = new IllegalStateException("Exception resolving view with name '" + viewId +
+						"'");
+				ise.initCause(e);
+				throw ise;
+			}
+		}
+
+		return null;
 	}
 }

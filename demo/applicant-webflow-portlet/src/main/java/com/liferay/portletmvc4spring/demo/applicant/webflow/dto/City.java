@@ -22,7 +22,7 @@ import java.io.Serializable;
  * This is a bean that represents a City, and implements the Transfer Object (formerly known as ValueObject/VO) design
  * pattern.
  *
- * @author  "Neil Griffin"
+ * @author  Neil Griffin
  */
 public class City implements Serializable {
 

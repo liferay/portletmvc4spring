@@ -23,15 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * @author  Neil Griffin
+ * @author  Fabian Bouché
  */
 public class TransientUpload implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private List<MultipartFile> multipartFiles = new ArrayList<>();
 
 	public List<MultipartFile> getMultipartFiles() {
