@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package com.liferay.portletmvc4spring.webflow.mvc.portlet;
 
-import com.liferay.portletmvc4spring.DispatcherPortlet;
-import com.liferay.portletmvc4spring.ViewRendererServlet;
-
 import java.util.Map;
 
 import javax.portlet.MimeResponse;
@@ -25,22 +22,28 @@ import javax.portlet.PortletContext;
 import javax.portlet.PortletRequest;
 
 import org.springframework.web.servlet.View;
+
 import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.mvc.view.AbstractMvcView;
 
+import com.liferay.portletmvc4spring.DispatcherPortlet;
+import com.liferay.portletmvc4spring.ViewRendererServlet;
+
+
 /**
  * The Spring Web Portlet MVC view implementation.
- * 
- * @author Keith Donald
- * @author Scott Andrews
+ *
+ * @author  Keith Donald
+ * @author  Scott Andrews
  */
 public class PortletMvcView extends AbstractMvcView {
 
 	/**
 	 * Creates a new Portlet MVC view.
-	 * @param view the view to render
-	 * @param context the current flow request context
+	 *
+	 * @param  view     the view to render
+	 * @param  context  the current flow request context
 	 */
 	public PortletMvcView(org.springframework.web.servlet.View view, RequestContext context) {
 		super(view, context);
@@ -53,18 +56,22 @@ public class PortletMvcView extends AbstractMvcView {
 		PortletContext portletContext = (PortletContext) externalContext.getNativeContext();
 		PortletRequest request = (PortletRequest) externalContext.getNativeRequest();
 		MimeResponse response = (MimeResponse) externalContext.getNativeResponse();
+
 		if (response.getContentType() == null) {
+
 			// No Portlet content type specified yet -> use the view-determined type.
 			// (The Portlet spec requires the content type to be set on the RenderResponse)
 			String contentType = view.getContentType();
+
 			if (contentType != null) {
 				response.setContentType(contentType);
 			}
 		}
+
 		request.setAttribute(ViewRendererServlet.VIEW_ATTRIBUTE, view);
 		request.setAttribute(ViewRendererServlet.MODEL_ATTRIBUTE, model);
 		request.setAttribute(org.springframework.web.servlet.support.RequestContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE,
-				context.getActiveFlow().getApplicationContext());
+			context.getActiveFlow().getApplicationContext());
 		portletContext.getRequestDispatcher(DispatcherPortlet.DEFAULT_VIEW_RENDERER_URL).include(request, response);
 	}
 

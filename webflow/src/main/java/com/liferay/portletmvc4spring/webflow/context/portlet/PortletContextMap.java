@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,19 +21,19 @@ import javax.portlet.PortletContext;
 
 import org.springframework.binding.collection.SharedMap;
 import org.springframework.binding.collection.StringKeyedMapAdapter;
+
 import org.springframework.webflow.core.collection.CollectionUtils;
+
 
 /**
  * Map backed by the Portlet context for accessing application scoped attributes.
- * 
- * @author Keith Donald
- * @author Scott Andrews
+ *
+ * @author  Keith Donald
+ * @author  Scott Andrews
  */
 public class PortletContextMap extends StringKeyedMapAdapter<Object> implements SharedMap<String, Object> {
 
-	/**
-	 * The wrapped portlet context.
-	 */
+	/** The wrapped portlet context. */
 	private PortletContext context;
 
 	/**
@@ -43,23 +43,23 @@ public class PortletContextMap extends StringKeyedMapAdapter<Object> implements 
 		this.context = context;
 	}
 
+	public Object getMutex() {
+		return context;
+	}
+
 	protected Object getAttribute(String key) {
 		return context.getAttribute(key);
-	}
-
-	protected void setAttribute(String key, Object value) {
-		context.setAttribute(key, value);
-	}
-
-	protected void removeAttribute(String key) {
-		context.removeAttribute(key);
 	}
 
 	protected Iterator<String> getAttributeNames() {
 		return CollectionUtils.toIterator(context.getAttributeNames());
 	}
 
-	public Object getMutex() {
-		return context;
+	protected void removeAttribute(String key) {
+		context.removeAttribute(key);
+	}
+
+	protected void setAttribute(String key, Object value) {
+		context.setAttribute(key, value);
 	}
 }

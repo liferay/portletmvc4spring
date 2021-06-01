@@ -43,5 +43,5 @@ public class Attachment implements Serializable {
 	public long getSize() {
 		return file.length();
 	}
-	
+
 }

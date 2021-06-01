@@ -158,5 +158,5 @@ public class Applicant implements Serializable {
 	public void setProvinceId(Long provinceId) {
 		this.provinceId = provinceId;
 	}
-	
+
 }

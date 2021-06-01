@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2008 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,47 +15,53 @@
  */
 package com.liferay.portletmvc4spring.webflow.mvc.builder;
 
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.util.ClassUtils;
+
+import org.springframework.web.context.WebApplicationContext;
+
 import com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.util.ClassUtils;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Supported Spring Web MVC environments.
- * 
- * @author Keith Donald
+ *
+ * @author  Keith Donald
  */
 public enum MvcEnvironment {
 
-	/**
-	 * Spring Web Servlet MVC.
-	 */
+	/** Spring Web Servlet MVC. */
 	SERVLET,
 
-	/**
-	 * Spring Web Portlet MVC.
-	 */
+	/** Spring Web Portlet MVC. */
 	PORTLET;
 
 	/**
 	 * Calculates the web environment from the state of the provided application context.
-	 * @param applicationContext the application context
-	 * @return the web environment the context is running in, or null if not running in a web environment
+	 *
+	 * @param   applicationContext  the application context
+	 *
+	 * @return  the web environment the context is running in, or null if not running in a web environment
 	 */
 	public static MvcEnvironment environmentFor(ApplicationContext applicationContext) {
-		if (ClassUtils.isPresent("javax.portlet.PortletContext", MvcEnvironment.class.getClassLoader()) && isPortletApplicationContext(applicationContext)) {
+
+		if (ClassUtils.isPresent("javax.portlet.PortletContext", MvcEnvironment.class.getClassLoader()) &&
+				isPortletApplicationContext(applicationContext)) {
 			return MvcEnvironment.PORTLET;
-		} else if (applicationContext instanceof WebApplicationContext) {
+		}
+		else if (applicationContext instanceof WebApplicationContext) {
 			return MvcEnvironment.SERVLET;
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
 
 	private static boolean isPortletApplicationContext(ApplicationContext applicationContext) {
-		return ClassUtils.isPresent("com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext", MvcEnvironment.class.getClassLoader())
-				&& applicationContext instanceof ConfigurablePortletApplicationContext;
+		return ClassUtils.isPresent("com.liferay.portletmvc4spring.context.ConfigurablePortletApplicationContext",
+				MvcEnvironment.class.getClassLoader()) &&
+			(applicationContext instanceof ConfigurablePortletApplicationContext);
 	}
 
 }

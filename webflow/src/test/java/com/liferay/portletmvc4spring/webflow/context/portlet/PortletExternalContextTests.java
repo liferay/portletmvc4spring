@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,20 @@
  */
 package com.liferay.portletmvc4spring.webflow.context.portlet;
 
-import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionRequest;
-import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionResponse;
-import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
-import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
-import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
-
 import java.io.IOException;
 import java.io.Writer;
 
 import org.springframework.webflow.context.servlet.ServletExternalContext;
 import org.springframework.webflow.core.collection.LocalAttributeMap;
 
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockActionResponse;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
+import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
+
 import junit.framework.TestCase;
+
 
 /**
  * Unit tests for {@link ServletExternalContext}.
@@ -48,41 +49,8 @@ public class PortletExternalContextTests extends TestCase {
 
 	private PortletExternalContext renderContext;
 
-	protected void setUp() {
-		portletContext = new MockPortletContext();
-		request = new MockActionRequest();
-		response = new MockActionResponse();
-		context = new PortletExternalContext(portletContext, request, response);
-		renderRequest = new MockRenderRequest();
-		renderResponse = new MockRenderResponse();
-		renderContext = new PortletExternalContext(portletContext, renderRequest, renderResponse);
-	}
-
-	public void testGetContextPath() {
-		request.setContextPath("/foo");
-		assertEquals("/foo", request.getContextPath());
-	}
-
-	public void testRequestParameters() {
-		assertTrue(context.getRequestParameterMap().isEmpty());
-	}
-
-	public void testGetNativeObjects() {
-		assertEquals(portletContext, context.getNativeContext());
-		assertEquals(request, context.getNativeRequest());
-		assertEquals(response, context.getNativeResponse());
-	}
-
-	public void testNotAnAjaxRequest() {
-		assertFalse(context.isAjaxRequest());
-	}
-
 	public void testAjaxRequestAcceptHeader() {
 		assertFalse(context.isAjaxRequest());
-	}
-
-	public void testNotResponseCommitted() {
-		assertFalse(context.isResponseComplete());
 	}
 
 	public void testCommitExecutionRedirect() {
@@ -94,11 +62,53 @@ public class PortletExternalContextTests extends TestCase {
 		assertFalse(context.isResponseAllowed());
 	}
 
+	public void testCommitExecutionRedirectPopup() {
+		assertFalse(context.isResponseAllowed());
+		context.requestFlowExecutionRedirect();
+		context.requestRedirectInPopup();
+		assertTrue(context.getFlowExecutionRedirectRequested());
+		assertTrue(context.getRedirectInPopup());
+		assertTrue(context.isResponseComplete());
+		assertTrue(context.isResponseCompleteFlowExecutionRedirect());
+	}
+
 	public void testCommitExecutionRedirectRenderRequest() {
+
 		try {
 			renderContext.requestFlowExecutionRedirect();
 			fail("IllegalStateException expected");
-		} catch (IllegalStateException e) {
+		}
+		catch (IllegalStateException e) {
+			// we want this
+		}
+	}
+
+	public void testCommitExternalRedirect() {
+		assertFalse(context.isResponseAllowed());
+		context.requestExternalRedirect("foo");
+		assertTrue(context.getExternalRedirectRequested());
+		assertEquals("foo", context.getExternalRedirectUrl());
+		assertTrue(context.isResponseComplete());
+		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
+	}
+
+	public void testCommitExternalRedirectPopup() {
+		context.requestExternalRedirect("foo");
+		context.requestRedirectInPopup();
+		assertTrue(context.getExternalRedirectRequested());
+		assertEquals("foo", context.getExternalRedirectUrl());
+		assertTrue(context.getRedirectInPopup());
+		assertTrue(context.isResponseComplete());
+		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
+	}
+
+	public void testCommitExternalRedirectRenderRequest() {
+
+		try {
+			renderContext.requestExternalRedirect("foo");
+			fail("IllegalStateException expected");
+		}
+		catch (IllegalStateException e) {
 			// we want this
 		}
 	}
@@ -114,55 +124,6 @@ public class PortletExternalContextTests extends TestCase {
 		assertNotNull(context.getFlowRedirectFlowInput());
 	}
 
-	public void testCommitFlowRedirectWithInput() {
-		assertFalse(context.isResponseAllowed());
-		LocalAttributeMap<Object> input = new LocalAttributeMap<Object>();
-		context.requestFlowDefinitionRedirect("foo", input);
-		assertTrue(context.getFlowDefinitionRedirectRequested());
-		assertEquals("foo", context.getFlowRedirectFlowId());
-		assertTrue(context.isResponseComplete());
-		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
-		assertFalse(context.isResponseAllowed());
-		assertEquals(input, context.getFlowRedirectFlowInput());
-	}
-
-	public void testCommitFlowRedirectRenderRequest() {
-		try {
-			renderContext.requestFlowDefinitionRedirect("foo", null);
-			fail("IllegalStateException expected");
-		} catch (IllegalStateException e) {
-			// we want this
-		}
-	}
-
-	public void testCommitExternalRedirect() {
-		assertFalse(context.isResponseAllowed());
-		context.requestExternalRedirect("foo");
-		assertTrue(context.getExternalRedirectRequested());
-		assertEquals("foo", context.getExternalRedirectUrl());
-		assertTrue(context.isResponseComplete());
-		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
-	}
-
-	public void testCommitExternalRedirectRenderRequest() {
-		try {
-			renderContext.requestExternalRedirect("foo");
-			fail("IllegalStateException expected");
-		} catch (IllegalStateException e) {
-			// we want this
-		}
-	}
-
-	public void testCommitExecutionRedirectPopup() {
-		assertFalse(context.isResponseAllowed());
-		context.requestFlowExecutionRedirect();
-		context.requestRedirectInPopup();
-		assertTrue(context.getFlowExecutionRedirectRequested());
-		assertTrue(context.getRedirectInPopup());
-		assertTrue(context.isResponseComplete());
-		assertTrue(context.isResponseCompleteFlowExecutionRedirect());
-	}
-
 	public void testCommitFlowRedirectPopup() {
 		context.requestFlowDefinitionRedirect("foo", null);
 		context.requestRedirectInPopup();
@@ -173,27 +134,93 @@ public class PortletExternalContextTests extends TestCase {
 		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
 	}
 
-	public void testCommitExternalRedirectPopup() {
-		context.requestExternalRedirect("foo");
-		context.requestRedirectInPopup();
-		assertTrue(context.getExternalRedirectRequested());
-		assertEquals("foo", context.getExternalRedirectUrl());
-		assertTrue(context.getRedirectInPopup());
-		assertTrue(context.isResponseComplete());
-		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
-	}
+	public void testCommitFlowRedirectRenderRequest() {
 
-	public void testExecutionRedirectPopupRenderRequest() {
 		try {
-			renderContext.requestRedirectInPopup();
+			renderContext.requestFlowDefinitionRedirect("foo", null);
 			fail("IllegalStateException expected");
-		} catch (IllegalStateException e) {
+		}
+		catch (IllegalStateException e) {
 			// we want this
 		}
 	}
 
-	public void testResponseAllowed() {
+	public void testCommitFlowRedirectWithInput() {
 		assertFalse(context.isResponseAllowed());
+
+		LocalAttributeMap<Object> input = new LocalAttributeMap<Object>();
+		context.requestFlowDefinitionRedirect("foo", input);
+		assertTrue(context.getFlowDefinitionRedirectRequested());
+		assertEquals("foo", context.getFlowRedirectFlowId());
+		assertTrue(context.isResponseComplete());
+		assertFalse(context.isResponseCompleteFlowExecutionRedirect());
+		assertFalse(context.isResponseAllowed());
+		assertEquals(input, context.getFlowRedirectFlowInput());
+	}
+
+	public void testDoubleCommitResponse() {
+		context.recordResponseComplete();
+
+		try {
+			context.requestExternalRedirect("foo");
+		}
+		catch (IllegalStateException e) {
+		}
+
+		try {
+			context.requestFlowExecutionRedirect();
+			fail("Should have failed");
+		}
+		catch (IllegalStateException e) {
+
+		}
+
+		try {
+			context.requestFlowDefinitionRedirect("foo", null);
+			fail("Should have failed");
+		}
+		catch (IllegalStateException e) {
+
+		}
+	}
+
+	public void testExecutionRedirectPopupRenderRequest() {
+
+		try {
+			renderContext.requestRedirectInPopup();
+			fail("IllegalStateException expected");
+		}
+		catch (IllegalStateException e) {
+			// we want this
+		}
+	}
+
+	public void testGetContextPath() {
+		request.setContextPath("/foo");
+		assertEquals("/foo", request.getContextPath());
+	}
+
+	public void testGetNativeObjects() {
+		assertEquals(portletContext, context.getNativeContext());
+		assertEquals(request, context.getNativeRequest());
+		assertEquals(response, context.getNativeResponse());
+	}
+
+	public void testGetResponseWriter() throws IOException {
+		Writer writer = renderContext.getResponseWriter();
+		writer.append('t');
+		assertEquals("t", renderResponse.getContentAsString());
+	}
+
+	public void testGetResponseWriterResponseComplete() throws IOException {
+		context.recordResponseComplete();
+
+		try {
+			context.getResponseWriter();
+			fail("Should have failed");
+		}
+		catch (IllegalStateException e) {
+		}
 	}
 
 	public void testIsActionPhase() {
@@ -204,30 +231,18 @@ public class PortletExternalContextTests extends TestCase {
 		assertFalse(context.isRenderPhase());
 	}
 
+	public void testNotAnAjaxRequest() {
+		assertFalse(context.isAjaxRequest());
+	}
+
+	public void testNotResponseCommitted() {
+		assertFalse(context.isResponseComplete());
+	}
+
 	public void testRecordResponseComplete() {
 		context.recordResponseComplete();
 		assertTrue(context.isResponseComplete());
 		assertFalse(context.isResponseAllowed());
-	}
-
-	public void testDoubleCommitResponse() {
-		context.recordResponseComplete();
-		try {
-			context.requestExternalRedirect("foo");
-		} catch (IllegalStateException e) {
-		}
-		try {
-			context.requestFlowExecutionRedirect();
-			fail("Should have failed");
-		} catch (IllegalStateException e) {
-
-		}
-		try {
-			context.requestFlowDefinitionRedirect("foo", null);
-			fail("Should have failed");
-		} catch (IllegalStateException e) {
-
-		}
 	}
 
 	public void testRedirectInPopup() {
@@ -243,26 +258,31 @@ public class PortletExternalContextTests extends TestCase {
 	}
 
 	public void testRedirectInPopupNoRedirectRequested() {
+
 		try {
 			context.requestRedirectInPopup();
 			fail("Should have failed");
-		} catch (IllegalStateException e) {
+		}
+		catch (IllegalStateException e) {
 		}
 	}
 
-	public void testGetResponseWriter() throws IOException {
-		Writer writer = renderContext.getResponseWriter();
-		writer.append('t');
-		assertEquals("t", renderResponse.getContentAsString());
+	public void testRequestParameters() {
+		assertTrue(context.getRequestParameterMap().isEmpty());
 	}
 
-	public void testGetResponseWriterResponseComplete() throws IOException {
-		context.recordResponseComplete();
-		try {
-			context.getResponseWriter();
-			fail("Should have failed");
-		} catch (IllegalStateException e) {
-		}
+	public void testResponseAllowed() {
+		assertFalse(context.isResponseAllowed());
+	}
+
+	protected void setUp() {
+		portletContext = new MockPortletContext();
+		request = new MockActionRequest();
+		response = new MockActionResponse();
+		context = new PortletExternalContext(portletContext, request, response);
+		renderRequest = new MockRenderRequest();
+		renderResponse = new MockRenderResponse();
+		renderContext = new PortletExternalContext(portletContext, renderRequest, renderResponse);
 	}
 
 }

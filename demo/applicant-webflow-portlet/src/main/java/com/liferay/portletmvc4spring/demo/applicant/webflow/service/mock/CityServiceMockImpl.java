@@ -15,21 +15,23 @@
  */
 package com.liferay.portletmvc4spring.demo.applicant.webflow.service.mock;
 
-import com.liferay.portletmvc4spring.demo.applicant.webflow.dto.City;
-import com.liferay.portletmvc4spring.demo.applicant.webflow.service.CityService;
-import com.liferay.portletmvc4spring.demo.applicant.webflow.service.ProvinceService;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
+
+import com.liferay.portletmvc4spring.demo.applicant.webflow.dto.City;
+import com.liferay.portletmvc4spring.demo.applicant.webflow.service.CityService;
+import com.liferay.portletmvc4spring.demo.applicant.webflow.service.ProvinceService;
 
 
 /**
  * @author  Neil Griffin
+ * @author  Fabian Bouché
  */
 @Service
 public class CityServiceMockImpl implements CityService {

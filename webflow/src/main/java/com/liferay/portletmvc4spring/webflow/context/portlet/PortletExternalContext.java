@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2012 the original author or authors.
+ * Copyright (c) 2000-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,13 +39,14 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.core.collection.ParameterMap;
 import org.springframework.webflow.core.collection.SharedAttributeMap;
 
+
 /**
  * Provides contextual information about an portlet environment that has interacted with Spring Web Flow.
- * 
- * @author Keith Donald
- * @author Erwin Vervaet
- * @author Jeremy Grelle
- * @author Scott Andrews
+ *
+ * @author  Keith Donald
+ * @author  Erwin Vervaet
+ * @author  Jeremy Grelle
+ * @author  Scott Andrews
  */
 public class PortletExternalContext implements ExternalContext {
 
@@ -55,44 +56,28 @@ public class PortletExternalContext implements ExternalContext {
 
 	protected static final short RESOURCE_PHASE = 3;
 
-	/**
-	 * The context.
-	 */
+	/** The context. */
 	private PortletContext context;
 
-	/**
-	 * The request.
-	 */
+	/** The request. */
 	private PortletRequest request;
 
-	/**
-	 * The response.
-	 */
+	/** The response. */
 	private PortletResponse response;
 
-	/**
-	 * The portlet request phase: render, action, resource
-	 */
+	/** The portlet request phase: render, action, resource */
 	private short requestPhase;
 
-	/**
-	 * An accessor for the HTTP request parameter map.
-	 */
+	/** An accessor for the HTTP request parameter map. */
 	private ParameterMap requestParameterMap;
 
-	/**
-	 * An accessor for the HTTP request attribute map.
-	 */
+	/** An accessor for the HTTP request attribute map. */
 	private MutableAttributeMap<Object> requestMap;
 
-	/**
-	 * An accessor for the HTTP session map.
-	 */
+	/** An accessor for the HTTP session map. */
 	private SharedAttributeMap<Object> sessionMap;
 
-	/**
-	 * An accessor for the servlet context application map.
-	 */
+	/** An accessor for the servlet context application map. */
 	private SharedAttributeMap<Object> applicationMap;
 
 	/**
@@ -101,9 +86,7 @@ public class PortletExternalContext implements ExternalContext {
 	 */
 	private boolean responseComplete;
 
-	/**
-	 * A flag indicating if a flow execution redirect has been requested.
-	 */
+	/** A flag indicating if a flow execution redirect has been requested. */
 	private boolean flowExecutionRedirectRequested;
 
 	/**
@@ -113,19 +96,15 @@ public class PortletExternalContext implements ExternalContext {
 	private String flowDefinitionRedirectFlowId;
 
 	/**
-	 * Input to pass the flow definition upon redirecting. May be null. Never set unless
-	 * {@link #flowDefinitionRedirectFlowId} has been set.
+	 * Input to pass the flow definition upon redirecting. May be null. Never set unless {@link
+	 * #flowDefinitionRedirectFlowId} has been set.
 	 */
 	private MutableAttributeMap<Object> flowDefinitionRedirectFlowInput;
 
-	/**
-	 * A string specifying an arbitrary
-	 */
+	/** A string specifying an arbitrary */
 	private String externalRedirectUrl;
 
-	/**
-	 * The strategy for generating flow execution urls.
-	 */
+	/** The strategy for generating flow execution urls. */
 	private FlowUrlHandler flowUrlHandler;
 
 	/**
@@ -136,9 +115,10 @@ public class PortletExternalContext implements ExternalContext {
 
 	/**
 	 * Create a new external context wrapping given portlet action request and response and given portlet context.
-	 * @param context the portal context
-	 * @param request the portlet request
-	 * @param response the portlet response
+	 *
+	 * @param  context   the portal context
+	 * @param  request   the portlet request
+	 * @param  response  the portlet response
 	 */
 	public PortletExternalContext(PortletContext context, PortletRequest request, PortletResponse response) {
 		init(context, request, response, new DefaultFlowUrlHandler());
@@ -146,14 +126,19 @@ public class PortletExternalContext implements ExternalContext {
 
 	/**
 	 * Create a new external context wrapping given portlet action request and response and given portlet context.
-	 * @param context the portal context
-	 * @param request the portlet request
-	 * @param response the portlet response
-	 * @param flowUrlHandler the flow url handler
+	 *
+	 * @param  context         the portal context
+	 * @param  request         the portlet request
+	 * @param  response        the portlet response
+	 * @param  flowUrlHandler  the flow url handler
 	 */
 	public PortletExternalContext(PortletContext context, PortletRequest request, PortletResponse response,
-			FlowUrlHandler flowUrlHandler) {
+		FlowUrlHandler flowUrlHandler) {
 		init(context, request, response, flowUrlHandler);
+	}
+
+	public SharedAttributeMap<Object> getApplicationMap() {
+		return applicationMap;
 	}
 
 	// implementing external context
@@ -162,28 +147,70 @@ public class PortletExternalContext implements ExternalContext {
 		return request.getContextPath();
 	}
 
-	public ParameterMap getRequestParameterMap() {
-		return requestParameterMap;
+	public Principal getCurrentUser() {
+		return request.getUserPrincipal();
 	}
 
-	public MutableAttributeMap<Object> getRequestMap() {
-		return requestMap;
+	/**
+	 * Returns the flag indicating if an external redirect response has been requested by the flow.
+	 */
+	public boolean getExternalRedirectRequested() {
+		return externalRedirectUrl != null;
 	}
 
-	public SharedAttributeMap<Object> getSessionMap() {
-		return sessionMap;
+	/**
+	 * Returns the URL to redirect to. Only set if {@link #getExternalRedirectRequested()} returns true.
+	 */
+	public String getExternalRedirectUrl() {
+		return externalRedirectUrl;
+	}
+
+	/**
+	 * Returns the flag indicating if a flow definition redirect response has been requested by the flow.
+	 */
+	public boolean getFlowDefinitionRedirectRequested() {
+		return flowDefinitionRedirectFlowId != null;
+	}
+
+	/**
+	 * Returns the flag indicating if a flow execution redirect response has been requested by the flow.
+	 */
+	public boolean getFlowExecutionRedirectRequested() {
+		return flowExecutionRedirectRequested;
+	}
+
+	public String getFlowExecutionUrl(String flowId, String flowExecutionKey) {
+
+		if (isRenderPhase()) {
+			return flowUrlHandler.createFlowExecutionUrl(flowId, flowExecutionKey, (RenderResponse) response);
+		}
+		else if (isResourcePhase()) {
+			return flowUrlHandler.createFlowExecutionUrl(flowId, flowExecutionKey, (ResourceResponse) response);
+		}
+		else {
+			throw new IllegalStateException(
+				"A flow execution action URL can only be obtained in a RenderRequest or a ResourceRequest");
+		}
+	}
+
+	/**
+	 * Returns the id of the flow definition to redirect to. Only set when {@link #getFlowDefinitionRedirectRequested()}
+	 * returns true.
+	 */
+	public String getFlowRedirectFlowId() {
+		return flowDefinitionRedirectFlowId;
+	}
+
+	/**
+	 * Returns the input to pass the flow definition through the redirect. Only set when {@link
+	 * #getFlowDefinitionRedirectRequested()} returns true.
+	 */
+	public MutableAttributeMap<Object> getFlowRedirectFlowInput() {
+		return flowDefinitionRedirectFlowInput;
 	}
 
 	public SharedAttributeMap<Object> getGlobalSessionMap() {
 		return getSessionMap();
-	}
-
-	public SharedAttributeMap<Object> getApplicationMap() {
-		return applicationMap;
-	}
-
-	public Principal getCurrentUser() {
-		return request.getUserPrincipal();
 	}
 
 	public Locale getLocale() {
@@ -202,125 +229,6 @@ public class PortletExternalContext implements ExternalContext {
 		return response;
 	}
 
-	public boolean isAjaxRequest() {
-		return false;
-	}
-
-	public String getFlowExecutionUrl(String flowId, String flowExecutionKey) {
-		if (isRenderPhase()) {
-			return flowUrlHandler.createFlowExecutionUrl(flowId, flowExecutionKey, (RenderResponse) response);
-		} else if (isResourcePhase()) {
-			return flowUrlHandler.createFlowExecutionUrl(flowId, flowExecutionKey, (ResourceResponse) response);
-		} else {
-			throw new IllegalStateException(
-					"A flow execution action URL can only be obtained in a RenderRequest or a ResourceRequest");
-		}
-	}
-
-	public Writer getResponseWriter() throws IllegalStateException {
-		assertResponseAllowed();
-		try {
-			return ((MimeResponse) response).getWriter();
-		} catch (IOException e) {
-			IllegalStateException ise = new IllegalStateException("Unable to access the response Writer");
-			ise.initCause(e);
-			throw ise;
-		}
-	}
-
-	public boolean isResponseAllowed() {
-		return (isRenderPhase() || isResourcePhase()) && !responseComplete;
-	}
-
-	public boolean isResponseComplete() {
-		return responseComplete;
-	}
-
-	public void recordResponseComplete() {
-		responseComplete = true;
-	}
-
-	public boolean isResponseCompleteFlowExecutionRedirect() {
-		return flowExecutionRedirectRequested;
-	}
-
-	public void requestFlowExecutionRedirect() throws IllegalStateException {
-		assertRedirectResponseAllowed();
-		flowExecutionRedirectRequested = true;
-		recordResponseComplete();
-	}
-
-	public void requestFlowDefinitionRedirect(String flowId, MutableAttributeMap<?> input) throws IllegalStateException {
-		assertRedirectResponseAllowed();
-		flowDefinitionRedirectFlowId = flowId;
-		flowDefinitionRedirectFlowInput = new LocalAttributeMap<Object>();
-		if (input != null) {
-			flowDefinitionRedirectFlowInput.putAll(input);
-		}
-		recordResponseComplete();
-	}
-
-	public void requestExternalRedirect(String uri) throws IllegalStateException {
-		assertRedirectResponseAllowed();
-		externalRedirectUrl = uri;
-		recordResponseComplete();
-	}
-
-	public void requestRedirectInPopup() throws IllegalStateException {
-		if (isRedirectRequested()) {
-			redirectInPopup = true;
-		} else {
-			throw new IllegalStateException(
-					"Only call requestRedirectInPopup after a redirect has been requested by calling requestFlowExecutionRedirect, requestFlowDefinitionRedirect, or requestExternalRedirect");
-		}
-	}
-
-	// implementation specific methods
-
-	/**
-	 * Returns the flag indicating if a flow execution redirect response has been requested by the flow.
-	 */
-	public boolean getFlowExecutionRedirectRequested() {
-		return flowExecutionRedirectRequested;
-	}
-
-	/**
-	 * Returns the flag indicating if a flow definition redirect response has been requested by the flow.
-	 */
-	public boolean getFlowDefinitionRedirectRequested() {
-		return flowDefinitionRedirectFlowId != null;
-	}
-
-	/**
-	 * Returns the id of the flow definition to redirect to. Only set when {@link #getFlowDefinitionRedirectRequested()}
-	 * returns true.
-	 */
-	public String getFlowRedirectFlowId() {
-		return flowDefinitionRedirectFlowId;
-	}
-
-	/**
-	 * Returns the input to pass the flow definition through the redirect. Only set when
-	 * {@link #getFlowDefinitionRedirectRequested()} returns true.
-	 */
-	public MutableAttributeMap<Object> getFlowRedirectFlowInput() {
-		return flowDefinitionRedirectFlowInput;
-	}
-
-	/**
-	 * Returns the flag indicating if an external redirect response has been requested by the flow.
-	 */
-	public boolean getExternalRedirectRequested() {
-		return externalRedirectUrl != null;
-	}
-
-	/**
-	 * Returns the URL to redirect to. Only set if {@link #getExternalRedirectRequested()} returns true.
-	 */
-	public String getExternalRedirectUrl() {
-		return externalRedirectUrl;
-	}
-
 	/**
 	 * If a redirect response has been requested, indicates if the redirect should be issued from a popup dialog.
 	 */
@@ -328,11 +236,40 @@ public class PortletExternalContext implements ExternalContext {
 		return redirectInPopup;
 	}
 
+	public MutableAttributeMap<Object> getRequestMap() {
+		return requestMap;
+	}
+
+	public ParameterMap getRequestParameterMap() {
+		return requestParameterMap;
+	}
+
+	public Writer getResponseWriter() throws IllegalStateException {
+		assertResponseAllowed();
+
+		try {
+			return ((MimeResponse) response).getWriter();
+		}
+		catch (IOException e) {
+			IllegalStateException ise = new IllegalStateException("Unable to access the response Writer");
+			ise.initCause(e);
+			throw ise;
+		}
+	}
+
+	public SharedAttributeMap<Object> getSessionMap() {
+		return sessionMap;
+	}
+
 	/**
 	 * Returns true if the current request phase is the action phase
 	 */
 	public boolean isActionPhase() {
 		return requestPhase == ACTION_PHASE;
+	}
+
+	public boolean isAjaxRequest() {
+		return false;
 	}
 
 	/**
@@ -349,10 +286,90 @@ public class PortletExternalContext implements ExternalContext {
 		return requestPhase == RESOURCE_PHASE;
 	}
 
+	public boolean isResponseAllowed() {
+		return (isRenderPhase() || isResourcePhase()) && !responseComplete;
+	}
+
+	public boolean isResponseComplete() {
+		return responseComplete;
+	}
+
+	public boolean isResponseCompleteFlowExecutionRedirect() {
+		return flowExecutionRedirectRequested;
+	}
+
+	public void recordResponseComplete() {
+		responseComplete = true;
+	}
+
+	public void requestExternalRedirect(String uri) throws IllegalStateException {
+		assertRedirectResponseAllowed();
+		externalRedirectUrl = uri;
+		recordResponseComplete();
+	}
+
+	public void requestFlowDefinitionRedirect(String flowId, MutableAttributeMap<?> input)
+		throws IllegalStateException {
+		assertRedirectResponseAllowed();
+		flowDefinitionRedirectFlowId = flowId;
+		flowDefinitionRedirectFlowInput = new LocalAttributeMap<Object>();
+
+		if (input != null) {
+			flowDefinitionRedirectFlowInput.putAll(input);
+		}
+
+		recordResponseComplete();
+	}
+
+	public void requestFlowExecutionRedirect() throws IllegalStateException {
+		assertRedirectResponseAllowed();
+		flowExecutionRedirectRequested = true;
+		recordResponseComplete();
+	}
+
+	public void requestRedirectInPopup() throws IllegalStateException {
+
+		if (isRedirectRequested()) {
+			redirectInPopup = true;
+		}
+		else {
+			throw new IllegalStateException(
+				"Only call requestRedirectInPopup after a redirect has been requested by calling requestFlowExecutionRedirect, requestFlowDefinitionRedirect, or requestExternalRedirect");
+		}
+	}
+
+	// implementation specific methods
+
+	private void assertRedirectResponseAllowed() throws IllegalStateException {
+
+		if (!isActionPhase()) {
+			throw new IllegalStateException(
+				"A redirect is not allowed because the current PortletRequest is not a ActionRequest");
+		}
+
+		if (responseComplete) {
+			throw new IllegalStateException(
+				"A redirect is not allowed because a response has already been completed on this ExternalContext");
+		}
+	}
+
+	private void assertResponseAllowed() throws IllegalStateException {
+
+		if (!isRenderPhase() && !isResourcePhase()) {
+			throw new IllegalStateException(
+				"A response is not allowed because the current PortletRequest is neither a RenderRequest nor a ResourceRequest");
+		}
+
+		if (responseComplete) {
+			throw new IllegalStateException(
+				"A response is not allowed because recordResponseComplete() has already been called on this ExternalContext");
+		}
+	}
+
 	// private helpers
 
 	private void init(PortletContext context, PortletRequest request, PortletResponse response,
-			FlowUrlHandler flowUrlHandler) {
+		FlowUrlHandler flowUrlHandler) {
 		this.context = context;
 		this.request = request;
 		this.response = response;
@@ -361,42 +378,24 @@ public class PortletExternalContext implements ExternalContext {
 		this.sessionMap = new LocalSharedAttributeMap<Object>(new PortletSessionMap(request));
 		this.applicationMap = new LocalSharedAttributeMap<Object>(new PortletContextMap(context));
 		this.flowUrlHandler = flowUrlHandler;
-		if (request instanceof ActionRequest && response instanceof ActionResponse) {
+
+		if ((request instanceof ActionRequest) && (response instanceof ActionResponse)) {
 			requestPhase = ACTION_PHASE;
-		} else if (request instanceof RenderRequest && response instanceof RenderResponse) {
+		}
+		else if ((request instanceof RenderRequest) && (response instanceof RenderResponse)) {
 			requestPhase = RENDER_PHASE;
-		} else if (request instanceof ResourceRequest && response instanceof ResourceResponse) {
+		}
+		else if ((request instanceof ResourceRequest) && (response instanceof ResourceResponse)) {
 			requestPhase = RESOURCE_PHASE;
-		} else {
+		}
+		else {
 			throw new IllegalArgumentException("Unknown portlet phase, expected: action, render, or resource");
 		}
 	}
 
-	private void assertResponseAllowed() throws IllegalStateException {
-		if (!isRenderPhase() && !isResourcePhase()) {
-			throw new IllegalStateException(
-					"A response is not allowed because the current PortletRequest is neither a RenderRequest nor a ResourceRequest");
-		}
-		if (responseComplete) {
-			throw new IllegalStateException(
-					"A response is not allowed because recordResponseComplete() has already been called on this ExternalContext");
-		}
-	}
-
-	private void assertRedirectResponseAllowed() throws IllegalStateException {
-		if (!isActionPhase()) {
-			throw new IllegalStateException(
-					"A redirect is not allowed because the current PortletRequest is not a ActionRequest");
-		}
-		if (responseComplete) {
-			throw new IllegalStateException(
-					"A redirect is not allowed because a response has already been completed on this ExternalContext");
-		}
-	}
-
 	private boolean isRedirectRequested() {
-		return getFlowExecutionRedirectRequested() || getFlowDefinitionRedirectRequested()
-				|| getExternalRedirectRequested();
+		return getFlowExecutionRedirectRequested() || getFlowDefinitionRedirectRequested() ||
+			getExternalRedirectRequested();
 	}
 
 }
