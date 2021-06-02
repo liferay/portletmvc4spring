@@ -9,6 +9,10 @@ with the latest versions of the Spring Framework and the Portlet API.
 [Liferay, Inc.](http://www.liferay.com) adopted Spring Portlet MVC in March of 2019 and the project was renamed to
 **PortletMVC4Spring**.
 
+In June of 2021, Liferay also adopted the portlet-related source from the
+[Spring Web Flow](https://spring.io/projects/spring-webflow) project and incorporated it into a separate "webflow"
+module within the PortletMVC4Spring project.
+
 ## Documentation
 
 * [Developer Guide](framework/src/main/asciidoc/portletmvc4spring.adoc)
@@ -20,11 +24,12 @@ with the latest versions of the Spring Framework and the Portlet API.
 | ------ | ----------- |
 | [com.liferay.portletmvc4spring.framework](framework) | Provides the Model/View/Controller (MVC) portlet framework. |
 | [com.liferay.portletmvc4spring.security](security) | Provides convenience and utility classes that help support [Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) protection provided by [Spring Security](https://spring.io/projects/spring-security). For more information, see [Enabling CSRF Protection](#enabling-csrf-protection).|
+| [com.liferay.portletmvc4spring.webflow](webflow) | Provides the portlet framework that is built on top of [Spring Web Flow](https://spring.io/projects/spring-webflow).|
 
 ## Requirements
 
 PortletMVC4Spring requires JDK 8+ and has been upgraded from version 2.0 of the Portlet API to version 3.0. In addition,
-it has been refactored and tested for use with version 5.1.x of the Spring Framework.
+it has been refactored and tested for use with version 5.1.x, 5.2,x, and 5.3.x of the Spring Framework.
 
 ## Supported Portals
 
@@ -47,20 +52,30 @@ containing patches for software defects.
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
-			<version>5.2.1</version>	
+			<version>5.3.0</version>	
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.security</artifactId>
-			<version>5.2.1</version>	
+			<version>5.3.0</version>	
 		</dependency>
+		<!-- Only required for portlets that use Spring Web Flow -->
+		<!--
+		<dependency>
+			<groupId>com.liferay.portletmvc4spring</groupId>
+			<artifactId>com.liferay.portletmvc4spring.webflow</artifactId>
+			<version>5.3.0</version>	
+		</dependency>
+		-->
 	<dependencies>
 	
 **Gradle:**
 
 	dependencies {
-		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.2.1'
-		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.2.1'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.3.0'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.3.0'
+		// Only required for portlets that use Spring Web Flow
+		// compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.webflow', version: '5.3.0'
 	}
 
 ## Archetypes
@@ -69,7 +84,7 @@ containing patches for software defects.
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.jsp.portlet \
-		-DarchetypeVersion=5.2.1 \
+		-DarchetypeVersion=5.3.0 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.jsp.portlet
 
@@ -77,7 +92,7 @@ containing patches for software defects.
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.thymeleaf.portlet \
-		-DarchetypeVersion=5.2.1 \
+		-DarchetypeVersion=5.3.0 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.thymeleaf.portlet
 
@@ -89,9 +104,10 @@ There are two demos available that have been tested in both Liferay Portal and A
 | ------------- | ------------- |
 | [applicant-jsp-portlet](demo/applicant-jsp-portlet)  |  [com.liferay.portletmvc4spring.demo.applicant.jsp.portlet.war](https://search.maven.org/search?q=a:com.liferay.portletmvc4spring.demo.applicant.jsp.portlet) |
 | [applicant-thymeleaf-portlet](demo/applicant-thymeleaf-portlet)  |  [com.liferay.portletmvc4spring.demo.applicant.thymeleaf.portlet.war](https://search.maven.org/search?q=a:com.liferay.portletmvc4spring.demo.applicant.thymeleaf.portlet) |
+| [applicant-webflow-portlet](demo/applicant-webflow-portlet)  |  [com.liferay.portletmvc4spring.demo.applicant.webflow.portlet.war](https://search.maven.org/search?q=a:com.liferay.portletmvc4spring.demo.applicant.webflow.portlet) |
 
 The demos exercise **many** of the features of PortletMVC4Spring that developers typically need for form-based portlet
-applications. The demos are **identical** _except_ that one uses JSPX views and the other uses
+applications. The first two demos are **identical** _except_ that one uses JSPX views and the other uses
 [Thymeleaf](https://www.thymeleaf.org) views.
 
 ## Migration
