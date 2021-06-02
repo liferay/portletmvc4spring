@@ -34,12 +34,12 @@ import javax.portlet.filter.FilterChain;
 import javax.portlet.filter.FilterConfig;
 import javax.portlet.filter.RenderFilter;
 import javax.portlet.filter.ResourceFilter;
+import javax.servlet.DispatcherType;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.pluto.portlet.servlet.adapter.HttpServletRequestAdapter;
 import org.apache.pluto.portlet.servlet.adapter.HttpServletResponseAdapter;
 
 import org.springframework.context.ApplicationContext;
@@ -126,7 +126,7 @@ public class SpringSecurityPortletFilter implements ActionFilter, RenderFilter, 
 		if (delegatingFilterProxy != null) {
 
 			try {
-				delegatingFilterProxy.doFilter(new HttpServletRequestAdapter(actionRequest),
+				delegatingFilterProxy.doFilter(new SpringSecurityRequestAdapter(actionRequest, DispatcherType.REQUEST),
 					new HttpServletResponseAdapter(actionResponse), EmptyServletFilterChain.INSTANCE);
 			}
 			catch (AccessDeniedException e) {
@@ -157,15 +157,16 @@ public class SpringSecurityPortletFilter implements ActionFilter, RenderFilter, 
 			if (delegatingFilterProxy != null) {
 
 				try {
-					delegatingFilterProxy.doFilter(new HttpServletRequestAdapter(resourceRequest),
-						new HttpServletResponseAdapter(resourceResponse), EmptyServletFilterChain.INSTANCE);
+					delegatingFilterProxy.doFilter(new SpringSecurityRequestAdapter(resourceRequest,
+							DispatcherType.REQUEST), new HttpServletResponseAdapter(resourceResponse),
+						EmptyServletFilterChain.INSTANCE);
 				}
 				catch (AccessDeniedException e) {
 					resourceResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
 					return;
 				}
-				catch (ServletException e) {
+				catch (Exception e) {
 					throw new PortletException(e);
 				}
 			}
