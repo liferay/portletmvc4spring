@@ -58,7 +58,7 @@
 		<liferay.version.dtd>7.1</liferay.version.dtd>
 		<spring.framework.scope>compile</spring.framework.scope>
 		<spring.framework.version>5.2.15.RELEASE</spring.framework.version>
-		<spring.security.version>5.4.6</spring.security.version>
+		<spring.security.version>5.4.7</spring.security.version>
 		<surefire.version>2.22.1</surefire.version>
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 		<webflow.version>2.5.1.RELEASE</webflow.version>
