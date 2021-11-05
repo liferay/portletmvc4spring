@@ -44,4 +44,16 @@ public class SpringSecurityRequestAdapter extends HttpServletRequestAdapter {
 	public DispatcherType getDispatcherType() {
 		return dispatcherType;
 	}
+
+	@Override
+	public String getHeader(String name) {
+
+		if ("X-CSRF-TOKEN".equals(name)) {
+
+			// https://issues.liferay.com/browse/MVCS-66
+			return null;
+		}
+
+		return super.getHeader(name);
+	}
 }
