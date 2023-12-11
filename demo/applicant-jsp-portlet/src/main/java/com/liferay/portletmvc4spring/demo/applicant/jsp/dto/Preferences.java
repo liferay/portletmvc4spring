@@ -15,7 +15,8 @@
  */
 package com.liferay.portletmvc4spring.demo.applicant.jsp.dto;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 
 /**
@@ -23,7 +24,9 @@ import javax.validation.constraints.NotBlank;
  */
 public class Preferences {
 
-	@NotBlank
+	@NotNull
+	@Pattern(regexp = "\\S+", message = "Value is required")
+	// @NotBlank - Requires validation-api-2.0
 	private String datePattern;
 
 	public Preferences() {

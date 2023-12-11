@@ -16,17 +16,13 @@
 package com.liferay.portletmvc4spring.demo.applicant.webflow.dto;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,7 +36,9 @@ public class Applicant implements Serializable {
 
 	private List<Attachment> attachments;
 
-	@NotBlank
+	@NotNull
+	@Pattern(regexp = "\\S+", message = "Value is required")
+	// @NotBlank - Requires validation-api-2.0
 	private String city;
 
 	private String comments;
@@ -49,25 +47,35 @@ public class Applicant implements Serializable {
 	@DateTimeFormat(pattern = "MM-dd-yyyy")
 	private Date dateOfBirth;
 
-	@Email
-	@NotBlank
+	// @Email - Requires validation-api-2.0
+	@NotNull
+	@Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,6}$", message = "Valid email is required")
+	// @NotBlank - Requires validation-api-2.0
 	private String emailAddress;
 
-	@NotBlank
+	@NotNull
+	@Pattern(regexp = "\\S+", message = "Value is required")
+	// @NotBlank - Requires validation-api-2.0
 	private String firstName;
 
-	@NotBlank
+	@NotNull
+	@Pattern(regexp = "\\S+", message = "Value is required")
+	// @NotBlank - Requires validation-api-2.0
 	private String lastName;
 
-	@NotBlank
-	@Pattern(regexp = "([0-9]+)")
+	@NotNull
+	// @NotBlank - Requires validation-api-2.0
+	@Pattern(regexp = "^(\\(\\d{3}\\)|\\d{3})[.-]?\\d{3}[.-]?\\d{4}$", message = "Valid phone number xxx-xxx-xxxx is required")
 	private String phoneNumber;
 
-	@NotBlank
+	@NotNull
+	@Pattern(regexp = "\\S+", message = "Value is required")
+	// @NotBlank - Requires validation-api-2.0
 	private String postalCode;
 
 	@NotNull
-	@Positive
+	// @Positive - Requires validation-api-2.0
+	@Min(value = 1, message = "Positive numeric value is required")
 	private Long provinceId;
 
 	public Applicant(List<Attachment> attachments) {
