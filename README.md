@@ -1,10 +1,16 @@
 # PortletMVC4Spring
 
-The PortletMVC4Spring project began as Spring Portlet MVC and was part of the
-[Spring Framework](https://spring.io/projects/spring-framework). When the project was pruned from version 5.0.x of the
-Spring Framework under [SPR-14129](https://github.com/spring-projects/spring-framework/issues/18701), it became
-necessary to fork and rename the project. This made it possible to improve and maintain the project for compatibility
-with the latest versions of the Spring Framework and the Portlet API.
+**NOTE ON BRANCHES**
+
+- The PortletMVC4Spring **master** branch was intended to be reserved for compatibility with Spring Framework 6.x, but
+  since Pivotal made the move from the `javax.` to the `jakarta.` package namespace, the PortletMVC4Spring master branch
+  remains unused. See [Version Scheme](#version-scheme) for more information about the 5.3,x, 5.2.x, and 5.1.x branches.
+
+The PortletMVC4Spring project began as Spring Portlet MVC and was part of the [Spring
+Framework](https://spring.io/projects/spring-framework). When the project was pruned from version 5.0.x of the Spring
+Framework under [SPR-14129](https://github.com/spring-projects/spring-framework/issues/18701), it became necessary to
+fork and rename the project. This made it possible to improve and maintain the project for compatibility with the latest
+versions of the Spring Framework and the Portlet API.
 
 [Liferay, Inc.](http://www.liferay.com) adopted Spring Portlet MVC in March of 2019 and the project was renamed to
 **PortletMVC4Spring**.
@@ -40,9 +46,9 @@ PortletMVC4Spring is supported in the following Portlet 3.0 compliant portals:
 ## Version Scheme
 
 PortletMVC4Spring follows a `major.minor.patch` version scheme. The `major` and `minor` version numbers correspond to
-Spring Framework versions for which PortletMVC4Spring is compatible. For example, version 5.1.x of PortletMVC4Spring is
-intended for use with version 5.1.x of the Spring Framework. The `patch` number indicates an incremental version
-containing patches for software defects.
+Spring Framework versions for which PortletMVC4Spring is compatible. For example, version 5.3.x of PortletMVC4Spring is
+intended for use with Spring Framework 5.3.x, version 5.2.x of PortletMVC4Spring is intended for use with Spring
+Framework 5.2.x, and so on. The `patch` number indicates an incremental version containing patches for software defects.
 
 ## Dependency Coordinates
 
