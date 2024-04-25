@@ -51,7 +51,7 @@ public class PortletSessionMap extends StringKeyedMapAdapter<Object> implements 
 	public Object getMutex() {
 
 		// force session creation
-		PortletSession session = request.getPortletSession(true);
+		PortletSession session = getSession();
 		Object mutex = session.getAttribute(WebUtils.SESSION_MUTEX_ATTRIBUTE);
 
 		return (mutex != null) ? mutex : session;
@@ -59,10 +59,6 @@ public class PortletSessionMap extends StringKeyedMapAdapter<Object> implements 
 
 	protected Object getAttribute(String key) {
 		PortletSession session = getSession();
-
-		if (session == null) {
-			return null;
-		}
 
 		Object value = session.getAttribute(key);
 
@@ -79,22 +75,19 @@ public class PortletSessionMap extends StringKeyedMapAdapter<Object> implements 
 	protected Iterator<String> getAttributeNames() {
 		PortletSession session = getSession();
 
-		return (session == null) ? CollectionUtils.<String>emptyIterator()
-								 : CollectionUtils.toIterator(session.getAttributeNames());
+		return CollectionUtils.toIterator(session.getAttributeNames());
 	}
 
 	protected void removeAttribute(String key) {
 		PortletSession session = getSession();
 
-		if (session != null) {
-			session.removeAttribute(key);
-		}
+		session.removeAttribute(key);
 	}
 
 	protected void setAttribute(String key, Object value) {
 
 		// force session creation
-		PortletSession session = request.getPortletSession(true);
+		PortletSession session = getSession();
 
 		if (value instanceof AttributeMapBindingListener) {
 
@@ -107,12 +100,11 @@ public class PortletSessionMap extends StringKeyedMapAdapter<Object> implements 
 	}
 
 	/**
-	 * Internal helper to get the portlet session associated with the wrapped request, or null if there is no such
-	 * session.
+	 * Internal helper to get the portlet session associated with the wrapped request
 	 *
 	 * <p>Note that this method will not force session creation.
 	 */
 	private PortletSession getSession() {
-		return request.getPortletSession(false);
+		return request.getPortletSession(true);
 	}
 }
