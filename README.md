@@ -58,19 +58,19 @@ Framework 5.2.x, and so on. The `patch` number indicates an incremental version 
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.framework</artifactId>
-			<version>5.2.4</version>	
+			<version>5.2.5</version>	
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.security</artifactId>
-			<version>5.2.4</version>	
+			<version>5.2.5</version>	
 		</dependency>
 		<!-- Only required for portlets that use Spring Web Flow -->
 		<!--
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>
 			<artifactId>com.liferay.portletmvc4spring.webflow</artifactId>
-			<version>5.2.4</version>	
+			<version>5.2.5</version>	
 		</dependency>
 		-->
 	<dependencies>
@@ -78,10 +78,10 @@ Framework 5.2.x, and so on. The `patch` number indicates an incremental version 
 **Gradle:**
 
 	dependencies {
-		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.2.4'
-		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.2.4'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.framework', version: '5.2.5'
+		compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.security', version: '5.2.5'
 		// Only required for portlets that use Spring Web Flow
-		// compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.webflow', version: '5.2.4'
+		// compile group: 'com.liferay.portletmvc4spring', name: 'com.liferay.portletmvc4spring.webflow', version: '5.2.5'
 	}
 
 ## Archetypes
@@ -90,7 +90,7 @@ Framework 5.2.x, and so on. The `patch` number indicates an incremental version 
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.jsp.portlet \
-		-DarchetypeVersion=5.2.4 \
+		-DarchetypeVersion=5.2.5 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.jsp.portlet
 
@@ -98,7 +98,7 @@ Framework 5.2.x, and so on. The `patch` number indicates an incremental version 
 	mvn archetype:generate \
 		-DarchetypeGroupId=com.liferay.portletmvc4spring.archetype \
 		-DarchetypeArtifactId=com.liferay.portletmvc4spring.archetype.form.thymeleaf.portlet \
-		-DarchetypeVersion=5.2.4 \
+		-DarchetypeVersion=5.2.5 \
 		-DgroupId=com.mycompany \
 		-DartifactId=com.mycompany.my.form.thymeleaf.portlet
 
