@@ -17,5 +17,5 @@ dependencies {
     compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '@thymeleaf-version@'
     providedCompile group: 'jakarta.validation', name: 'jakarta.validation-api', version: "2.0.2"
     providedCompile group: 'javax.portlet', name: 'portlet-api', version: '@portlet-api-version@'
-    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '@servlet-api-version@'
+    providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '@servlet-api-version@'
 }

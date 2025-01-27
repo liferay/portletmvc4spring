@@ -26,7 +26,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.ResourceParameters;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import javax.servlet.DispatcherType;
+import jakarta.servlet.DispatcherType;
 
 
 /**

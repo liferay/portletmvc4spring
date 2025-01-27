@@ -25,8 +25,8 @@
 			<id>pluto</id>
 			<dependencies>
 				<dependency>
-					<groupId>javax.validation</groupId>
-					<artifactId>validation-api</artifactId>
+					<groupId>jakarta.validation</groupId>
+					<artifactId>jakarta.validation-api</artifactId>
 					<version>1.1.0.Final</version>
 				</dependency>
 				<dependency>
@@ -44,8 +44,8 @@
 			<id>liferay71</id>
 			<dependencies>
 				<dependency>
-					<groupId>javax.validation</groupId>
-					<artifactId>validation-api</artifactId>
+					<groupId>jakarta.validation</groupId>
+					<artifactId>jakarta.validation-api</artifactId>
 					<scope>compile</scope>
 				</dependency>
 			</dependencies>
@@ -63,20 +63,20 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.portlet</groupId>
-			<artifactId>portlet-api</artifactId>
+			<groupId>com.liferay</groupId>
+			<artifactId>javax.portlet</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>

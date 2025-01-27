@@ -99,8 +99,7 @@ import com.liferay.portletmvc4spring.multipart.PortletMultipartResolver;
  *     the application context, overriding the default ViewResolver. ViewResolvers can be given any bean name (they are
  *     tested by type).</li>
  *   <li>The dispatcher's strategy for resolving multipart requests is determined by a {@link
- *     com.liferay.portletmvc4spring.multipart.PortletMultipartResolver} implementation. An implementations for Apache
- *     Commons FileUpload is included: {@link com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver}.
+ *     com.liferay.portletmvc4spring.multipart.PortletMultipartResolver} implementation.
  *     The MultipartResolver bean name is "portletMultipartResolver"; default is none.</li>
  * </ul>
  *

@@ -17,8 +17,8 @@ package com.liferay.portletmvc4spring.util;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.filter.PortletRequestWrapper;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 
 /**

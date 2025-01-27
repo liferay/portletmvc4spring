@@ -51,7 +51,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.StateAwareResponse;
 import javax.portlet.WindowState;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -1268,7 +1268,7 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 
 			this.phase = phase;
 			this.value = value;
-			this.params = StringUtils.mergeStringArrays(this.params, params);
+			this.params = mergeStringArrays(this.params, params);
 		}
 
 		public void initStandardMapping(String[] modes, RequestMethod[] methods, String[] params, String[] headers) {
@@ -1281,8 +1281,8 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 				this.methods.add(method.name());
 			}
 
-			this.params = StringUtils.mergeStringArrays(this.params, params);
-			this.headers = StringUtils.mergeStringArrays(this.headers, headers);
+			this.params = mergeStringArrays(this.params, params);
+			this.headers = mergeStringArrays(this.headers, headers);
 		}
 
 		public boolean isBetterMatchThan(RequestMappingInfo other) {
@@ -1329,6 +1329,20 @@ public class PortletRequestMappingHandlerAdapter extends AbstractPortletHandlerM
 			return (PortletAnnotationMappingUtils.checkRequestMethod(this.methods, request) &&
 					PortletAnnotationMappingUtils.checkParameters(this.params, request) &&
 					PortletAnnotationMappingUtils.checkHeaders(this.headers, request));
+		}
+
+		private static String[] mergeStringArrays(String[] array1, String[] array2) {
+			if (array1 == null) {
+				return array2 != null ? array2.clone() : new String[0];
+			}
+			if (array2 == null) {
+				return array1.clone();
+			}
+
+			Set<String> mergedSet = new HashSet<>();
+			mergedSet.addAll(Arrays.asList(array1));
+			mergedSet.addAll(Arrays.asList(array2));
+			return mergedSet.toArray(new String[0]);
 		}
 	}
 

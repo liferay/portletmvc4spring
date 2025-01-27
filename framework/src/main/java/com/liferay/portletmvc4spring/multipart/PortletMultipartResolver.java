@@ -62,7 +62,6 @@ import org.springframework.web.multipart.MultipartException;
  * @see     MultipartActionRequest
  * @see     MultipartResourceRequest
  * @see     org.springframework.web.multipart.MultipartFile
- * @see     CommonsPortletMultipartResolver
  * @see     org.springframework.web.multipart.support.ByteArrayMultipartFileEditor
  * @see     org.springframework.web.multipart.support.StringMultipartFileEditor
  * @see     com.liferay.portletmvc4spring.DispatcherPortlet

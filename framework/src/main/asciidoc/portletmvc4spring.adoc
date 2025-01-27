@@ -772,22 +772,6 @@ The following example shows how to use the `StandardPortletMultipartResolver`:
 	</bean>
 ----
 
-The following example shows how to use the legacy `CommonsPortletMultipartResolver`:
-
-[source,xml,indent=0]
-[subs="verbatim,quotes"]
-----
-	<bean id="portletMultipartResolver"
-		class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver">
-		<!-- one of the properties available; the maximum file size in bytes -->
-		<property name="maxUploadSize" value="100000"/>
-	</bean>
-----
-
-If you are using the `CommonsPortletMultipartResolver`, then you also need to put the appropriate jars in your classpath
-for the multipart resolver to work. In the case of the `CommonsMultipartResolver`, you need to use
-`commons-fileupload.jar`. Be sure to use at least version 1.3.3 of Commons FileUpload.
-
 Now that you have seen how to set PortletMVC4Spring up to handle multipart requests, let's talk about how to actually
 use it. When `DispatcherPortlet` detects a multipart request, it activates the resolver that has been declared in your
 context and hands over the request. What the resolver then does is wrap the current `PortletRequest` in either a

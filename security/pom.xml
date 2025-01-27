@@ -12,12 +12,12 @@
 	<description>PortletMVC4Spring Security</description>
 	<dependencies>
 		<dependency>
-			<groupId>javax.portlet</groupId>
-			<artifactId>portlet-api</artifactId>
+			<groupId>com.liferay</groupId>
+			<artifactId>javax.portlet</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.portletmvc4spring</groupId>

@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ClientDataRequest;
 import javax.portlet.ResourceRequest;
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -47,7 +47,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 /**
  * Standard implementation of the {@link MultipartResolver} interface, based on the Servlet 3.0 {@link
- * javax.servlet.http.Part} API. To be added as "portletMultipartResolver" bean to a Spring DispatcherServlet context,
+ * jakarta.servlet.http.Part} API. To be added as "portletMultipartResolver" bean to a Spring DispatcherServlet context,
  * without any extra configuration at the bean level (see below).
  *
  * <p><b>Note:</b> In order to use Portlet 3.0 based multipart parsing, you need to mark the affected servlet with a

@@ -19,8 +19,8 @@ import java.util.Enumeration;
 
 import javax.portlet.PortletContext;
 import javax.portlet.PortletSession;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

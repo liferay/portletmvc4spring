@@ -20,7 +20,7 @@ import java.nio.charset.UnsupportedCharsetException;
 
 import javax.portlet.ClientDataRequest;
 import javax.portlet.PortletRequest;
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

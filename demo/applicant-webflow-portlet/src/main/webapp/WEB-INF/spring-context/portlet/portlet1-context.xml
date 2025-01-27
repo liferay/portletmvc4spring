@@ -51,10 +51,6 @@
 
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	
-	<!--
-	NOTE: Requires commons-fileupload dependency and transitive commons-io dependency (see pom.xml)
-	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver" />
-	-->
 	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
 
 </beans>

@@ -34,11 +34,11 @@ import javax.portlet.filter.FilterChain;
 import javax.portlet.filter.FilterConfig;
 import javax.portlet.filter.RenderFilter;
 import javax.portlet.filter.ResourceFilter;
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.pluto.portlet.servlet.adapter.HttpServletResponseAdapter;
 
@@ -226,7 +226,7 @@ public class SpringSecurityPortletFilter implements ActionFilter, RenderFilter, 
 		return null;
 	}
 
-	private static class EmptyServletFilterChain implements javax.servlet.FilterChain {
+	private static class EmptyServletFilterChain implements jakarta.servlet.FilterChain {
 
 		public static EmptyServletFilterChain INSTANCE = new EmptyServletFilterChain();
 

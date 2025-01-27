@@ -17,14 +17,16 @@ package com.liferay.portletmvc4spring.security;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 
@@ -82,25 +84,25 @@ import org.springframework.security.web.access.AccessDeniedHandler;
  * @author  Neil Griffin
  */
 @EnableWebSecurity
-public class SpringSecurityPortletConfigurer extends WebSecurityConfigurerAdapter {
+@Configuration
+public class SpringSecurityPortletConfigurer {
 
-	public SpringSecurityPortletConfigurer() {
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http
+			.csrf(csrf -> csrf.disable()) // Disable CSRF or customize as necessary for portlets
+			.exceptionHandling(exceptionHandling ->
+				exceptionHandling.accessDeniedHandler(new PortletAccessDeniedHandler())
+			);
 
-		// Disable defaults so that the configure(HttpSecurity) method can selectively enable features that are
-		// relevant to portlets.
-		super(true);
-	}
-
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().and().exceptionHandling().accessDeniedHandler(new PortletAccessDeniedHandler());
+		return http.build();
 	}
 
 	private static class PortletAccessDeniedHandler implements AccessDeniedHandler {
 
 		@Override
-		public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+		public void handle(HttpServletRequest request, HttpServletResponse response,
+						   AccessDeniedException accessDeniedException) throws IOException, ServletException {
 			throw accessDeniedException;
 		}
 	}

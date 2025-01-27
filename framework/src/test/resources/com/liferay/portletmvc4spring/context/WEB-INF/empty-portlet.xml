@@ -3,8 +3,6 @@
 
 <beans>
 
-	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver"/>
-
 	<bean id="portletContextAwareBean" class="com.liferay.portletmvc4spring.context.PortletContextAwareBean"/>
 
 	<bean id="portletConfigAwareBean" class="com.liferay.portletmvc4spring.context.PortletConfigAwareBean"/>

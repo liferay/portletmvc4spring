@@ -127,7 +127,7 @@ public class DefaultAnnotationHandlerMapping extends AbstractMapBasedHandlerMapp
 						String[] params = new String[0];
 
 						if (typeMapping != null) {
-							params = StringUtils.mergeStringArrays(typeMapping.params(), params);
+							params = mergeStringArrays(typeMapping.params(), params);
 						}
 
 						ActionMapping actionMapping = AnnotationUtils.findAnnotation(method, ActionMapping.class);
@@ -137,11 +137,11 @@ public class DefaultAnnotationHandlerMapping extends AbstractMapBasedHandlerMapp
 						RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 
 						if (actionMapping != null) {
-							params = StringUtils.mergeStringArrays(params, actionMapping.params());
+							params = mergeStringArrays(params, actionMapping.params());
 							predicate = new ActionMappingPredicate(actionMapping.name(), params);
 						}
 						else if (renderMapping != null) {
-							params = StringUtils.mergeStringArrays(params, renderMapping.params());
+							params = mergeStringArrays(params, renderMapping.params());
 							predicate = new RenderMappingPredicate(renderMapping.windowState(), params);
 						}
 						else if (resourceMapping != null) {
@@ -163,7 +163,7 @@ public class DefaultAnnotationHandlerMapping extends AbstractMapBasedHandlerMapp
 								}
 							}
 
-							params = StringUtils.mergeStringArrays(params, requestMapping.params());
+							params = mergeStringArrays(params, requestMapping.params());
 
 							if (predicate == null) {
 								predicate = new MethodLevelMappingPredicate(params);
@@ -241,6 +241,20 @@ public class DefaultAnnotationHandlerMapping extends AbstractMapBasedHandlerMapp
 	@Override
 	protected PortletMode getLookupKey(PortletRequest request) throws Exception {
 		return request.getPortletMode();
+	}
+
+	private static String[] mergeStringArrays(String[] array1, String[] array2) {
+		if (array1 == null) {
+			return array2 != null ? array2.clone() : new String[0];
+		}
+		if (array2 == null) {
+			return array1.clone();
+		}
+
+		Set<String> mergedSet = new HashSet<>();
+		mergedSet.addAll(Arrays.asList(array1));
+		mergedSet.addAll(Arrays.asList(array2));
+		return mergedSet.toArray(new String[0]);
 	}
 
 	private interface SpecialRequestTypePredicate {

@@ -25,7 +25,7 @@ import java.util.Set;
 
 import javax.portlet.PortalContext;
 import javax.portlet.PortletResponse;
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 

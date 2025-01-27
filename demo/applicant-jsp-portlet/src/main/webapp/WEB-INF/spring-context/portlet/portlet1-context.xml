@@ -11,9 +11,5 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	<context:component-scan base-package="com.liferay.portletmvc4spring.demo.applicant.jsp**"/>
 	<mvc:annotation-driven/>
-	<!--
-	NOTE: Requires commons-fileupload dependency and transitive commons-io dependency (see pom.xml)
-	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.CommonsPortletMultipartResolver" />
-	-->
 	<bean id="portletMultipartResolver" class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
 </beans>

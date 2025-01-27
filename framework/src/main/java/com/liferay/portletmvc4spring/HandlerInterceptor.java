@@ -41,7 +41,7 @@ import javax.portlet.ResourceResponse;
  * mapping bean definition via its {@link com.liferay.portletmvc4spring.handler.AbstractHandlerMapping#setInterceptors
  * "interceptors"} property (in XML: a &lt;list&gt; of &lt;ref&gt; elements).
  *
- * <p>A {@code HandlerInterceptor} is basically similar to a Servlet {@link javax.servlet.Filter}, but in contrast to
+ * <p>A {@code HandlerInterceptor} is basically similar to a Servlet {@link jakarta.servlet.Filter}, but in contrast to
  * the latter it allows custom pre-processing with the option to prohibit the execution of the handler itself, and
  * custom post-processing. {@code Filters} are more powerful; for example they allow for exchanging the request and
  * response objects that are handed down the chain. Note that a filter gets configured in {@code web.xml}, a {@code

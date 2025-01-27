@@ -18,7 +18,7 @@ package com.liferay.portletmvc4spring.demo.applicant.jsp.service.mock;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

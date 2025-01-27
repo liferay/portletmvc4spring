@@ -16,8 +16,8 @@
 package com.liferay.portletmvc4spring.security;
 
 import javax.portlet.PortletRequest;
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletContext;
 
 import org.apache.pluto.portlet.servlet.adapter.HttpServletRequestAdapter;
 

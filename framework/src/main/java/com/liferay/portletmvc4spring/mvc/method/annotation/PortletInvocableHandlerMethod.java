@@ -24,13 +24,12 @@ import java.util.concurrent.Callable;
 import javax.portlet.PortletResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 
-import org.springframework.http.HttpStatus;
-
+import org.springframework.http.HttpStatusCode;
 import org.springframework.lang.Nullable;
 
 import org.springframework.util.Assert;
@@ -167,7 +166,7 @@ public class PortletInvocableHandlerMethod extends InvocableHandlerMethod {
 	 * Set the response status according to the {@link ResponseStatus} annotation.
 	 */
 	private void setResponseStatus(PortletWebRequest webRequest) throws IOException {
-		HttpStatus status = getResponseStatus();
+		HttpStatusCode status = getResponseStatus();
 
 		if (status == null) {
 			return;
@@ -253,7 +252,7 @@ public class PortletInvocableHandlerMethod extends InvocableHandlerMethod {
 	 * MethodParameter subclass based on the actual return value type or if that's null falling back on the generic type
 	 * within the declared async return type, e.g. Foo instead of {@code DeferredResult<Foo>}.
 	 */
-	private class ConcurrentResultMethodParameter extends HandlerMethodParameter {
+	private class ConcurrentResultMethodParameter extends MethodParameter {
 
 		@Nullable
 		private final Object returnValue;
@@ -261,7 +260,7 @@ public class PortletInvocableHandlerMethod extends InvocableHandlerMethod {
 		private final ResolvableType returnType;
 
 		public ConcurrentResultMethodParameter(Object returnValue) {
-			super(-1);
+			super(ConcurrentResultMethodParameter.class.getDeclaredMethods()[0], -1);
 			this.returnValue = returnValue;
 			this.returnType = ResolvableType.forType(super.getGenericParameterType()).getGeneric();
 		}

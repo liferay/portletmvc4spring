@@ -24,14 +24,14 @@ import java.util.Set;
 
 import javax.portlet.PortletContext;
 import javax.portlet.PortletRequestDispatcher;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.springframework.util.Assert;
 
 
 /**
  * Mock implementation of the {@link javax.portlet.PortletContext} interface, wrapping an underlying {@link
- * javax.servlet.ServletContext}.
+ * jakarta.servlet.ServletContext}.
  *
  * @author  Juergen Hoeller
  * @since   3.0

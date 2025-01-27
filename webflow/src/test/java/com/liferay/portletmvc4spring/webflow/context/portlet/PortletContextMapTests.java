@@ -113,7 +113,7 @@ public class PortletContextMapTests extends TestCase {
 
 		// a fresh MockPortletContext seems to already contain an element;
 		// that's confusing, so we remove it
-		context.removeAttribute("javax.servlet.context.tempdir");
+		context.removeAttribute("jakarta.servlet.context.tempdir");
 		tested = new PortletContextMap(context);
 		tested.put("SomeKey", "SomeValue");
 	}
