@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
 
 /**

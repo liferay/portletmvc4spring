@@ -11,10 +11,10 @@ import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import javax.portlet.ActionResponse;
-import javax.portlet.MutableRenderParameters;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.MutableRenderParameters;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +62,7 @@ public class UserController {
 
 			MutableRenderParameters mutableRenderParameters = actionResponse.getRenderParameters();
 
-			mutableRenderParameters.setValue("javax.portlet.action", "success");
+			mutableRenderParameters.setValue("jakarta.portlet.action", "success");
 
 			sessionStatus.setComplete();
 		}
@@ -78,7 +78,7 @@ public class UserController {
 		return "user";
 	}
 
-	@RenderMapping(params = "javax.portlet.action=success")
+	@RenderMapping(params = "jakarta.portlet.action=success")
 	public String showGreeting(ModelMap model, RenderRequest renderRequest) {
 
 		model.put("contextPath", renderRequest.getContextPath());

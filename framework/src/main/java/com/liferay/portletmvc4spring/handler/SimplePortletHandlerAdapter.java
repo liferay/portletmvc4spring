@@ -15,18 +15,18 @@
  */
 package com.liferay.portletmvc4spring.handler;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventPortlet;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.Portlet;
-import javax.portlet.PortletContext;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.ResourceServingPortlet;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.EventPortlet;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.EventResponse;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.ResourceServingPortlet;
 
 import com.liferay.portletmvc4spring.HandlerAdapter;
 import com.liferay.portletmvc4spring.ModelAndView;
@@ -49,7 +49,7 @@ import com.liferay.portletmvc4spring.util.PortletUtils;
  *
  * @author  John A. Lewis
  * @since   2.0
- * @see     javax.portlet.Portlet
+ * @see     jakarta.portlet.Portlet
  * @see     SimplePortletPostProcessor
  * @see     com.liferay.portletmvc4spring.mvc.PortletWrappingController
  */

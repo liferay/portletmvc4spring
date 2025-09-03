@@ -17,8 +17,8 @@ package com.liferay.portletmvc4spring.webflow.context.portlet;
 
 import java.util.Iterator;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletSession;
 
 import org.springframework.binding.collection.SharedMap;
 import org.springframework.binding.collection.StringKeyedMapAdapter;

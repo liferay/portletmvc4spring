@@ -15,10 +15,10 @@
  */
 package com.liferay.portletmvc4spring.handler;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import com.liferay.portletmvc4spring.context.PortletApplicationObjectSupport;
 

@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.handler;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 
 /**
@@ -50,7 +50,7 @@ public class ParameterMappingInterceptor extends HandlerInterceptorAdapter {
 	private String parameterName = DEFAULT_PARAMETER_NAME;
 
 	/**
-	 * If request is an {@link javax.portlet.ActionRequest ActionRequest}, get handler mapping parameter and add it to
+	 * If request is an {@link jakarta.portlet.ActionRequest ActionRequest}, get handler mapping parameter and add it to
 	 * the ActionResponse.
 	 */
 	@Override

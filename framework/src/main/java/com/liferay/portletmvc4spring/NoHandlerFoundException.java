@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.core.style.StylerUtils;
 

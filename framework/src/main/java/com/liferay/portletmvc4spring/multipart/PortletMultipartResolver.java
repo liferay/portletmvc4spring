@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.multipart;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ResourceRequest;
 
 import org.springframework.web.multipart.MultipartException;
 
@@ -126,9 +126,9 @@ public interface PortletMultipartResolver {
 	 * @see     com.liferay.portletmvc4spring.multipart.MultipartActionRequest#getFile
 	 * @see     com.liferay.portletmvc4spring.multipart.MultipartActionRequest#getFileNames
 	 * @see     com.liferay.portletmvc4spring.multipart.MultipartActionRequest#getFileMap
-	 * @see     javax.portlet.ActionRequest#getParameter
-	 * @see     javax.portlet.ActionRequest#getParameterNames
-	 * @see     javax.portlet.ActionRequest#getParameterMap
+	 * @see     jakarta.portlet.ActionRequest#getParameter
+	 * @see     jakarta.portlet.ActionRequest#getParameterNames
+	 * @see     jakarta.portlet.ActionRequest#getParameterMap
 	 * @since   5.1
 	 */
 	MultipartActionRequest resolveMultipart(ActionRequest request) throws MultipartException;
@@ -149,9 +149,9 @@ public interface PortletMultipartResolver {
 	 * @see     com.liferay.portletmvc4spring.multipart.MultipartResourceRequest#getFile
 	 * @see     com.liferay.portletmvc4spring.multipart.MultipartResourceRequest#getFileNames
 	 * @see     com.liferay.portletmvc4spring.multipart.MultipartResourceRequest#getFileMap
-	 * @see     javax.portlet.ResourceRequest#getParameter
-	 * @see     javax.portlet.ResourceRequest#getParameterNames
-	 * @see     javax.portlet.ResourceRequest#getParameterMap
+	 * @see     jakarta.portlet.ResourceRequest#getParameter
+	 * @see     jakarta.portlet.ResourceRequest#getParameterNames
+	 * @see     jakarta.portlet.ResourceRequest#getParameterMap
 	 * @since   5.1
 	 */
 	MultipartResourceRequest resolveMultipart(ResourceRequest request) throws MultipartException;

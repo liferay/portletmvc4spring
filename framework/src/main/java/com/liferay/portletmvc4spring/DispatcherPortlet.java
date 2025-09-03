@@ -26,21 +26,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.StateAwareResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.EventResponse;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletRequestDispatcher;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.StateAwareResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -313,7 +313,7 @@ public class DispatcherPortlet extends FrameworkPortlet {
 	 * <p>Default is true. Turn this off if you want the portlet container to provide immediate exception handling for
 	 * action requests.
 	 *
-	 * @see  #exposeActionException(javax.portlet.PortletRequest, javax.portlet.StateAwareResponse, Exception)
+	 * @see  #exposeActionException(jakarta.portlet.PortletRequest, jakarta.portlet.StateAwareResponse, Exception)
 	 */
 	public void setForwardActionException(boolean forwardActionException) {
 		this.forwardActionException = forwardActionException;

@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.webflow.mvc.portlet;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.easymock.EasyMock;
 

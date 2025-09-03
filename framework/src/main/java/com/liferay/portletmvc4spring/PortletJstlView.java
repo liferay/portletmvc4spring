@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -67,7 +67,7 @@ public class PortletJstlView extends JstlView {
 
 		if (PortletContainer.PLUTO.isDetected(request)) {
 
-			Object portletRequest = request.getAttribute("javax.portlet.request");
+			Object portletRequest = request.getAttribute("jakarta.portlet.request");
 
 			if (portletRequest instanceof ResourceRequest) {
 				return true;

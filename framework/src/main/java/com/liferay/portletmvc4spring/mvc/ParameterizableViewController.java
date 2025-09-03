@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.mvc;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import com.liferay.portletmvc4spring.ModelAndView;
 

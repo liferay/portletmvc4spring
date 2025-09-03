@@ -15,14 +15,14 @@
  */
 package com.liferay.portletmvc4spring;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.EventResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 
 /**
@@ -66,13 +66,13 @@ import javax.portlet.ResourceResponse;
  *   <li>{@code DispatcherPortlet} maps the action request to a particular handler and assembles a handler execution
  *     chain consisting of the handler that is to be invoked and all of the {@code HandlerInterceptor} instances that
  *     apply to the request.</li>
- *   <li>{@link HandlerInterceptor#preHandleAction(javax.portlet.ActionRequest, javax.portlet.ActionResponse, Object)
+ *   <li>{@link HandlerInterceptor#preHandleAction(jakarta.portlet.ActionRequest, jakarta.portlet.ActionResponse, Object)
  *     preHandleAction(..)} is called; if the invocation of this method returns {@code true} then this workflow
  *     continues.</li>
  *   <li>The target handler handles the action request (via {@link
- *     HandlerAdapter#handleAction(javax.portlet.ActionRequest, javax.portlet.ActionResponse, Object)
+ *     HandlerAdapter#handleAction(jakarta.portlet.ActionRequest, jakarta.portlet.ActionResponse, Object)
  *     HandlerAdapter.handleAction(..)}).</li>
- *   <li>{@link HandlerInterceptor#afterActionCompletion(javax.portlet.ActionRequest, javax.portlet.ActionResponse,
+ *   <li>{@link HandlerInterceptor#afterActionCompletion(jakarta.portlet.ActionRequest, jakarta.portlet.ActionResponse,
  *     Object, Exception) afterActionCompletion(..)} is called.</li>
  * </ol>
  *
@@ -83,17 +83,17 @@ import javax.portlet.ResourceResponse;
  *   <li>{@code DispatcherPortlet} maps the render request to a particular handler and assembles a handler execution
  *     chain consisting of the handler that is to be invoked and all of the {@code HandlerInterceptor} instances that
  *     apply to the request.</li>
- *   <li>{@link HandlerInterceptor#preHandleRender(javax.portlet.RenderRequest, javax.portlet.RenderResponse, Object)
+ *   <li>{@link HandlerInterceptor#preHandleRender(jakarta.portlet.RenderRequest, jakarta.portlet.RenderResponse, Object)
  *     preHandleRender(..)} is called; if the invocation of this method returns {@code true} then this workflow
  *     continues.</li>
  *   <li>The target handler handles the render request (via {@link
- *     HandlerAdapter#handleRender(javax.portlet.RenderRequest, javax.portlet.RenderResponse, Object)
+ *     HandlerAdapter#handleRender(jakarta.portlet.RenderRequest, jakarta.portlet.RenderResponse, Object)
  *     HandlerAdapter.handleRender(..)}).</li>
- *   <li>{@link HandlerInterceptor#postHandleRender(javax.portlet.RenderRequest, javax.portlet.RenderResponse, Object,
+ *   <li>{@link HandlerInterceptor#postHandleRender(jakarta.portlet.RenderRequest, jakarta.portlet.RenderResponse, Object,
  *     ModelAndView) postHandleRender(..)} is called.</li>
  *   <li>If the {@code HandlerAdapter} returned a {@code ModelAndView}, then {@code DispatcherPortlet} renders the view
  *     accordingly.</li>
- *   <li>{@link HandlerInterceptor#afterRenderCompletion(javax.portlet.RenderRequest, javax.portlet.RenderResponse,
+ *   <li>{@link HandlerInterceptor#afterRenderCompletion(jakarta.portlet.RenderRequest, jakarta.portlet.RenderResponse,
  *     Object, Exception) afterRenderCompletion(..)} is called.</li>
  * </ol>
  *
@@ -111,8 +111,8 @@ public interface HandlerInterceptor {
 	 * Callback after completion of request processing in the action phase, that is, after rendering the view. Will be
 	 * called on any outcome of handler execution, thus allowing for proper resource cleanup.
 	 *
-	 * <p>Note: Will only be called if this interceptor's {@link #preHandleAction(javax.portlet.ActionRequest,
-	 * javax.portlet.ActionResponse, Object)} method has successfully completed and returned {@code true}!
+	 * <p>Note: Will only be called if this interceptor's {@link #preHandleAction(jakarta.portlet.ActionRequest,
+	 * jakarta.portlet.ActionResponse, Object)} method has successfully completed and returned {@code true}!
 	 *
 	 * @param   request   current portlet action request
 	 * @param   response  current portlet action response
@@ -130,8 +130,8 @@ public interface HandlerInterceptor {
 	 * Callback after completion of request processing in the action phase, that is, after rendering the view. Will be
 	 * called on any outcome of handler execution, thus allowing for proper resource cleanup.
 	 *
-	 * <p>Note: Will only be called if this interceptor's {@link #preHandleAction(javax.portlet.ActionRequest,
-	 * javax.portlet.ActionResponse, Object)} method has successfully completed and returned {@code true}!
+	 * <p>Note: Will only be called if this interceptor's {@link #preHandleAction(jakarta.portlet.ActionRequest,
+	 * jakarta.portlet.ActionResponse, Object)} method has successfully completed and returned {@code true}!
 	 *
 	 * @param   request   current portlet action request
 	 * @param   response  current portlet action response
@@ -149,8 +149,8 @@ public interface HandlerInterceptor {
 	 * Callback after completion of request processing, that is, after rendering the view. Will be called on any outcome
 	 * of handler execution, thus allowing for proper resource cleanup.
 	 *
-	 * <p>Note: Will only be called if this interceptor's {@link #preHandleRender(javax.portlet.RenderRequest,
-	 * javax.portlet.RenderResponse, Object)} method has successfully completed and returned {@code true}!
+	 * <p>Note: Will only be called if this interceptor's {@link #preHandleRender(jakarta.portlet.RenderRequest,
+	 * jakarta.portlet.RenderResponse, Object)} method has successfully completed and returned {@code true}!
 	 *
 	 * @param   request   current portlet render request
 	 * @param   response  current portlet render response
@@ -166,8 +166,8 @@ public interface HandlerInterceptor {
 	 * Callback after completion of request processing, that is, after rendering the view. Will be called on any outcome
 	 * of handler execution, thus allowing for proper resource cleanup.
 	 *
-	 * <p>Note: Will only be called if this interceptor's {@link #preHandleRender(javax.portlet.RenderRequest,
-	 * javax.portlet.RenderResponse, Object)} method has successfully completed and returned {@code true}!
+	 * <p>Note: Will only be called if this interceptor's {@link #preHandleRender(jakarta.portlet.RenderRequest,
+	 * jakarta.portlet.RenderResponse, Object)} method has successfully completed and returned {@code true}!
 	 *
 	 * @param   request   current portlet render request
 	 * @param   response  current portlet render response

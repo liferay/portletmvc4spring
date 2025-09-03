@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.mvc;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import com.liferay.portletmvc4spring.ModelAndView;
 
@@ -27,7 +27,7 @@ import com.liferay.portletmvc4spring.ModelAndView;
  *
  * @author  Juergen Hoeller
  * @since   3.0
- * @see     javax.portlet.ResourceServingPortlet
+ * @see     jakarta.portlet.ResourceServingPortlet
  * @see     Controller
  * @see     EventAwareController
  */

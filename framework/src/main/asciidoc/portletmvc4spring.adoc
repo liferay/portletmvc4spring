@@ -1027,8 +1027,8 @@ Here is short example consisting of a class and a declaration in the web applica
 ----
 	package samples;
 
-	import javax.portlet.RenderRequest;
-	import javax.portlet.RenderResponse;
+	import jakarta.portlet.RenderRequest;
+	import jakarta.portlet.RenderResponse;
 
 	import com.liferay.portletmvc4spring.mvc.AbstractController;
 	import com.liferay.portletmvc4spring.ModelAndView;

@@ -22,8 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.beans.BeansException;
 
@@ -37,7 +37,7 @@ import org.springframework.util.Assert;
  *
  * @author  Juergen Hoeller
  * @since   2.0
- * @see     #getLookupKey(javax.portlet.PortletRequest)
+ * @see     #getLookupKey(jakarta.portlet.PortletRequest)
  * @see     #registerHandler(Object, Object)
  */
 public abstract class AbstractMapBasedHandlerMapping<K> extends AbstractHandlerMapping {

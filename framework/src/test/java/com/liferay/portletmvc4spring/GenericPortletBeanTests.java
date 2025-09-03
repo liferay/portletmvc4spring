@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
 
 import static org.junit.Assert.*;
 

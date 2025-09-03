@@ -17,8 +17,8 @@ package com.liferay.portletmvc4spring.context;
 
 import java.io.Serializable;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletSession;
 
 import static org.junit.Assert.*;
 

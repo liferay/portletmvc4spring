@@ -22,10 +22,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.portlet.ActionResponse;
-import javax.portlet.MutableRenderParameters;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletSession;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.MutableRenderParameters;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,7 +128,7 @@ public class ApplicantController {
 		return "applicant";
 	}
 
-	@RenderMapping(params = "javax.portlet.action=success")
+	@RenderMapping(params = "jakarta.portlet.action=success")
 	public String showConfirmation() {
 		return "confirmation";
 	}
@@ -165,7 +165,7 @@ public class ApplicantController {
 
 			MutableRenderParameters mutableRenderParameters = actionResponse.getRenderParameters();
 
-			mutableRenderParameters.setValue("javax.portlet.action", "success");
+			mutableRenderParameters.setValue("jakarta.portlet.action", "success");
 
 			sessionStatus.setComplete();
 		}

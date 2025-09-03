@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.mvc.method.annotation;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.util.Assert;
 

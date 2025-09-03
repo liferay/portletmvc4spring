@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.context;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;

@@ -18,11 +18,11 @@ package com.liferay.portletmvc4spring.context;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.ResourceRequest;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -43,10 +43,10 @@ import com.liferay.portletmvc4spring.util.PortletUtils;
  *
  * @author  Juergen Hoeller
  * @since   2.0
- * @see     javax.portlet.PortletRequest#getAttribute
- * @see     javax.portlet.PortletSession#getAttribute
- * @see     javax.portlet.PortletSession#PORTLET_SCOPE
- * @see     javax.portlet.PortletSession#APPLICATION_SCOPE
+ * @see     jakarta.portlet.PortletRequest#getAttribute
+ * @see     jakarta.portlet.PortletSession#getAttribute
+ * @see     jakarta.portlet.PortletSession#PORTLET_SCOPE
+ * @see     jakarta.portlet.PortletSession#APPLICATION_SCOPE
  * @see     RequestAttributes#SCOPE_SESSION
  */
 public class PortletRequestAttributes extends AbstractRequestAttributes {

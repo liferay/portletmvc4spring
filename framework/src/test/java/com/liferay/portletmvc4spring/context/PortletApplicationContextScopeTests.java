@@ -17,8 +17,8 @@ package com.liferay.portletmvc4spring.context;
 
 import java.util.Enumeration;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletSession;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 

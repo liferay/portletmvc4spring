@@ -18,10 +18,10 @@ package com.liferay.portletmvc4spring;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletSecurityException;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletSecurityException;
 
 import static org.junit.Assert.*;
 

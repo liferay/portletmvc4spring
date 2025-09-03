@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -48,7 +48,7 @@ public class PortletContextResourcePatternResolver extends PathMatchingResourceP
 	 *
 	 * @param  portletContext  the PortletContext to load resources with
 	 *
-	 * @see    PortletContextResourceLoader#PortletContextResourceLoader(javax.portlet.PortletContext)
+	 * @see    PortletContextResourceLoader#PortletContextResourceLoader(jakarta.portlet.PortletContext)
 	 */
 	public PortletContextResourcePatternResolver(PortletContext portletContext) {
 		super(new PortletContextResourceLoader(portletContext));
@@ -70,7 +70,7 @@ public class PortletContextResourcePatternResolver extends PathMatchingResourceP
 	 *
 	 * @see  #doRetrieveMatchingPortletContextResources
 	 * @see  PortletContextResource
-	 * @see  javax.portlet.PortletContext#getResourcePaths
+	 * @see  jakarta.portlet.PortletContext#getResourcePaths
 	 */
 	@Override
 	protected Set<Resource> doFindPathMatchingFileResources(Resource rootDirResource, String subPattern)
@@ -100,7 +100,7 @@ public class PortletContextResourcePatternResolver extends PathMatchingResourceP
 	 * @throws  IOException  if directory contents could not be retrieved
 	 *
 	 * @see     com.liferay.portletmvc4spring.context.PortletContextResource
-	 * @see     javax.portlet.PortletContext#getResourcePaths
+	 * @see     jakarta.portlet.PortletContext#getResourcePaths
 	 */
 	protected void doRetrieveMatchingPortletContextResources(PortletContext portletContext, String fullPattern,
 		String dir, Set<Resource> result) throws IOException {

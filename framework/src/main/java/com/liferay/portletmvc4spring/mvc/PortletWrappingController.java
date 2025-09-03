@@ -22,22 +22,22 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventPortlet;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.Portlet;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.ResourceServingPortlet;
-import javax.portlet.WindowState;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.EventPortlet;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.EventResponse;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.ResourceServingPortlet;
+import jakarta.portlet.WindowState;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -107,7 +107,7 @@ public class PortletWrappingController extends AbstractController implements Res
 
 		if (!Portlet.class.isAssignableFrom(this.portletClass)) {
 			throw new IllegalArgumentException("portletClass [" + this.portletClass.getName() +
-				"] needs to implement interface [javax.portlet.Portlet]");
+				"] needs to implement interface [jakarta.portlet.Portlet]");
 		}
 
 		if (this.portletName == null) {
@@ -207,9 +207,9 @@ public class PortletWrappingController extends AbstractController implements Res
 	}
 
 	/**
-	 * Set the class of the Portlet to wrap. Needs to implement {@code javax.portlet.Portlet}.
+	 * Set the class of the Portlet to wrap. Needs to implement {@code jakarta.portlet.Portlet}.
 	 *
-	 * @see  javax.portlet.Portlet
+	 * @see  jakarta.portlet.Portlet
 	 */
 	public void setPortletClass(Class<?> portletClass) {
 		this.portletClass = portletClass;

@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -34,7 +34,7 @@ import com.liferay.portletmvc4spring.util.PortletUtils;
 
 
 /**
- * {@link org.springframework.web.context.request.WebRequest} adapter for a {@link javax.portlet.PortletRequest}.
+ * {@link org.springframework.web.context.request.WebRequest} adapter for a {@link jakarta.portlet.PortletRequest}.
  *
  * @author  Juergen Hoeller
  * @since   2.0

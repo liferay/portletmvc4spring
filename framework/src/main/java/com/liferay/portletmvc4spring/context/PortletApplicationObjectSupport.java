@@ -17,7 +17,7 @@ package com.liferay.portletmvc4spring.context;
 
 import java.io.File;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.context.support.ApplicationObjectSupport;
 
@@ -62,7 +62,7 @@ public abstract class PortletApplicationObjectSupport extends ApplicationObjectS
 	 *
 	 * @throws  IllegalStateException  if not running within a PortletContext
 	 *
-	 * @see     com.liferay.portletmvc4spring.util.PortletUtils#getTempDir(javax.portlet.PortletContext)
+	 * @see     com.liferay.portletmvc4spring.util.PortletUtils#getTempDir(jakarta.portlet.PortletContext)
 	 */
 	protected final File getTempDir() throws IllegalStateException {
 		return PortletUtils.getTempDir(getPortletContext());

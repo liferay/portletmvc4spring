@@ -19,8 +19,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.beans.BeansException;
 
@@ -136,7 +136,7 @@ public class PortletModeParameterHandlerMapping extends AbstractMapBasedHandlerM
 	/**
 	 * Returns a lookup key that combines the current PortletMode and the current value of the specified parameter.
 	 *
-	 * @see  javax.portlet.PortletRequest#getPortletMode()
+	 * @see  jakarta.portlet.PortletRequest#getPortletMode()
 	 * @see  #setParameterName
 	 */
 	@Override

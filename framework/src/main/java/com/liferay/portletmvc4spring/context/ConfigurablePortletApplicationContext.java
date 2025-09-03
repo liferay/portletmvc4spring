@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.context;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -48,14 +48,14 @@ public interface ConfigurablePortletApplicationContext extends WebApplicationCon
 	/**
 	 * Name of the PortletContext environment bean in the factory.
 	 *
-	 * @see  javax.portlet.PortletContext
+	 * @see  jakarta.portlet.PortletContext
 	 */
 	String PORTLET_CONTEXT_BEAN_NAME = "portletContext";
 
 	/**
 	 * Name of the PortletConfig environment bean in the factory.
 	 *
-	 * @see  javax.portlet.PortletConfig
+	 * @see  jakarta.portlet.PortletConfig
 	 */
 	String PORTLET_CONFIG_BEAN_NAME = "portletConfig";
 

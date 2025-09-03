@@ -21,12 +21,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.Portlet;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletMode;
-import javax.portlet.WindowState;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.WindowState;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -40,7 +40,7 @@ import com.liferay.portletmvc4spring.context.PortletContextAware;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} that applies initialization and destruction
- * callbacks to beans that implement the {@link javax.portlet.Portlet} interface.
+ * callbacks to beans that implement the {@link jakarta.portlet.Portlet} interface.
  *
  * <p>After initialization of the bean instance, the Portlet {@code init} method will be called with a PortletConfig
  * that contains the bean name of the Portlet and the PortletContext that it is running in.
@@ -63,8 +63,8 @@ import com.liferay.portletmvc4spring.context.PortletContextAware;
  * @author  Juergen Hoeller
  * @author  John A. Lewis
  * @since   2.0
- * @see     javax.portlet.Portlet
- * @see     javax.portlet.PortletConfig
+ * @see     jakarta.portlet.Portlet
+ * @see     jakarta.portlet.PortletConfig
  * @see     SimplePortletHandlerAdapter
  * @see     com.liferay.portletmvc4spring.GenericPortletBean
  * @see     com.liferay.portletmvc4spring.mvc.PortletWrappingController

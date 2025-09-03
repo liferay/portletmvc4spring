@@ -18,7 +18,7 @@ package com.liferay.portletmvc4spring.support;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.TimeZoneAwareLocaleContext;

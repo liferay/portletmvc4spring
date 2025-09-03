@@ -18,9 +18,9 @@ package com.liferay.portletmvc4spring.demo.applicant.thymeleaf.portlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.portlet.HeaderRequest;
-import javax.portlet.HeaderResponse;
-import javax.portlet.PortletException;
+import jakarta.portlet.HeaderRequest;
+import jakarta.portlet.HeaderResponse;
+import jakarta.portlet.PortletException;
 
 import com.liferay.portletmvc4spring.DispatcherPortlet;
 import com.liferay.portletmvc4spring.util.PortletContainer;

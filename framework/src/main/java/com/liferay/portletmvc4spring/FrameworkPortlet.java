@@ -19,17 +19,17 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.EventResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.springframework.beans.BeanUtils;
 
@@ -344,7 +344,7 @@ public abstract class FrameworkPortlet extends GenericPortletBean
 	 *
 	 * @throws  Exception  in case of any kind of processing failure
 	 *
-	 * @see     javax.portlet.GenericPortlet#processAction
+	 * @see     jakarta.portlet.GenericPortlet#processAction
 	 */
 	protected abstract void doActionService(ActionRequest request, ActionResponse response) throws Exception;
 
@@ -360,7 +360,7 @@ public abstract class FrameworkPortlet extends GenericPortletBean
 	 *
 	 * @throws  Exception  in case of any kind of processing failure
 	 *
-	 * @see     javax.portlet.GenericPortlet#processEvent
+	 * @see     jakarta.portlet.GenericPortlet#processEvent
 	 */
 	protected abstract void doEventService(EventRequest request, EventResponse response) throws Exception;
 
@@ -376,7 +376,7 @@ public abstract class FrameworkPortlet extends GenericPortletBean
 	 *
 	 * @throws  Exception  in case of any kind of processing failure
 	 *
-	 * @see     javax.portlet.GenericPortlet#doDispatch
+	 * @see     jakarta.portlet.GenericPortlet#doDispatch
 	 */
 	protected abstract void doRenderService(RenderRequest request, RenderResponse response) throws Exception;
 
@@ -392,7 +392,7 @@ public abstract class FrameworkPortlet extends GenericPortletBean
 	 *
 	 * @throws  Exception  in case of any kind of processing failure
 	 *
-	 * @see     javax.portlet.GenericPortlet#serveResource
+	 * @see     jakarta.portlet.GenericPortlet#serveResource
 	 */
 	protected abstract void doResourceService(ResourceRequest request, ResourceResponse response) throws Exception;
 
@@ -508,9 +508,9 @@ public abstract class FrameworkPortlet extends GenericPortletBean
 	 *
 	 * @return  the username, or {@code null} if none found
 	 *
-	 * @see     javax.portlet.PortletRequest#getUserPrincipal()
-	 * @see     javax.portlet.PortletRequest#getRemoteUser()
-	 * @see     javax.portlet.PortletRequest#USER_INFO
+	 * @see     jakarta.portlet.PortletRequest#getUserPrincipal()
+	 * @see     jakarta.portlet.PortletRequest#getRemoteUser()
+	 * @see     jakarta.portlet.PortletRequest#USER_INFO
 	 * @see     #setUserinfoUsernameAttributes
 	 */
 	protected String getUsernameForRequest(PortletRequest request) {

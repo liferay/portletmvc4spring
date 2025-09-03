@@ -17,8 +17,8 @@ package com.liferay.portletmvc4spring;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import org.springframework.context.i18n.LocaleContext;
 

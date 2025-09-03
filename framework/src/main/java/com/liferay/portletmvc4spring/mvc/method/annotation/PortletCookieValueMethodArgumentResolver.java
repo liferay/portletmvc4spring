@@ -18,8 +18,8 @@ package com.liferay.portletmvc4spring.mvc.method.annotation;
 import java.net.URLDecoder;
 import java.nio.charset.UnsupportedCharsetException;
 
-import javax.portlet.ClientDataRequest;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.PortletRequest;
 import jakarta.servlet.http.Cookie;
 
 import org.apache.commons.logging.Log;

@@ -15,13 +15,13 @@
  */
 package com.liferay.portletmvc4spring.mvc;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.WindowState;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.WindowState;
 
 import com.liferay.portletmvc4spring.ModelAndView;
 import com.liferay.portletmvc4spring.handler.PortletContentGenerator;
@@ -185,8 +185,8 @@ public abstract class AbstractController extends PortletContentGenerator impleme
 	/**
 	 * Set if the controller should render an view when the portlet is in a minimized window. The default is false.
 	 *
-	 * @see  javax.portlet.RenderRequest#getWindowState
-	 * @see  javax.portlet.WindowState#MINIMIZED
+	 * @see  jakarta.portlet.RenderRequest#getWindowState
+	 * @see  jakarta.portlet.WindowState#MINIMIZED
 	 */
 	public final void setRenderWhenMinimized(boolean renderWhenMinimized) {
 		this.renderWhenMinimized = renderWhenMinimized;
@@ -210,7 +210,7 @@ public abstract class AbstractController extends PortletContentGenerator impleme
 	 *
 	 * @see  #handleActionRequestInternal
 	 * @see  org.springframework.web.util.HttpSessionMutexListener
-	 * @see  com.liferay.portletmvc4spring.util.PortletUtils#getSessionMutex(javax.portlet.PortletSession)
+	 * @see  com.liferay.portletmvc4spring.util.PortletUtils#getSessionMutex(jakarta.portlet.PortletSession)
 	 */
 	public final void setSynchronizeOnSession(boolean synchronizeOnSession) {
 		this.synchronizeOnSession = synchronizeOnSession;

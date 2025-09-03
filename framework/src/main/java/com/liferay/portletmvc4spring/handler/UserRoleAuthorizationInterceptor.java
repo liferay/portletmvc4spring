@@ -17,10 +17,10 @@ package com.liferay.portletmvc4spring.handler;
 
 import java.io.IOException;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSecurityException;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSecurityException;
 
 
 /**
@@ -30,7 +30,7 @@ import javax.portlet.PortletSecurityException;
  * @author  John A. Lewis
  * @author  Juergen Hoeller
  * @since   2.0
- * @see     javax.portlet.PortletRequest#isUserInRole
+ * @see     jakarta.portlet.PortletRequest#isUserInRole
  */
 public class UserRoleAuthorizationInterceptor extends HandlerInterceptorAdapter {
 
@@ -75,7 +75,7 @@ public class UserRoleAuthorizationInterceptor extends HandlerInterceptorAdapter 
 	 * @param   response  current portlet response
 	 * @param   handler   chosen handler to execute, for type and/or instance evaluation
 	 *
-	 * @throws  javax.portlet.PortletException  if there is an internal error
+	 * @throws  jakarta.portlet.PortletException  if there is an internal error
 	 * @throws  java.io.IOException             in case of an I/O error when writing the response
 	 */
 	protected void handleNotAuthorized(PortletRequest request, PortletResponse response, Object handler)

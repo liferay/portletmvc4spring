@@ -23,18 +23,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.filter.PortletRequestWrapper;
-import javax.portlet.filter.PortletResponseWrapper;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletRequestDispatcher;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.filter.PortletRequestWrapper;
+import jakarta.portlet.filter.PortletResponseWrapper;
 import jakarta.servlet.http.Cookie;
 
 import org.springframework.util.Assert;
@@ -54,7 +54,7 @@ import org.springframework.web.util.WebUtils;
 public abstract class PortletUtils {
 
 	/**
-	 * Clear all the render parameters from the {@link javax.portlet.ActionResponse}. This may not be called when the
+	 * Clear all the render parameters from the {@link jakarta.portlet.ActionResponse}. This may not be called when the
 	 * action will call {@link ActionResponse#sendRedirect sendRedirect}.
 	 *
 	 * @param  response  the current action response
@@ -165,7 +165,7 @@ public abstract class PortletUtils {
 	}
 
 	/**
-	 * Get the specified session attribute under the {@link javax.portlet.PortletSession#PORTLET_SCOPE}, creating and
+	 * Get the specified session attribute under the {@link jakarta.portlet.PortletSession#PORTLET_SCOPE}, creating and
 	 * setting a new attribute if no existing found. The given class needs to have a public no-arg constructor. Useful
 	 * for on-demand state objects in a web tier, like shopping carts.
 	 *
@@ -232,7 +232,7 @@ public abstract class PortletUtils {
 	 * <p>For example, with a prefix of "spring_", "spring_param1" and "spring_param2" result in a Map with "param1" and
 	 * "param2" as keys.
 	 *
-	 * <p>Similar to portlet {@link javax.portlet.PortletRequest#getParameterMap()}, but more flexible.
+	 * <p>Similar to portlet {@link jakarta.portlet.PortletRequest#getParameterMap()}, but more flexible.
 	 *
 	 * @param   request  portlet request in which to look for parameters
 	 * @param   prefix   the beginning of parameter names (if this is {@code null} or the empty string, all parameters
@@ -241,9 +241,9 @@ public abstract class PortletUtils {
 	 * @return  map containing request parameters <b>without the prefix</b>, containing either a String or a String
 	 *          array as values
 	 *
-	 * @see     javax.portlet.PortletRequest#getParameterNames
-	 * @see     javax.portlet.PortletRequest#getParameterValues
-	 * @see     javax.portlet.PortletRequest#getParameterMap
+	 * @see     jakarta.portlet.PortletRequest#getParameterNames
+	 * @see     jakarta.portlet.PortletRequest#getParameterValues
+	 * @see     jakarta.portlet.PortletRequest#getParameterMap
 	 */
 	public static Map<String, Object> getParametersStartingWith(PortletRequest request, String prefix) {
 		Assert.notNull(request, "Request must not be null");
@@ -282,7 +282,7 @@ public abstract class PortletUtils {
 	 *
 	 * <p>Prepends a slash if the path does not already start with a slash, and throws a {@link
 	 * java.io.FileNotFoundException} if the path cannot be resolved to a resource (in contrast to {@link
-	 * javax.portlet.PortletContext#getRealPath PortletContext's {@code getRealPath}}, which simply returns {@code
+	 * jakarta.portlet.PortletContext#getRealPath PortletContext's {@code getRealPath}}, which simply returns {@code
 	 * null}).
 	 *
 	 * @param   portletContext  the portlet context of the web application
@@ -292,7 +292,7 @@ public abstract class PortletUtils {
 	 *
 	 * @throws  FileNotFoundException  if the path cannot be resolved to a resource
 	 *
-	 * @see     javax.portlet.PortletContext#getRealPath
+	 * @see     jakarta.portlet.PortletContext#getRealPath
 	 */
 	public static String getRealPath(PortletContext portletContext, String path) throws FileNotFoundException {
 		Assert.notNull(portletContext, "PortletContext must not be null");
@@ -314,7 +314,7 @@ public abstract class PortletUtils {
 
 	/**
 	 * Check the given request for a session attribute of the given name under the {@link
-	 * javax.portlet.PortletSession#PORTLET_SCOPE}. Throws an exception if there is no session or if the session has no
+	 * jakarta.portlet.PortletSession#PORTLET_SCOPE}. Throws an exception if there is no session or if the session has no
 	 * such attribute in that scope.
 	 *
 	 * <p>Does not create a new session if none has existed before!
@@ -358,7 +358,7 @@ public abstract class PortletUtils {
 
 	/**
 	 * Check the given request for a session attribute of the given name under the {@link
-	 * javax.portlet.PortletSession#PORTLET_SCOPE}. Returns {@code null} if there is no session or if the session has no
+	 * jakarta.portlet.PortletSession#PORTLET_SCOPE}. Returns {@code null} if there is no session or if the session has no
 	 * such attribute in that scope. Does not create a new session if none has existed before!
 	 *
 	 * @param   request  current portlet request
@@ -395,13 +395,13 @@ public abstract class PortletUtils {
 	 *
 	 * <p>Returns the session mutex attribute if available; usually, this means that the {@link
 	 * org.springframework.web.util.HttpSessionMutexListener} needs to be defined in {@code web.xml}. Falls back to the
-	 * {@link javax.portlet.PortletSession} itself if no mutex attribute found.
+	 * {@link jakarta.portlet.PortletSession} itself if no mutex attribute found.
 	 *
 	 * <p>The session mutex is guaranteed to be the same object during the entire lifetime of the session, available
 	 * under the key defined by the {@link org.springframework.web.util.WebUtils#SESSION_MUTEX_ATTRIBUTE} constant. It
 	 * serves as a safe reference to synchronize on for locking on the current session.
 	 *
-	 * <p>In many cases, the {@link javax.portlet.PortletSession} reference itself is a safe mutex as well, since it
+	 * <p>In many cases, the {@link jakarta.portlet.PortletSession} reference itself is a safe mutex as well, since it
 	 * will always be the same object reference for the same active logical session. However, this is not guaranteed
 	 * across different servlet containers; the only 100% safe way is a session mutex.
 	 *
@@ -517,12 +517,12 @@ public abstract class PortletUtils {
 
 	/**
 	 * Pass all the action request parameters to the render phase by putting them into the action response object. This
-	 * may not be called when the action will call {@link javax.portlet.ActionResponse#sendRedirect sendRedirect}.
+	 * may not be called when the action will call {@link jakarta.portlet.ActionResponse#sendRedirect sendRedirect}.
 	 *
 	 * @param  request   the current action request
 	 * @param  response  the current action response
 	 *
-	 * @see    javax.portlet.ActionResponse#setRenderParameter
+	 * @see    jakarta.portlet.ActionResponse#setRenderParameter
 	 */
 	public static void passAllParametersToRenderPhase(ActionRequest request, ActionResponse response) {
 
@@ -576,7 +576,7 @@ public abstract class PortletUtils {
 
 	/**
 	 * Set the session attribute with the given name to the given value under the {@link
-	 * javax.portlet.PortletSession#PORTLET_SCOPE}. Removes the session attribute if value is {@code null}, if a session
+	 * jakarta.portlet.PortletSession#PORTLET_SCOPE}. Removes the session attribute if value is {@code null}, if a session
 	 * existed at all. Does not create a new session if not necessary!
 	 *
 	 * @param  request  current portlet request

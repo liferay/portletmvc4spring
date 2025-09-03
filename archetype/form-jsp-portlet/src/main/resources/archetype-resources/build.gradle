@@ -12,5 +12,5 @@ dependencies {
         exclude group: 'jakarta.validation', module: 'jakarta.validation-api'
     }
     providedCompile group: 'jakarta.validation', name: 'jakarta.validation-api', version: "2.0.2"
-    providedCompile group: 'javax.portlet', name: 'portlet-api', version: '@portlet-api-version@'
+    providedCompile group: 'jakarta.portlet', name: 'jakarta.portlet-api', version: '@portlet-api-version@'
 }

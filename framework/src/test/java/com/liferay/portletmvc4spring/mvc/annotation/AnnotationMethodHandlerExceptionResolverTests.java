@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.SocketException;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import static org.junit.Assert.*;
 

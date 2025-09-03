@@ -17,9 +17,9 @@ package com.liferay.portletmvc4spring.webflow.mvc.portlet;
 
 import java.util.Map;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.web.servlet.View;
 

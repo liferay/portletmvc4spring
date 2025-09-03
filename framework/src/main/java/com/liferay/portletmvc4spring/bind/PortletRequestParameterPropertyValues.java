@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.bind;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.beans.MutablePropertyValues;
 

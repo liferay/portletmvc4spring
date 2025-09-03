@@ -18,7 +18,7 @@ package com.liferay.portletmvc4spring.handler;
 import java.util.Collections;
 import java.util.Properties;
 
-import javax.portlet.WindowState;
+import jakarta.portlet.WindowState;
 
 import static org.junit.Assert.*;
 

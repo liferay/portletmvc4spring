@@ -17,13 +17,13 @@ package com.liferay.portletmvc4spring.handler;
 
 import java.util.Set;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.WindowState;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.WindowState;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -124,8 +124,8 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	/**
 	 * Set if the resolver should render a view when the portlet is in a minimized window. The default is "false".
 	 *
-	 * @see  javax.portlet.RenderRequest#getWindowState()
-	 * @see  javax.portlet.WindowState#MINIMIZED
+	 * @see  jakarta.portlet.RenderRequest#getWindowState()
+	 * @see  jakarta.portlet.WindowState#MINIMIZED
 	 */
 	public void setRenderWhenMinimized(boolean renderWhenMinimized) {
 		this.renderWhenMinimized = renderWhenMinimized;

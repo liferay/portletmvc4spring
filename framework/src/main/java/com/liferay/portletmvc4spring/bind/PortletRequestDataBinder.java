@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.bind;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.beans.MutablePropertyValues;
 
@@ -53,7 +53,7 @@ import com.liferay.portletmvc4spring.util.PortletUtils;
  * @author  Juergen Hoeller
  * @author  John A. Lewis
  * @since   2.0
- * @see     #bind(javax.portlet.PortletRequest)
+ * @see     #bind(jakarta.portlet.PortletRequest)
  * @see     #registerCustomEditor
  * @see     #setAllowedFields
  * @see     #setRequiredFields

@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.beans.BeansException;
 

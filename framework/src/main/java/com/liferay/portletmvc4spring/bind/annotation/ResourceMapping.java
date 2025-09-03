@@ -42,7 +42,7 @@ public @interface ResourceMapping {
 	 *
 	 * <p>If not specified, the handler method will be invoked for any resource request within its general mapping.
 	 *
-	 * @see  javax.portlet.ResourceRequest#getResourceID()
+	 * @see  jakarta.portlet.ResourceRequest#getResourceID()
 	 */
 	String value() default "";
 

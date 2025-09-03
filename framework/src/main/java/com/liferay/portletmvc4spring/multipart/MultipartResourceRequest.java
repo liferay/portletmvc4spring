@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.multipart;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 
 import org.springframework.web.multipart.MultipartRequest;
 

@@ -46,7 +46,7 @@ public enum MvcEnvironment {
 	 */
 	public static MvcEnvironment environmentFor(ApplicationContext applicationContext) {
 
-		if (ClassUtils.isPresent("javax.portlet.PortletContext", MvcEnvironment.class.getClassLoader()) &&
+		if (ClassUtils.isPresent("jakarta.portlet.PortletContext", MvcEnvironment.class.getClassLoader()) &&
 				isPortletApplicationContext(applicationContext)) {
 			return MvcEnvironment.PORTLET;
 		}

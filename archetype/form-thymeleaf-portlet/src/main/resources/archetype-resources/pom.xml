@@ -51,8 +51,8 @@
 			<version>@portletmvc4spring-version@</version>
 		</dependency>
 		<dependency>
-			<groupId>com.liferay</groupId>
-			<artifactId>javax.portlet</artifactId>
+			<groupId>jakarta.portlet</groupId>
+			<artifactId>jakarta.portlet-api</artifactId>
 			<version>@portlet-api-version@</version>
 			<scope>provided</scope>
 		</dependency>

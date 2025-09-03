@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.handler;
 
-import javax.portlet.PortletSecurityException;
+import jakarta.portlet.PortletSecurityException;
 
 import static org.junit.Assert.*;
 

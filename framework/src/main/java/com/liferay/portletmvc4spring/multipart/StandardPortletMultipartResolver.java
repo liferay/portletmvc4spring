@@ -24,9 +24,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ClientDataRequest;
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.ResourceRequest;
 import jakarta.servlet.http.Part;
 
 import org.apache.commons.logging.LogFactory;
@@ -52,14 +52,14 @@ import org.springframework.web.multipart.MultipartRequest;
  *
  * <p><b>Note:</b> In order to use Portlet 3.0 based multipart parsing, you need to mark the affected servlet with a
  * "multipart-config" section in {@code portlet.xml}, or (in case of a custom portlet class) possibly with a {@link
- * javax.portlet.annotations.Multipart} annotation on your portlet class. Configuration settings such as maximum sizes
+ * jakarta.portlet.annotations.Multipart} annotation on your portlet class. Configuration settings such as maximum sizes
  * or storage locations need to be applied at that portlet registration level.
  *
  * @author  Juergen Hoeller
  * @author  Neil Griffin
  * @since   5.1.0
  * @see     #setResolveLazily
- * @see     javax.portlet.ClientDataRequest#getParts()
+ * @see     jakarta.portlet.ClientDataRequest#getParts()
  * @see     org.springframework.web.multipart.commons.CommonsMultipartResolver
  */
 public class StandardPortletMultipartResolver implements PortletMultipartResolver {

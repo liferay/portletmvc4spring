@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.core.io.AbstractFileResolvingResource;
 import org.springframework.core.io.ContextResource;
@@ -36,7 +36,7 @@ import com.liferay.portletmvc4spring.util.PortletUtils;
 
 
 /**
- * {@link org.springframework.core.io.Resource} implementation for {@link javax.portlet.PortletContext} resources,
+ * {@link org.springframework.core.io.Resource} implementation for {@link jakarta.portlet.PortletContext} resources,
  * interpreting relative paths within the portlet application root directory.
  *
  * <p>Always supports stream access and URL access, but only allows {@code java.io.File} access when the portlet
@@ -45,8 +45,8 @@ import com.liferay.portletmvc4spring.util.PortletUtils;
  * @author  Juergen Hoeller
  * @author  John A. Lewis
  * @since   2.0
- * @see     javax.portlet.PortletContext#getResourceAsStream
- * @see     javax.portlet.PortletContext#getRealPath
+ * @see     jakarta.portlet.PortletContext#getResourceAsStream
+ * @see     jakarta.portlet.PortletContext#getRealPath
  */
 public class PortletContextResource extends AbstractFileResolvingResource implements ContextResource {
 
@@ -108,7 +108,7 @@ public class PortletContextResource extends AbstractFileResolvingResource implem
 	/**
 	 * This implementation checks {@code PortletContext.getResource}.
 	 *
-	 * @see  javax.portlet.PortletContext#getResource(String)
+	 * @see  jakarta.portlet.PortletContext#getResource(String)
 	 */
 	@Override
 	public boolean exists() {
@@ -132,8 +132,8 @@ public class PortletContextResource extends AbstractFileResolvingResource implem
 	 * This implementation resolves "file:" URLs or alternatively delegates to {@code PortletContext.getRealPath},
 	 * throwing a FileNotFoundException if not found or not resolvable.
 	 *
-	 * @see  javax.portlet.PortletContext#getResource(String)
-	 * @see  javax.portlet.PortletContext#getRealPath(String)
+	 * @see  jakarta.portlet.PortletContext#getResource(String)
+	 * @see  jakarta.portlet.PortletContext#getRealPath(String)
 	 */
 	@Override
 	public File getFile() throws IOException {
@@ -160,7 +160,7 @@ public class PortletContextResource extends AbstractFileResolvingResource implem
 	 * This implementation delegates to {@code PortletContext.getResourceAsStream}, but throws a FileNotFoundException
 	 * if not found.
 	 *
-	 * @see  javax.portlet.PortletContext#getResourceAsStream(String)
+	 * @see  jakarta.portlet.PortletContext#getResourceAsStream(String)
 	 */
 	@Override
 	public InputStream getInputStream() throws IOException {
@@ -196,7 +196,7 @@ public class PortletContextResource extends AbstractFileResolvingResource implem
 	 * This implementation delegates to {@code PortletContext.getResource}, but throws a FileNotFoundException if no
 	 * resource found.
 	 *
-	 * @see  javax.portlet.PortletContext#getResource(String)
+	 * @see  jakarta.portlet.PortletContext#getResource(String)
 	 */
 	@Override
 	public URL getURL() throws IOException {
@@ -218,7 +218,7 @@ public class PortletContextResource extends AbstractFileResolvingResource implem
 	 * This implementation delegates to {@code PortletContext.getResourceAsStream}, which returns {@code null} in case
 	 * of a non-readable resource (e.g. a directory).
 	 *
-	 * @see  javax.portlet.PortletContext#getResourceAsStream(String)
+	 * @see  jakarta.portlet.PortletContext#getResourceAsStream(String)
 	 */
 	@Override
 	public boolean isReadable() {

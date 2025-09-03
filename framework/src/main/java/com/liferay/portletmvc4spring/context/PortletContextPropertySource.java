@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.context;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;

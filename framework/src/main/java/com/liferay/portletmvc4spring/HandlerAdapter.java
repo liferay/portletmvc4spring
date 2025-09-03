@@ -15,14 +15,14 @@
  */
 package com.liferay.portletmvc4spring;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.EventResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 
 /**
@@ -57,7 +57,7 @@ public interface HandlerAdapter {
 	 *
 	 * @throws  Exception  in case of errors
 	 *
-	 * @see     javax.portlet.Portlet#processAction
+	 * @see     jakarta.portlet.Portlet#processAction
 	 */
 	void handleAction(ActionRequest request, ActionResponse response, Object handler) throws Exception;
 
@@ -71,7 +71,7 @@ public interface HandlerAdapter {
 	 *
 	 * @throws  Exception  in case of errors
 	 *
-	 * @see     javax.portlet.EventPortlet#processEvent
+	 * @see     jakarta.portlet.EventPortlet#processEvent
 	 */
 	void handleEvent(EventRequest request, EventResponse response, Object handler) throws Exception;
 
@@ -88,7 +88,7 @@ public interface HandlerAdapter {
 	 * @return  ModelAndView object with the name of the view and the required model data, or {@code null} if the
 	 *          request has been handled directly
 	 *
-	 * @see     javax.portlet.Portlet#render
+	 * @see     jakarta.portlet.Portlet#render
 	 */
 	ModelAndView handleRender(RenderRequest request, RenderResponse response, Object handler) throws Exception;
 
@@ -105,7 +105,7 @@ public interface HandlerAdapter {
 	 * @return  ModelAndView object with the name of the view and the required model data, or {@code null} if the
 	 *          request has been handled directly
 	 *
-	 * @see     javax.portlet.ResourceServingPortlet#serveResource
+	 * @see     jakarta.portlet.ResourceServingPortlet#serveResource
 	 */
 	ModelAndView handleResource(ResourceRequest request, ResourceResponse response, Object handler) throws Exception;
 

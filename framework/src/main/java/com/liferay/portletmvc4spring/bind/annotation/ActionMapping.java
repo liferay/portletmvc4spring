@@ -47,7 +47,7 @@ public @interface ActionMapping {
 	String value() default "";
 
 	/**
-	 * The name of the action, according to the Portlet 2.0 {@code javax.portlet.action} parameter.
+	 * The name of the action, according to the Portlet 2.0 {@code jakarta.portlet.action} parameter.
 	 *
 	 * <p>If not specified, the annotated method will be used as a default handler: i.e. for action requests where no
 	 * specific action mapping was found.
@@ -56,7 +56,7 @@ public @interface ActionMapping {
 	 * containing handler class.
 	 *
 	 * @since  4.2
-	 * @see    javax.portlet.ActionRequest#ACTION_NAME
+	 * @see    jakarta.portlet.ActionRequest#ACTION_NAME
 	 * @see    #value
 	 */
 	@AliasFor("value")

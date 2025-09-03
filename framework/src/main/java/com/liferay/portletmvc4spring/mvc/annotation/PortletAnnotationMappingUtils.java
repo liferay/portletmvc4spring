@@ -19,8 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.portlet.ClientDataRequest;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.http.MediaType;
 

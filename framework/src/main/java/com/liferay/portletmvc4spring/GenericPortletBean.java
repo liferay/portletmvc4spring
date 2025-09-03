@@ -19,10 +19,10 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.portlet.GenericPortlet;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
+import jakarta.portlet.GenericPortlet;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,7 +51,7 @@ import com.liferay.portletmvc4spring.context.StandardPortletEnvironment;
 
 
 /**
- * Simple extension of {@code javax.portlet.GenericPortlet} that treats its config parameters as bean properties.
+ * Simple extension of {@code jakarta.portlet.GenericPortlet} that treats its config parameters as bean properties.
  *
  * <p>A very handy superclass for any type of portlet. Type conversion is automatic. It is also possible for subclasses
  * to specify required properties.

@@ -12,8 +12,8 @@
 	<description>PortletMVC4Spring Security</description>
 	<dependencies>
 		<dependency>
-			<groupId>com.liferay</groupId>
-			<artifactId>javax.portlet</artifactId>
+			<groupId>jakarta.portlet</groupId>
+			<artifactId>jakarta.portlet-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.servlet</groupId>

@@ -18,8 +18,8 @@ package com.liferay.portletmvc4spring.handler;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
 
 import com.liferay.portletmvc4spring.ModelAndView;
 
@@ -68,7 +68,7 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 	/**
 	 * Set the mappings between exception class names and error view names. The exception class name can be a substring,
 	 * with no wildcard support at present. A value of "PortletException" would match {@code
-	 * javax.portet.PortletException} and subclasses, for example.
+	 * jakarta.portlet.PortletException} and subclasses, for example.
 	 *
 	 * <p><b>NB:</b> Consider carefully how specific the pattern is, and whether to include package information (which
 	 * isn't mandatory). For example, "Exception" will match nearly anything, and will probably hide other rules.

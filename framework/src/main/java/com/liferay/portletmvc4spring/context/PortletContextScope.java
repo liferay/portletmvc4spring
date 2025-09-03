@@ -18,7 +18,7 @@ package com.liferay.portletmvc4spring.context;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectFactory;

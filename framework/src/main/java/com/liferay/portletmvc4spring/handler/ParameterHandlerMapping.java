@@ -17,7 +17,7 @@ package com.liferay.portletmvc4spring.handler;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.springframework.beans.BeansException;
 

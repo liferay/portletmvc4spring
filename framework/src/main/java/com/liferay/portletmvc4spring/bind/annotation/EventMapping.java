@@ -45,8 +45,8 @@ public @interface EventMapping {
 	 *
 	 * <p>If not specified, the handler method will be invoked for any event request within its general mapping.
 	 *
-	 * @see  javax.portlet.EventRequest#getEvent()
-	 * @see  javax.portlet.Event#getName()
+	 * @see  jakarta.portlet.EventRequest#getEvent()
+	 * @see  jakarta.portlet.Event#getName()
 	 */
 	String value() default "";
 

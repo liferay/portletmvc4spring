@@ -23,15 +23,15 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.portlet.ClientDataRequest;
-import javax.portlet.Event;
-import javax.portlet.EventRequest;
-import javax.portlet.PortalContext;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
-import javax.portlet.WindowState;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.Event;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.PortalContext;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.WindowState;
 
 import org.springframework.core.MethodParameter;
 

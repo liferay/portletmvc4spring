@@ -15,8 +15,8 @@
  */
 package com.liferay.portletmvc4spring.demo.applicant.thymeleaf.controller;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.ResourceURL;
 
 
 /**

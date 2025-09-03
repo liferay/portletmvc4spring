@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.handler;
 
-import javax.portlet.PortletMode;
+import jakarta.portlet.PortletMode;
 
 import org.springframework.util.ObjectUtils;
 

@@ -58,7 +58,7 @@ public @interface RenderMapping {
 	 *
 	 * @since  4.2
 	 * @see    #value
-	 * @see    javax.portlet.PortletRequest#getWindowState()
+	 * @see    jakarta.portlet.PortletRequest#getWindowState()
 	 */
 	@AliasFor("value")
 	String windowState() default "";

@@ -15,7 +15,7 @@
  */
 package com.liferay.portletmvc4spring.multipart;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -31,9 +31,9 @@ import org.springframework.web.multipart.MultipartRequest;
  * @since   2.0
  * @see     PortletMultipartResolver
  * @see     org.springframework.web.multipart.MultipartFile
- * @see     javax.portlet.ActionRequest#getParameter
- * @see     javax.portlet.ActionRequest#getParameterNames
- * @see     javax.portlet.ActionRequest#getParameterMap
+ * @see     jakarta.portlet.ActionRequest#getParameter
+ * @see     jakarta.portlet.ActionRequest#getParameterNames
+ * @see     jakarta.portlet.ActionRequest#getParameterMap
  */
 public interface MultipartActionRequest extends ActionRequest, MultipartRequest {
 
