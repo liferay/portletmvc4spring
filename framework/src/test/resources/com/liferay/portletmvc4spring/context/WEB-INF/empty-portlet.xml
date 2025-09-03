@@ -7,4 +7,7 @@
 
 	<bean id="portletConfigAwareBean" class="com.liferay.portletmvc4spring.context.PortletConfigAwareBean"/>
 
+	<bean id="portletMultipartResolver"
+		  class="com.liferay.portletmvc4spring.multipart.StandardPortletMultipartResolver" />
+
 </beans>
