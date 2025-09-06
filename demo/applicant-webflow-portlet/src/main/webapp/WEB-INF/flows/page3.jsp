@@ -41,8 +41,8 @@
 				</div>
 			</fieldset>
 
-			<spring:message code="return" var="return" />
-			<input class="btn btn-primary" formaction="${returnURL}" value="${return}" type="submit"/>
+			<spring:message code="return" var="returnText" />
+			<input class="btn btn-primary" formaction="${returnURL}" value="${returnText}" type="submit"/>
 
 			<spring:message code="submit" var="submit" />
 			<input class="btn btn-primary" value="${submit}" type="submit"/>

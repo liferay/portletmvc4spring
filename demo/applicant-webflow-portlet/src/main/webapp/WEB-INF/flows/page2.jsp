@@ -70,8 +70,8 @@
 						<input class="btn btn-primary" value="${addAttachment}" type="submit"/>
 					</div>
 				</form:form>
-				<spring:message code="return" var="return" />
-				<a href="${returnURL}" class="btn btn-light"><c:out value="${return}" /></a>
+				<spring:message code="return" var="returnText" />
+				<a href="${returnURL}" class="btn btn-light"><c:out value="${returnText}" /></a>
 				<spring:message code="submit" var="submit" />
 				<a href="${submitURL}" class="btn btn-primary"><c:out value="${submit}" /></a>
 			</div>
