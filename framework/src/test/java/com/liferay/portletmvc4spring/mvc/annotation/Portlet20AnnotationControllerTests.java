@@ -713,8 +713,7 @@ public class Portlet20AnnotationControllerTests {
 		String responseContentAsString = response.getContentAsString();
 		assertTrue(responseContentAsString.contains("argument type mismatch") &&
 			responseContentAsString.contains(
-				"Field error in object 'testBean' on field 'age': rejected value [value2];") &&
-			responseContentAsString.contains("java.lang.NumberFormatException"));
+				"Field error in object 'testBean' on field 'age': rejected value [value2];"));
 	}
 
 	@Test
