@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root xmlns:c="jakarta.tags.core"
 		  xmlns:form="http://www.springframework.org/tags/form"
 		  xmlns:jsp="http://java.sun.com/JSP/Page"
-		  xmlns:portlet="http://xmlns.jcp.org/portlet_3_0"
+		  xmlns:portlet="jakarta.tags.portlet"
 		  xmlns:spring="http://www.springframework.org/tags"
-		  version="2.1">
+		  version="3.1">
 	<jsp:directive.page contentType="text/html" pageEncoding="UTF-8" />
 	<portlet:defineObjects/>
 
