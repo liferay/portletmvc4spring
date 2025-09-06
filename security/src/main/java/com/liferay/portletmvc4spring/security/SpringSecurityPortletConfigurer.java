@@ -28,7 +28,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 /**
  * In order to enable CSRF protection, it is necessary to specify this class in a component-scan or register it in the
@@ -89,8 +90,11 @@ public class SpringSecurityPortletConfigurer {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		CsrfTokenRequestAttributeHandler requestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 		http
-			.csrf(csrf -> csrf.disable()) // Disable CSRF or customize as necessary for portlets
+			.csrf(csrf -> csrf
+					.csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+					.csrfTokenRequestHandler(requestAttributeHandler))
 			.exceptionHandling(exceptionHandling ->
 				exceptionHandling.accessDeniedHandler(new PortletAccessDeniedHandler())
 			);
