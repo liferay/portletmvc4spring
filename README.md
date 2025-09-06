@@ -2,9 +2,7 @@
 
 **NOTE ON BRANCHES**
 
-- The PortletMVC4Spring **master** branch was intended to be reserved for compatibility with Spring Framework 6.x, but
-  since Pivotal made the move from the `javax.` to the `jakarta.` package namespace, the PortletMVC4Spring master branch
-  remains unused. See [Version Scheme](#version-scheme) for more information about the 5.3,x, 5.2.x, and 5.1.x branches.
+- The PortletMVC4Spring **master** branch is for compatibility with Spring Framework 6.x, which requires Jakarta EE and JDK 17+.
 
 The PortletMVC4Spring project began as Spring Portlet MVC and was part of the [Spring
 Framework](https://spring.io/projects/spring-framework). When the project was pruned from version 5.0.x of the Spring
