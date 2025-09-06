@@ -43,6 +43,14 @@ public class PortletModelAttributeMethodProcessor extends ServletModelAttributeM
 		super(annotationNotRequired);
 	}
 
+	@Override
+	protected void constructAttribute(WebDataBinder binder, NativeWebRequest request) {
+		PortletRequest portletRequest = request.getNativeRequest(PortletRequest.class);
+		Assert.state(portletRequest != null, "No PortletRequest");
+		PortletRequestDataBinder portletBinder = (PortletRequestDataBinder) binder;
+		portletBinder.construct(portletRequest);
+	}
+
 	/**
 	 * This implementation downcasts {@link WebDataBinder} to {@link PortletRequestDataBinder} before binding.
 	 *
