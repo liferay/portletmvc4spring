@@ -42,7 +42,7 @@
 			<artifactId>jakarta.servlet-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.portals.pluto</groupId>
+			<groupId>com.liferay.pluto</groupId>
 			<artifactId>portlet-servlet-adapter</artifactId>
 		</dependency>
 		<dependency>
