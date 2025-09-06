@@ -54,8 +54,8 @@
 	</modules>
 	<properties>
 		<full.version>${project.version} (${timestamp} AD)</full.version>
-		<liferay.version>7.1.0</liferay.version>
-		<liferay.version.dtd>7.1</liferay.version.dtd>
+		<liferay.version>7.4.0</liferay.version>
+		<liferay.version.dtd>7.4</liferay.version.dtd>
 		<pluto.version>4.0.0-SNAPSHOT</pluto.version>
 		<spring.framework.scope>compile</spring.framework.scope>
 		<spring.framework.version>6.2.2</spring.framework.version>
