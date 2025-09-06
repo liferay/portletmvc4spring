@@ -41,6 +41,11 @@ public class SpringSecurityRequestAdapter extends HttpServletRequestAdapter {
 	}
 
 	@Override
+	public String getContextPath() {
+		return "";
+	}
+
+	@Override
 	public DispatcherType getDispatcherType() {
 		return dispatcherType;
 	}
