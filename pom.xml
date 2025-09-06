@@ -84,18 +84,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>pluto</id>
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.taglibs</groupId>
-						<artifactId>taglibs-standard-jstlel</artifactId>
-						<version>1.2.1</version>
-					</dependency>
-				</dependencies>
-			</dependencyManagement>
-		</profile>
-		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
