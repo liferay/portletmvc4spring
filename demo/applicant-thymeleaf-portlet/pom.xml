@@ -77,6 +77,14 @@
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.liferay.pluto.templating</groupId>
+			<artifactId>thymeleaf-portlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.pluto.templating</groupId>
+			<artifactId>thymeleaf-portlet-spring</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
 			<exclusions>
@@ -88,7 +96,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
-			<artifactId>thymeleaf-spring5</artifactId>
+			<artifactId>thymeleaf-spring6</artifactId>
 		</dependency>
 	</dependencies>
 </project>
