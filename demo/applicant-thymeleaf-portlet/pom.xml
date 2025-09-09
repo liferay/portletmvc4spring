@@ -76,10 +76,6 @@
 			<artifactId>thymeleaf-portlet-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.liferay.pluto.templating</groupId>
-			<artifactId>thymeleaf-portlet-spring</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
 			<exclusions>
