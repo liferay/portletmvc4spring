@@ -13,7 +13,7 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.liferay.portletmvc4spring</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>com.liferay.portletmvc4spring.test</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
