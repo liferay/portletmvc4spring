@@ -19,7 +19,7 @@ import jakarta.portlet.PortletRequest;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
 
-import com.liferay.pluto.portlet.servlet.adapter.HttpServletRequestAdapter;
+import com.liferay.plutonium.portlet.servlet.adapter.HttpServletRequestAdapter;
 
 
 /**

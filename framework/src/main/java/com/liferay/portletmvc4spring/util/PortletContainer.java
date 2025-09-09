@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
  */
 public enum PortletContainer {
 
-	LIFERAY("com.liferay"), PLUTO("com.liferay.pluto"), WEBSPHERE("com.ibm");
+	LIFERAY("com.liferay"), PLUTO("com.liferay.plutonium"), WEBSPHERE("com.ibm");
 
 	private String fqcnPrefix;
 

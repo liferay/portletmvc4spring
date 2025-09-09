@@ -72,7 +72,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.liferay.pluto.templating</groupId>
+			<groupId>com.liferay.plutonium.templating</groupId>
 			<artifactId>thymeleaf-portlet-api</artifactId>
 		</dependency>
 		<dependency>
