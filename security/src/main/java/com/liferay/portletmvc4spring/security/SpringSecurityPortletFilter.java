@@ -40,7 +40,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.pluto.portlet.servlet.adapter.HttpServletResponseAdapter;
+import com.liferay.pluto.portlet.servlet.adapter.HttpServletResponseAdapter;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractMessageSource;
