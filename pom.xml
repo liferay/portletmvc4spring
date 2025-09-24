@@ -52,7 +52,7 @@
 		<full.version>${project.version} (${timestamp} AD)</full.version>
 		<liferay.version>7.4.0</liferay.version>
 		<liferay.version.dtd>7.4</liferay.version.dtd>
-		<pluto.version>4.0.0-SNAPSHOT</pluto.version>
+		<plutonium.version>4.0.0-M1</plutonium.version>
 		<spring.framework.scope>compile</spring.framework.scope>
 		<spring.framework.version>6.2.10</spring.framework.version>
 		<spring.security.version>6.5.3</spring.security.version>
@@ -214,12 +214,12 @@
 			<dependency>
 				<groupId>com.liferay.plutonium</groupId>
 				<artifactId>portlet-servlet-adapter</artifactId>
-				<version>${pluto.version}</version>
+				<version>${plutonium.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.liferay.plutonium.templating</groupId>
 				<artifactId>thymeleaf-portlet-api</artifactId>
-				<version>${pluto.version}</version>
+				<version>${plutonium.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
