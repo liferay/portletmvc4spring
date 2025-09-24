@@ -30,6 +30,18 @@
 			<organization>Liferay, Inc.</organization>
 		</developer>
 	</developers>
+	<distributionManagement>
+		<repository>
+			<id>liferay-third-party</id>
+			<url>https://repository.liferay.com/nexus/content/repositories/third-party</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</distributionManagement>
 	<scm>
 		<connection>scm:git:git://github.com/liferay/portletmvc4spring</connection>
 		<developerConnection>scm:git:git://github.com/liferay/portletmvc4spring</developerConnection>
