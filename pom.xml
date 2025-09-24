@@ -182,9 +182,9 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>jakarta.portlet</groupId>
-				<artifactId>jakarta.portlet-api</artifactId>
-				<version>4.0.0-SNAPSHOT</version>
+				<groupId>com.liferay.jakarta.portlet</groupId>
+				<artifactId>com.liferay.jakarta.portlet-api</artifactId>
+				<version>4.0.0</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
