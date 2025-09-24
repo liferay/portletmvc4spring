@@ -403,7 +403,7 @@
 						<links>
 							<link>https://jakarta.ee/specifications/platform/10/apidocs</link>
 							<link>https://docs.spring.io/spring-framework/docs/${spring.framework.version}/javadoc-api</link>
-							<link>https://docs.enterprise.spring.io/spring-security/docs/${spring.security.version}/api</link>
+							<link>https://docs.enterprise.spring.io/spring-security/docs/6.2.10/api</link>
 						</links>
 						<source>17</source>
 					</configuration>
