@@ -5,7 +5,7 @@
 	<groupId>com.liferay.portletmvc4spring</groupId>
 	<artifactId>com.liferay.portletmvc4spring.parent</artifactId>
 	<!-- CURRENTLY UNUSED BRANCH: SEE README -->
-	<version>6.0.0-SNAPSHOT</version>
+	<version>6.0.0-M1-SNAPSHOT</version>
 	<name>PortletMVC4Spring</name>
 	<description>PortletMVC4Spring</description>
 	<url>https://github.com/liferay/portletmvc4spring</url>
