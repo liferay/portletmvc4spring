@@ -56,7 +56,7 @@ public class MockStateAwareResponse extends MockPortletResponse implements State
 	/**
 	 * Create a new MockActionResponse with a default {@link MockPortalContext}.
 	 *
-	 * @see  org.springframework.mock.web.portlet.MockPortalContext
+	 * @see  com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortalContext
 	 */
 	public MockStateAwareResponse() {
 		super();

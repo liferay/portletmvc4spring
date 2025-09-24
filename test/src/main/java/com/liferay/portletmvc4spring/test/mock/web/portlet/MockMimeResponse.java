@@ -73,7 +73,7 @@ public class MockMimeResponse extends MockPortletResponse implements MimeRespons
 	/**
 	 * Create a new MockMimeResponse with a default {@link MockPortalContext}.
 	 *
-	 * @see  org.springframework.mock.web.portlet.MockPortalContext
+	 * @see  com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortalContext
 	 */
 	public MockMimeResponse() {
 		super();

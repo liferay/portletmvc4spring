@@ -49,8 +49,8 @@ public class MockResourceRequest extends MockClientDataRequest implements Resour
 	 * Create a new MockResourceRequest with a default {@link MockPortalContext} and a default {@link
 	 * MockPortletContext}.
 	 *
-	 * @see  org.springframework.mock.web.portlet.MockPortalContext
-	 * @see  org.springframework.mock.web.portlet.MockPortletContext
+	 * @see  com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortalContext
+	 * @see  com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletContext
 	 */
 	public MockResourceRequest() {
 		super();
